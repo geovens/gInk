@@ -71,7 +71,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Root.cs" />
+    <Compile Include="Root.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <EmbeddedResource Include="FormDisplay.resx">
       <DependentUpon>FormDisplay.cs</DependentUpon>
     </EmbeddedResource>

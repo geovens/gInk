@@ -3,36 +3,52 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing;
 using System.Net;
+using System.Threading;
 
 namespace gInk
 {
-	public class Root
+	public class Root : Form
 	{
-		public FormCollection Form1;
-		public FormDisplay Form2;
+		private NotifyIcon trayIcon;
+		private ContextMenu trayMenu;
+		public FormCollection FormCollection;
+		public FormDisplay FormDisplay;
 
 		public Root()
 		{
-		}
-
-		public void Run()
-		{
-			Start();
-
-			Form1 = new FormCollection(this);
-			Application.Run(Form1);
-		}
-
-		public void Start()
-		{
 			ReadOptions();
-			Form2 = new FormDisplay(this);
-			Form2.Show();
+
+			trayMenu = new ContextMenu();
+			trayMenu.MenuItems.Add("Exit", OnExit);
+
+			trayIcon = new NotifyIcon();
+			trayIcon.Text = "MyTrayApp";
+			trayIcon.Icon = new Icon(SystemIcons.Application, 40, 40);
+			trayIcon.ContextMenu = trayMenu;
+			trayIcon.Click += TrayIcon_Click;
+			trayIcon.Visible = true;
+
+			this.Visible = false;
 		}
-		public void Stop()
+
+		private void TrayIcon_Click(object sender, EventArgs e)
 		{
-			Form2.Close();
+			StartInk();
+		}
+
+		public void StartInk()
+		{
+			FormDisplay = new FormDisplay(this);
+			FormCollection = new FormCollection(this);
+			FormDisplay.Show();
+			FormCollection.Show();		
+		}
+		public void StopInk()
+		{
+			FormCollection.Close();
+			FormDisplay.Close();
 		}
 
 		public void ReadOptions()
@@ -46,8 +62,6 @@ namespace gInk
 			StreamReader srini = new StreamReader(fini);
 			string sLine = "";
 			string sName = "", sPara = "";
-			IPAddress ip = new IPAddress(new byte[4]);
-			int port = 0;
 			while (sLine != null)
 			{
 				sLine = srini.ReadLine();
@@ -73,13 +87,29 @@ namespace gInk
 
 					switch (sName)
 					{
-						case "T900ADDRESS":
+						case "SOMENAME":
 							break;
 					}
 				}
 			}
 			fini.Close();
 		}
+		private void OnExit(object sender, EventArgs e)
+		{
+			Application.Exit();
+		}
+
+		protected override void Dispose(bool isDisposing)
+		{
+			if (isDisposing)
+			{
+				// Release the icon resource.
+				trayIcon.Dispose();
+			}
+
+			base.Dispose(isDisposing);
+		}
+
 	}
 }
 

@@ -15,10 +15,7 @@ namespace gInk
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			Root Root;
-			Root = new Root();
-
-			Root.Run();
+			Application.Run(new Root());
 		}
 	}
 }
