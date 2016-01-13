@@ -15,7 +15,8 @@ namespace gInk
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			Application.Run(new Root());
+			new Root();
+			Application.Run();
 		}
 	}
 }

@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace gInk
 {
-	public class Root : Form
+	public class Root
 	{
 		private NotifyIcon trayIcon;
 		private ContextMenu trayMenu;
@@ -29,8 +29,6 @@ namespace gInk
 			trayIcon.ContextMenu = trayMenu;
 			trayIcon.Click += TrayIcon_Click;
 			trayIcon.Visible = true;
-
-			this.Visible = false;
 		}
 
 		private void TrayIcon_Click(object sender, EventArgs e)
@@ -94,22 +92,12 @@ namespace gInk
 			}
 			fini.Close();
 		}
+
 		private void OnExit(object sender, EventArgs e)
 		{
+			trayIcon.Dispose();
 			Application.Exit();
 		}
-
-		protected override void Dispose(bool isDisposing)
-		{
-			if (isDisposing)
-			{
-				// Release the icon resource.
-				trayIcon.Dispose();
-			}
-
-			base.Dispose(isDisposing);
-		}
-
 	}
 }
 
