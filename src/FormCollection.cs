@@ -14,7 +14,8 @@ namespace gInk
 		public Root Root;
 		public InkOverlay IC;
 		Image exitimage, clearimage, eraseractimage, eraserinactimage;
-		public int Entering = 1;
+		Image checkimage;
+		public int ButtonsEntering = 1;
 
 		[DllImport("user32.dll")]
 		static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
@@ -44,6 +45,7 @@ namespace gInk
 			IC.CollectionMode = CollectionMode.InkOnly;
 			IC.EraserMode = InkOverlayEraserMode.StrokeErase;
 			IC.CursorInRange += IC_CursorInRange;
+			IC.MouseUp += IC_MouseUp;
 			IC.Ink = Root.FormDisplay.IC.Ink;
 			//IC.DefaultDrawingAttributes.PenTip = PenTip.Rectangle;
 			IC.DefaultDrawingAttributes.AntiAliased = false;
@@ -70,7 +72,22 @@ namespace gInk
 			g.DrawImage(global::gInk.Properties.Resources.eraserinact, 0, 0, btEraser.Width, btEraser.Height);
 			btEraser.Image = eraserinactimage;
 
+			checkimage = new Bitmap(btColorBlue.Width, btColorBlue.Height);
+			g = Graphics.FromImage(checkimage);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.check, 0, 0, btColorBlue.Width, btColorBlue.Height);
+			btColorBlue.Image = checkimage;
+
 			ToTopMost();
+		}
+
+		private void IC_MouseUp(object sender, CancelMouseEventArgs e)
+		{
+			if (Root.EraserMode)
+			{
+				Root.FormDisplay.Refresh();
+				Root.FormDisplay.DrawButtons();
+			}
 		}
 
 		private void IC_CursorInRange(object sender, InkCollectorCursorInRangeEventArgs e)
@@ -84,7 +101,6 @@ namespace gInk
 			{
 				Root.EraserMode = false;
 				EnterEraserMode(Root.EraserMode);
-				//Root.FormDisplay.Refresh();
 			}
 		}
 
@@ -121,27 +137,27 @@ namespace gInk
 		{
 			if (e.KeyChar == 27)
 			{
-				Entering = -1;
+				ButtonsEntering = -1;
 				tiSlide.Enabled = true;
 			}
 		}
 
 		private void btStop_Click(object sender, EventArgs e)
 		{
-			Entering = -1;
+			ButtonsEntering = -1;
 			tiSlide.Enabled = true;
 		}
 
 		private void tiSlide_Tick(object sender, EventArgs e)
 		{
-			if (Entering == 1)
+			if (ButtonsEntering == 1)
 			{
 				gpButtons.Left -= 15;
 				Root.FormDisplay.DrawButtons();
 				if (gpButtons.Left <= this.Width - gpButtons.Width)
 					tiSlide.Enabled = false;
 			}
-			else if (Entering == -1)
+			else if (ButtonsEntering == -1)
 			{
 				gpButtons.Left += 15;
 				Root.FormDisplay.DrawButtons();
@@ -163,15 +179,25 @@ namespace gInk
 			if ((Button)sender == btColorBlue)
 			{
 				Root.SetInkColor(Color.FromArgb(0, 0, 220));
+				btColorBlue.Image = checkimage;
+				btColorYellow.Image = null;
+				btColorRed.Image = null;
 			}
 			else if ((Button)sender == btColorYellow)
 			{
 				Root.SetInkColor(Color.FromArgb(220, 220, 0));
+				btColorBlue.Image = null;
+				btColorYellow.Image = checkimage;
+				btColorRed.Image = null;
 			}
 			else if ((Button)sender == btColorRed)
 			{
 				Root.SetInkColor(Color.FromArgb(220, 0, 0));
+				btColorBlue.Image = null;
+				btColorYellow.Image = null;
+				btColorRed.Image = checkimage;
 			}
+			Root.FormDisplay.DrawButtons();
 		}
 
 		private void btEraser_Click(object sender, EventArgs e)

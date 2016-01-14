@@ -14,7 +14,9 @@ namespace gInk
 		public Root Root;
 		public InkOverlay IC;
 		Graphics g;
-		Bitmap collectionbitmap;
+		Bitmap gpButtonsImage;
+		SolidBrush WhiteBrush;
+
 
 		[DllImport("user32.dll")]
 		static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
@@ -37,7 +39,8 @@ namespace gInk
 			this.Width = Screen.PrimaryScreen.Bounds.Width;
 			this.Height = Screen.PrimaryScreen.Bounds.Height;
 			this.DoubleBuffered = true;
-			collectionbitmap = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+			gpButtonsImage = new Bitmap(1000, 100);
+			WhiteBrush = new SolidBrush(Color.White);
 
 			IC = new InkOverlay(this.Handle);
 			IC.CollectionMode = CollectionMode.InkOnly;
@@ -62,11 +65,13 @@ namespace gInk
 		{
 			int top = Root.FormCollection.gpButtons.Top;
 			int height = Root.FormCollection.gpButtons.Height;
-			int left = Screen.PrimaryScreen.Bounds.Width - Root.FormCollection.gpButtons.Width;
+			int left = Root.FormCollection.gpButtons.Left;
 			int width = Root.FormCollection.gpButtons.Width;
-			Root.FormCollection.DrawToBitmap(collectionbitmap, new Rectangle(0, 0, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
+			//Root.FormCollection.DrawToBitmap(collectionbitmap, new Rectangle(0, 0, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
+			Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
 			g = this.CreateGraphics();
-			g.DrawImage(collectionbitmap, left, top, new Rectangle(left, top, width, height), GraphicsUnit.Pixel);
+			g.FillRectangle(WhiteBrush, this.Width - width, top, width, height); 
+			g.DrawImage(gpButtonsImage, left, top);
 			//this.Refresh();
 		}
 

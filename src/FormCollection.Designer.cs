@@ -43,7 +43,10 @@
 			// btColorRed
 			// 
 			this.btColorRed.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+			this.btColorRed.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
 			this.btColorRed.FlatAppearance.BorderSize = 0;
+			this.btColorRed.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+			this.btColorRed.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
 			this.btColorRed.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btColorRed.Location = new System.Drawing.Point(150, 40);
 			this.btColorRed.Name = "btColorRed";
@@ -55,7 +58,10 @@
 			// btColorYellow
 			// 
 			this.btColorYellow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(0)))));
+			this.btColorYellow.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
 			this.btColorYellow.FlatAppearance.BorderSize = 0;
+			this.btColorYellow.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(0)))));
+			this.btColorYellow.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(0)))));
 			this.btColorYellow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btColorYellow.Location = new System.Drawing.Point(80, 40);
 			this.btColorYellow.Name = "btColorYellow";
@@ -67,7 +73,10 @@
 			// btColorBlue
 			// 
 			this.btColorBlue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(220)))));
+			this.btColorBlue.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
 			this.btColorBlue.FlatAppearance.BorderSize = 0;
+			this.btColorBlue.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(220)))));
+			this.btColorBlue.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(220)))));
 			this.btColorBlue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btColorBlue.Location = new System.Drawing.Point(10, 40);
 			this.btColorBlue.Name = "btColorBlue";
@@ -108,6 +117,8 @@
 			// 
 			this.btStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.btStop.FlatAppearance.BorderSize = 0;
+			this.btStop.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btStop.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btStop.Location = new System.Drawing.Point(390, 10);
 			this.btStop.Name = "btStop";
@@ -120,6 +131,8 @@
 			// 
 			this.btClear.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
 			this.btClear.FlatAppearance.BorderSize = 0;
+			this.btClear.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btClear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btClear.Location = new System.Drawing.Point(300, 5);
 			this.btClear.Name = "btClear";
