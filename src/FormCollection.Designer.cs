@@ -28,12 +28,15 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.btColorRed = new System.Windows.Forms.Button();
 			this.btColorYellow = new System.Windows.Forms.Button();
 			this.btColorBlue = new System.Windows.Forms.Button();
 			this.gpButtons = new System.Windows.Forms.Panel();
+			this.btEraser = new System.Windows.Forms.Button();
 			this.btStop = new System.Windows.Forms.Button();
 			this.btClear = new System.Windows.Forms.Button();
+			this.tiSlide = new System.Windows.Forms.Timer(this.components);
 			this.gpButtons.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -76,6 +79,7 @@
 			// gpButtons
 			// 
 			this.gpButtons.BackColor = System.Drawing.Color.WhiteSmoke;
+			this.gpButtons.Controls.Add(this.btEraser);
 			this.gpButtons.Controls.Add(this.btStop);
 			this.gpButtons.Controls.Add(this.btColorBlue);
 			this.gpButtons.Controls.Add(this.btColorRed);
@@ -83,15 +87,29 @@
 			this.gpButtons.Controls.Add(this.btColorYellow);
 			this.gpButtons.Location = new System.Drawing.Point(42, 84);
 			this.gpButtons.Name = "gpButtons";
-			this.gpButtons.Size = new System.Drawing.Size(382, 92);
+			this.gpButtons.Size = new System.Drawing.Size(578, 92);
 			this.gpButtons.TabIndex = 3;
+			// 
+			// btEraser
+			// 
+			this.btEraser.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btEraser.FlatAppearance.BorderSize = 0;
+			this.btEraser.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btEraser.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btEraser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btEraser.Location = new System.Drawing.Point(210, 10);
+			this.btEraser.Name = "btEraser";
+			this.btEraser.Size = new System.Drawing.Size(80, 80);
+			this.btEraser.TabIndex = 0;
+			this.btEraser.UseVisualStyleBackColor = true;
+			this.btEraser.Click += new System.EventHandler(this.btEraser_Click);
 			// 
 			// btStop
 			// 
 			this.btStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 			this.btStop.FlatAppearance.BorderSize = 0;
 			this.btStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btStop.Location = new System.Drawing.Point(300, 10);
+			this.btStop.Location = new System.Drawing.Point(390, 10);
 			this.btStop.Name = "btStop";
 			this.btStop.Size = new System.Drawing.Size(80, 80);
 			this.btStop.TabIndex = 0;
@@ -103,12 +121,18 @@
 			this.btClear.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
 			this.btClear.FlatAppearance.BorderSize = 0;
 			this.btClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btClear.Location = new System.Drawing.Point(210, 5);
+			this.btClear.Location = new System.Drawing.Point(300, 5);
 			this.btClear.Name = "btClear";
 			this.btClear.Size = new System.Drawing.Size(80, 80);
 			this.btClear.TabIndex = 1;
 			this.btClear.UseVisualStyleBackColor = true;
 			this.btClear.Click += new System.EventHandler(this.btClear_Click);
+			// 
+			// tiSlide
+			// 
+			this.tiSlide.Enabled = true;
+			this.tiSlide.Interval = 15;
+			this.tiSlide.Tick += new System.EventHandler(this.tiSlide_Tick);
 			// 
 			// FormCollection
 			// 
@@ -138,7 +162,9 @@
 		private System.Windows.Forms.Button btColorRed;
 		private System.Windows.Forms.Button btColorYellow;
 		private System.Windows.Forms.Button btColorBlue;
-		private System.Windows.Forms.Panel gpButtons;
+		public System.Windows.Forms.Panel gpButtons;
+		private System.Windows.Forms.Button btEraser;
+		private System.Windows.Forms.Timer tiSlide;
 	}
 }
 

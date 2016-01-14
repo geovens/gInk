@@ -11,6 +11,9 @@ namespace gInk
 {
 	public class Root
 	{
+		public bool EraserMode = false;
+		public bool EraserLock = false;
+
 		private NotifyIcon trayIcon;
 		private ContextMenu trayMenu;
 		public FormCollection FormCollection;
@@ -45,7 +48,8 @@ namespace gInk
 			FormCollection = new FormCollection(this);
 			SetInkColor(LastColor);
 			FormDisplay.Show();
-			FormCollection.Show();		
+			FormCollection.Show();
+			FormDisplay.DrawButtons();
 		}
 		public void StopInk()
 		{
@@ -57,8 +61,8 @@ namespace gInk
 		public void ClearInk()
 		{
 			FormDisplay.IC.Ink.DeleteStrokes();
-			//FormDisplay.Refreshed = false;
 			FormDisplay.Refresh();
+			FormDisplay.DrawButtons();
 		}
 
 		public void SetInkColor(Color color)

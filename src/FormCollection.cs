@@ -12,7 +12,9 @@ namespace gInk
 	public partial class FormCollection : Form
 	{
 		public Root Root;
-		public InkCollector IC;
+		public InkOverlay IC;
+		Image exitimage, clearimage, eraseractimage, eraserinactimage;
+		public int Entering = 1;
 
 		[DllImport("user32.dll")]
 		static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
@@ -35,29 +37,55 @@ namespace gInk
 			this.MinimumSize = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
 			this.Width = Screen.PrimaryScreen.Bounds.Width;
 			this.Height = Screen.PrimaryScreen.Bounds.Height;
-			gpButtons.Left = this.Width - gpButtons.Width - 30;
+			gpButtons.Left = this.Width;
 			gpButtons.Top = this.Height - gpButtons.Height - 60;
 
-			IC = new InkCollector(this.Handle);
+			IC = new InkOverlay(this.Handle);
 			IC.CollectionMode = CollectionMode.InkOnly;
+			IC.EraserMode = InkOverlayEraserMode.StrokeErase;
+			IC.CursorInRange += IC_CursorInRange;
 			IC.Ink = Root.FormDisplay.IC.Ink;
 			//IC.DefaultDrawingAttributes.PenTip = PenTip.Rectangle;
 			IC.DefaultDrawingAttributes.AntiAliased = false;
 			IC.Enabled = true;
 
-			Image exitimage = new Bitmap(btStop.Width, btStop.Height);
+			exitimage = new Bitmap(btStop.Width, btStop.Height);
 			Console.WriteLine(btStop.Width);
 			Graphics g = Graphics.FromImage(exitimage);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.exit, 0, 0, btStop.Width, btStop.Height);
 			btStop.Image = exitimage;
-			Image clearimage = new Bitmap(btClear.Width, btClear.Height);
+			clearimage = new Bitmap(btClear.Width, btClear.Height);
 			g = Graphics.FromImage(clearimage);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.garbage, 0, 0, btClear.Width, btClear.Height);
 			btClear.Image = clearimage;
+			eraseractimage = new Bitmap(btEraser.Width, btEraser.Height);
+			g = Graphics.FromImage(eraseractimage);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.eraseract, 0, 0, btEraser.Width, btEraser.Height);
+			eraserinactimage = new Bitmap(btEraser.Width, btEraser.Height);
+			g = Graphics.FromImage(eraserinactimage);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.eraserinact, 0, 0, btEraser.Width, btEraser.Height);
+			btEraser.Image = eraserinactimage;
 
 			ToTopMost();
+		}
+
+		private void IC_CursorInRange(object sender, InkCollectorCursorInRangeEventArgs e)
+		{
+			if (e.Cursor.Inverted && Root.EraserMode == false)
+			{
+				Root.EraserMode = true;
+				EnterEraserMode(Root.EraserMode);
+			}
+			else if (!e.Cursor.Inverted && Root.EraserMode == true && !Root.EraserLock)
+			{
+				Root.EraserMode = false;
+				EnterEraserMode(Root.EraserMode);
+				//Root.FormDisplay.Refresh();
+			}
 		}
 
 		public void ToTopMost()
@@ -67,6 +95,24 @@ namespace gInk
 			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0020);
 		}
 
+		public void EnterEraserMode(bool enter)
+		{
+			if (enter)
+			{
+				IC.EditingMode = InkOverlayEditingMode.Delete;
+				btEraser.Image = eraseractimage;
+				Root.FormDisplay.DrawButtons();
+				Root.FormDisplay.timer1.Interval = 300;
+			}
+			else
+			{
+				IC.EditingMode = InkOverlayEditingMode.Ink;
+				btEraser.Image = eraserinactimage;
+				Root.FormDisplay.DrawButtons();
+				Root.FormDisplay.timer1.Interval = 30;
+			}
+		}
+
 		private void Form1_Load(object sender, EventArgs e)
 		{
 		}
@@ -74,12 +120,37 @@ namespace gInk
 		private void Form1_KeyPress(object sender, KeyPressEventArgs e)
 		{
 			if (e.KeyChar == 27)
-				Root.StopInk();
+			{
+				Entering = -1;
+				tiSlide.Enabled = true;
+			}
 		}
 
 		private void btStop_Click(object sender, EventArgs e)
 		{
-			Root.StopInk();
+			Entering = -1;
+			tiSlide.Enabled = true;
+		}
+
+		private void tiSlide_Tick(object sender, EventArgs e)
+		{
+			if (Entering == 1)
+			{
+				gpButtons.Left -= 15;
+				Root.FormDisplay.DrawButtons();
+				if (gpButtons.Left <= this.Width - gpButtons.Width)
+					tiSlide.Enabled = false;
+			}
+			else if (Entering == -1)
+			{
+				gpButtons.Left += 15;
+				Root.FormDisplay.DrawButtons();
+				if (gpButtons.Left >= this.Width)
+				{
+					tiSlide.Enabled = false;
+					Root.StopInk();
+				}
+			}
 		}
 
 		private void btClear_Click(object sender, EventArgs e)
@@ -101,6 +172,13 @@ namespace gInk
 			{
 				Root.SetInkColor(Color.FromArgb(220, 0, 0));
 			}
+		}
+
+		private void btEraser_Click(object sender, EventArgs e)
+		{
+			Root.EraserLock = !Root.EraserLock;
+			Root.EraserMode = !Root.EraserMode;
+			EnterEraserMode(Root.EraserMode);
 		}
 	}
 }

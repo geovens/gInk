@@ -12,10 +12,9 @@ namespace gInk
 	public partial class FormDisplay : Form
 	{
 		public Root Root;
-		public InkCollector IC;
+		public InkOverlay IC;
 		Graphics g;
 		Bitmap collectionbitmap;
-		public bool Refreshed = false;
 
 		[DllImport("user32.dll")]
 		static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
@@ -31,16 +30,16 @@ namespace gInk
 		public FormDisplay(Root root)
 		{
 			Root = root;
-			collectionbitmap = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
 			InitializeComponent();
 
 			this.Left = 0;
 			this.Top = 0;
 			this.Width = Screen.PrimaryScreen.Bounds.Width;
 			this.Height = Screen.PrimaryScreen.Bounds.Height;
-			Console.WriteLine(this.Height);
+			this.DoubleBuffered = true;
+			collectionbitmap = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
 
-			IC = new InkCollector(this.Handle);
+			IC = new InkOverlay(this.Handle);
 			IC.CollectionMode = CollectionMode.InkOnly;
 			//IC.DefaultDrawingAttributes.PenTip = PenTip.Rectangle;
 			IC.DefaultDrawingAttributes.AntiAliased = false;
@@ -59,33 +58,32 @@ namespace gInk
 			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0020);
 		}
 
-		private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+		public void DrawButtons()
 		{
-			//if (e.KeyChar == 27)
-			//	Root.StopInk();
-		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-			//Root.StopInk();
+			int top = Root.FormCollection.gpButtons.Top;
+			int height = Root.FormCollection.gpButtons.Height;
+			int left = Screen.PrimaryScreen.Bounds.Width - Root.FormCollection.gpButtons.Width;
+			int width = Root.FormCollection.gpButtons.Width;
+			Root.FormCollection.DrawToBitmap(collectionbitmap, new Rectangle(0, 0, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
+			g = this.CreateGraphics();
+			g.DrawImage(collectionbitmap, left, top, new Rectangle(left, top, width, height), GraphicsUnit.Pixel);
+			//this.Refresh();
 		}
 
 		private void timer1_Tick(object sender, EventArgs e)
 		{
-			if (!Root.FormCollection.IC.CollectingInk && !Refreshed)
-			{
-				Root.FormCollection.DrawToBitmap(collectionbitmap, new Rectangle(0, 0, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
-				this.BackgroundImage = collectionbitmap;
-				//this.Refresh();
-				Refreshed = true;
-			}
-
-			if (Root.FormCollection.IC.CollectingInk)
+			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false)
 			{
 				g = this.CreateGraphics();
 				Stroke stroke = IC.Ink.Strokes[IC.Ink.Strokes.Count - 1];
-				IC.Renderer.Draw(g, stroke, IC.DefaultDrawingAttributes);
-				Refreshed = false;
+				//if (!stroke.Deleted)
+					IC.Renderer.Draw(g, stroke, IC.DefaultDrawingAttributes);
+			}
+
+			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == true)
+			{
+				this.Refresh();
+				DrawButtons();
 			}
 		}
 	}
