@@ -32,14 +32,30 @@ namespace gInk
 
 			this.Left = 0;
 			this.Top = 0;
+			this.MinimumSize = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
 			this.Width = Screen.PrimaryScreen.Bounds.Width;
 			this.Height = Screen.PrimaryScreen.Bounds.Height;
+			gpButtons.Left = this.Width - gpButtons.Width - 30;
+			gpButtons.Top = this.Height - gpButtons.Height - 60;
 
 			IC = new InkCollector(this.Handle);
 			IC.CollectionMode = CollectionMode.InkOnly;
 			IC.Ink = Root.FormDisplay.IC.Ink;
-			IC.DefaultDrawingAttributes.Color = Color.Red;
+			//IC.DefaultDrawingAttributes.PenTip = PenTip.Rectangle;
+			IC.DefaultDrawingAttributes.AntiAliased = false;
 			IC.Enabled = true;
+
+			Image exitimage = new Bitmap(btStop.Width, btStop.Height);
+			Console.WriteLine(btStop.Width);
+			Graphics g = Graphics.FromImage(exitimage);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.exit, 0, 0, btStop.Width, btStop.Height);
+			btStop.Image = exitimage;
+			Image clearimage = new Bitmap(btClear.Width, btClear.Height);
+			g = Graphics.FromImage(clearimage);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.garbage, 0, 0, btClear.Width, btClear.Height);
+			btClear.Image = clearimage;
 
 			ToTopMost();
 		}
@@ -53,7 +69,6 @@ namespace gInk
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-
 		}
 
 		private void Form1_KeyPress(object sender, KeyPressEventArgs e)
@@ -62,9 +77,30 @@ namespace gInk
 				Root.StopInk();
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void btStop_Click(object sender, EventArgs e)
 		{
 			Root.StopInk();
+		}
+
+		private void btClear_Click(object sender, EventArgs e)
+		{
+			Root.ClearInk();
+		}
+
+		private void btColor_Click(object sender, EventArgs e)
+		{
+			if ((Button)sender == btColorBlue)
+			{
+				Root.SetInkColor(Color.FromArgb(0, 0, 220));
+			}
+			else if ((Button)sender == btColorYellow)
+			{
+				Root.SetInkColor(Color.FromArgb(220, 220, 0));
+			}
+			else if ((Button)sender == btColorRed)
+			{
+				Root.SetInkColor(Color.FromArgb(220, 0, 0));
+			}
 		}
 	}
 }

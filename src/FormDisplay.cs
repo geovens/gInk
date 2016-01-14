@@ -15,7 +15,7 @@ namespace gInk
 		public InkCollector IC;
 		Graphics g;
 		Bitmap collectionbitmap;
-
+		public bool Refreshed = false;
 
 		[DllImport("user32.dll")]
 		static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
@@ -38,10 +38,12 @@ namespace gInk
 			this.Top = 0;
 			this.Width = Screen.PrimaryScreen.Bounds.Width;
 			this.Height = Screen.PrimaryScreen.Bounds.Height;
+			Console.WriteLine(this.Height);
 
 			IC = new InkCollector(this.Handle);
 			IC.CollectionMode = CollectionMode.InkOnly;
-			IC.DefaultDrawingAttributes.Color = Color.Red;
+			//IC.DefaultDrawingAttributes.PenTip = PenTip.Rectangle;
+			IC.DefaultDrawingAttributes.AntiAliased = false;
 			IC.Enabled = true;
 
 			ToTopMost();
@@ -68,19 +70,13 @@ namespace gInk
 			//Root.StopInk();
 		}
 
-		bool Refreshed = false;
 		private void timer1_Tick(object sender, EventArgs e)
 		{
-			//Bitmap bmpScreenCapture = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-			//Graphics g = Graphics.FromImage(bmpScreenCapture);
-			//Root.Form1.DrawToBitmap(bmpScreenCapture, new Rectangle(0, 0, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
-			//this.BackgroundImage = bmpScreenCapture;
-
 			if (!Root.FormCollection.IC.CollectingInk && !Refreshed)
 			{
 				Root.FormCollection.DrawToBitmap(collectionbitmap, new Rectangle(0, 0, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
 				this.BackgroundImage = collectionbitmap;
-				this.Refresh();
+				//this.Refresh();
 				Refreshed = true;
 			}
 

@@ -16,6 +16,8 @@ namespace gInk
 		public FormCollection FormCollection;
 		public FormDisplay FormDisplay;
 
+		public Color LastColor = Color.FromArgb(0, 0, 220);
+
 		public Root()
 		{
 			ReadOptions();
@@ -27,8 +29,9 @@ namespace gInk
 			trayIcon.Text = "MyTrayApp";
 			trayIcon.Icon = new Icon(SystemIcons.Application, 40, 40);
 			trayIcon.ContextMenu = trayMenu;
-			trayIcon.Click += TrayIcon_Click;
 			trayIcon.Visible = true;
+			trayIcon.Click += TrayIcon_Click;
+			
 		}
 
 		private void TrayIcon_Click(object sender, EventArgs e)
@@ -40,13 +43,28 @@ namespace gInk
 		{
 			FormDisplay = new FormDisplay(this);
 			FormCollection = new FormCollection(this);
+			SetInkColor(LastColor);
 			FormDisplay.Show();
 			FormCollection.Show();		
 		}
 		public void StopInk()
 		{
+			LastColor = FormDisplay.IC.DefaultDrawingAttributes.Color;
 			FormCollection.Close();
 			FormDisplay.Close();
+		}
+
+		public void ClearInk()
+		{
+			FormDisplay.IC.Ink.DeleteStrokes();
+			//FormDisplay.Refreshed = false;
+			FormDisplay.Refresh();
+		}
+
+		public void SetInkColor(Color color)
+		{
+			FormDisplay.IC.DefaultDrawingAttributes.Color = color;
+			FormCollection.IC.DefaultDrawingAttributes.Color = color;
 		}
 
 		public void ReadOptions()
