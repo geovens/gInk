@@ -19,7 +19,7 @@ namespace gInk
 		public FormCollection FormCollection;
 		public FormDisplay FormDisplay;
 
-		public Color LastColor = Color.FromArgb(0, 0, 220);
+		public Color LastColor = Color.FromArgb(220, 0, 0);
 
 		public Root()
 		{

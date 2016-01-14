@@ -26,8 +26,6 @@ namespace gInk
 		static extern int SetWindowLong(IntPtr hWnd, int nIndex, UInt32 dwNewLong);
 		[DllImport("user32.dll")]
 		public extern static bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
-		[DllImport("user32.dll", SetLastError = false)]
-		static extern IntPtr GetDesktopWindow();
 
 		public FormDisplay(Root root)
 		{
@@ -36,15 +34,21 @@ namespace gInk
 
 			this.Left = 0;
 			this.Top = 0;
-			this.Width = Screen.PrimaryScreen.Bounds.Width;
-			this.Height = Screen.PrimaryScreen.Bounds.Height;
+			int targetheight = 0;
+			foreach (Screen screen in Screen.AllScreens)
+			{
+				if (screen.WorkingArea.Height > targetheight)
+					targetheight = screen.WorkingArea.Height;
+			}
+			int virwidth = SystemInformation.VirtualScreen.Width;
+			this.Width = virwidth;
+			this.Height = targetheight;
 			this.DoubleBuffered = true;
 			gpButtonsImage = new Bitmap(1000, 100);
 			WhiteBrush = new SolidBrush(Color.White);
 
 			IC = new InkOverlay(this.Handle);
 			IC.CollectionMode = CollectionMode.InkOnly;
-			//IC.DefaultDrawingAttributes.PenTip = PenTip.Rectangle;
 			IC.DefaultDrawingAttributes.AntiAliased = false;
 			IC.Enabled = true;
 
@@ -67,10 +71,9 @@ namespace gInk
 			int height = Root.FormCollection.gpButtons.Height;
 			int left = Root.FormCollection.gpButtons.Left;
 			int width = Root.FormCollection.gpButtons.Width;
-			//Root.FormCollection.DrawToBitmap(collectionbitmap, new Rectangle(0, 0, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height));
 			Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
 			g = this.CreateGraphics();
-			g.FillRectangle(WhiteBrush, this.Width - width, top, width, height); 
+			g.FillRectangle(WhiteBrush, left - 20, top, width + 40, height); 
 			g.DrawImage(gpButtonsImage, left, top);
 			//this.Refresh();
 		}

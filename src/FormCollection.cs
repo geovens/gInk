@@ -5,6 +5,8 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows.Input;
 using Microsoft.Ink;
 
 namespace gInk
@@ -15,6 +17,7 @@ namespace gInk
 		public InkOverlay IC;
 		Image exitimage, clearimage, eraseractimage, eraserinactimage;
 		Image checkimage;
+		System.Windows.Forms.Cursor cursorred, cursorblue, cursoryellow;
 		public int ButtonsEntering = 1;
 
 		[DllImport("user32.dll")]
@@ -27,6 +30,8 @@ namespace gInk
 		public extern static bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
 		[DllImport("user32.dll", SetLastError = false)]
 		static extern IntPtr GetDesktopWindow();
+		[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+		private static extern short GetKeyState(int keyCode);
 
 		public FormCollection(Root root)
 		{
@@ -35,11 +40,18 @@ namespace gInk
 
 			this.Left = 0;
 			this.Top = 0;
-			this.MinimumSize = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-			this.Width = Screen.PrimaryScreen.Bounds.Width;
-			this.Height = Screen.PrimaryScreen.Bounds.Height;
-			gpButtons.Left = this.Width;
-			gpButtons.Top = this.Height - gpButtons.Height - 60;
+			int targetheight = 0;
+			foreach (Screen screen in Screen.AllScreens)
+			{
+				if (screen.WorkingArea.Height > targetheight)
+					targetheight = screen.WorkingArea.Height;
+			}
+			int virwidth = SystemInformation.VirtualScreen.Width;
+			this.Width = virwidth;
+			this.Height = targetheight;
+			this.DoubleBuffered = true;
+			gpButtons.Left = Screen.PrimaryScreen.Bounds.Width;
+			gpButtons.Top = Screen.PrimaryScreen.Bounds.Height - gpButtons.Height - 50;
 
 			IC = new InkOverlay(this.Handle);
 			IC.CollectionMode = CollectionMode.InkOnly;
@@ -49,10 +61,14 @@ namespace gInk
 			IC.Ink = Root.FormDisplay.IC.Ink;
 			//IC.DefaultDrawingAttributes.PenTip = PenTip.Rectangle;
 			IC.DefaultDrawingAttributes.AntiAliased = false;
+			cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
+			cursoryellow = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursoryellow.Handle);
+			cursorblue = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorblue.Handle);
+			IC.Cursor = cursorred;
+			
 			IC.Enabled = true;
 
 			exitimage = new Bitmap(btStop.Width, btStop.Height);
-			Console.WriteLine(btStop.Width);
 			Graphics g = Graphics.FromImage(exitimage);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.exit, 0, 0, btStop.Width, btStop.Height);
@@ -72,11 +88,11 @@ namespace gInk
 			g.DrawImage(global::gInk.Properties.Resources.eraserinact, 0, 0, btEraser.Width, btEraser.Height);
 			btEraser.Image = eraserinactimage;
 
-			checkimage = new Bitmap(btColorBlue.Width, btColorBlue.Height);
+			checkimage = new Bitmap(btColorRed.Width, btColorRed.Height);
 			g = Graphics.FromImage(checkimage);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.check, 0, 0, btColorBlue.Width, btColorBlue.Height);
-			btColorBlue.Image = checkimage;
+			g.DrawImage(global::gInk.Properties.Resources.check, 0, 0, btColorRed.Width, btColorRed.Height);
+			btColorRed.Image = checkimage;
 
 			ToTopMost();
 		}
@@ -133,38 +149,39 @@ namespace gInk
 		{
 		}
 
-		private void Form1_KeyPress(object sender, KeyPressEventArgs e)
-		{
-			if (e.KeyChar == 27)
-			{
-				ButtonsEntering = -1;
-				tiSlide.Enabled = true;
-			}
-		}
-
 		private void btStop_Click(object sender, EventArgs e)
 		{
 			ButtonsEntering = -1;
-			tiSlide.Enabled = true;
+			//tiSlide.Enabled = true;
 		}
 
 		private void tiSlide_Tick(object sender, EventArgs e)
 		{
+			int primwidth = Screen.PrimaryScreen.Bounds.Width;
+			int primheight = Screen.PrimaryScreen.Bounds.Height;
 			if (ButtonsEntering == 1)
 			{
 				gpButtons.Left -= 15;
 				Root.FormDisplay.DrawButtons();
-				if (gpButtons.Left <= this.Width - gpButtons.Width)
-					tiSlide.Enabled = false;
+				if (gpButtons.Left <= primwidth - gpButtons.Width)
+					ButtonsEntering = 0;
 			}
 			else if (ButtonsEntering == -1)
 			{
 				gpButtons.Left += 15;
 				Root.FormDisplay.DrawButtons();
-				if (gpButtons.Left >= this.Width)
+				if (gpButtons.Left >= primwidth)
 				{
 					tiSlide.Enabled = false;
 					Root.StopInk();
+				}
+			}
+			else
+			{
+				short retVal = GetKeyState(27);
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					ButtonsEntering = -1;
 				}
 			}
 		}
@@ -182,6 +199,7 @@ namespace gInk
 				btColorBlue.Image = checkimage;
 				btColorYellow.Image = null;
 				btColorRed.Image = null;
+				//IC.Cursor = cursorblue;  causing error
 			}
 			else if ((Button)sender == btColorYellow)
 			{
@@ -189,6 +207,7 @@ namespace gInk
 				btColorBlue.Image = null;
 				btColorYellow.Image = checkimage;
 				btColorRed.Image = null;
+				//IC.Cursor = cursoryellow;  causing error
 			}
 			else if ((Button)sender == btColorRed)
 			{
@@ -196,6 +215,7 @@ namespace gInk
 				btColorBlue.Image = null;
 				btColorYellow.Image = null;
 				btColorRed.Image = checkimage;
+				//IC.Cursor = cursorred;  causing error
 			}
 			Root.FormDisplay.DrawButtons();
 		}

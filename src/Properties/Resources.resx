@@ -121,6 +121,18 @@
   <data name="check" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\check.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="cursorblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\cursorblue.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cursorgreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\cursorgreen.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cursorred" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\cursorred.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cursoryellow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\cursoryellow.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="eraser" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\eraser.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
