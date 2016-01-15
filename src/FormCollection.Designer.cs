@@ -159,7 +159,7 @@
 			this.MinimizeBox = false;
 			this.Name = "FormCollection";
 			this.ShowInTaskbar = false;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Form1";
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.gpButtons.ResumeLayout(false);

@@ -32,24 +32,27 @@ namespace gInk
 			Root = root;
 			InitializeComponent();
 
-			this.Left = 0;
-			this.Top = 0;
-			int targetheight = 0;
+			this.Left = SystemInformation.VirtualScreen.Left;
+			this.Top = SystemInformation.VirtualScreen.Top;
+			int targetbottom = 0;
 			foreach (Screen screen in Screen.AllScreens)
 			{
-				if (screen.WorkingArea.Height > targetheight)
-					targetheight = screen.WorkingArea.Height;
+				if (screen.WorkingArea.Bottom > targetbottom)
+					targetbottom = screen.WorkingArea.Bottom;
 			}
 			int virwidth = SystemInformation.VirtualScreen.Width;
 			this.Width = virwidth;
-			this.Height = targetheight;
+			this.Height = targetbottom - this.Top;
 			this.DoubleBuffered = true;
 			gpButtonsImage = new Bitmap(1000, 100);
 			WhiteBrush = new SolidBrush(Color.White);
 
 			IC = new InkOverlay(this.Handle);
 			IC.CollectionMode = CollectionMode.InkOnly;
-			IC.DefaultDrawingAttributes.AntiAliased = false;
+			IC.DefaultDrawingAttributes.FitToCurve = true;
+			IC.DefaultDrawingAttributes.Width = 100;
+			IC.DefaultDrawingAttributes.Transparency = 0xF0;
+			IC.DefaultDrawingAttributes.AntiAliased = true;
 			IC.Enabled = true;
 
 			ToTopMost();

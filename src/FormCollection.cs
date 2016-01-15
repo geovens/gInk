@@ -18,6 +18,7 @@ namespace gInk
 		Image exitimage, clearimage, eraseractimage, eraserinactimage;
 		Image checkimage;
 		System.Windows.Forms.Cursor cursorred, cursorblue, cursoryellow;
+		int gpButtonsLeft, gpButtonsTop;
 		public int ButtonsEntering = 1;
 
 		[DllImport("user32.dll")]
@@ -38,20 +39,24 @@ namespace gInk
 			Root = root;
 			InitializeComponent();
 
-			this.Left = 0;
-			this.Top = 0;
-			int targetheight = 0;
+			this.Left = SystemInformation.VirtualScreen.Left;
+			this.Top = SystemInformation.VirtualScreen.Top;
+			int targetbottom = 0;
 			foreach (Screen screen in Screen.AllScreens)
 			{
-				if (screen.WorkingArea.Height > targetheight)
-					targetheight = screen.WorkingArea.Height;
+				if (screen.WorkingArea.Bottom > targetbottom)
+					targetbottom = screen.WorkingArea.Bottom;
 			}
 			int virwidth = SystemInformation.VirtualScreen.Width;
 			this.Width = virwidth;
-			this.Height = targetheight;
+			this.Height = targetbottom - this.Top;
+			Console.WriteLine(this.Left.ToString() + " " + this.Top.ToString());
+			Console.WriteLine(this.Width.ToString() + " " + this.Height.ToString());
 			this.DoubleBuffered = true;
-			gpButtons.Left = Screen.PrimaryScreen.Bounds.Width;
-			gpButtons.Top = Screen.PrimaryScreen.Bounds.Height - gpButtons.Height - 50;
+			gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width + (Screen.PrimaryScreen.WorkingArea.Left - SystemInformation.VirtualScreen.Left);
+			gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 10 + (Screen.PrimaryScreen.WorkingArea.Top - SystemInformation.VirtualScreen.Top);
+			gpButtons.Left = gpButtonsLeft + gpButtons.Width;
+			gpButtons.Top = gpButtonsTop;
 
 			IC = new InkOverlay(this.Handle);
 			IC.CollectionMode = CollectionMode.InkOnly;
@@ -60,7 +65,10 @@ namespace gInk
 			IC.MouseUp += IC_MouseUp;
 			IC.Ink = Root.FormDisplay.IC.Ink;
 			//IC.DefaultDrawingAttributes.PenTip = PenTip.Rectangle;
-			IC.DefaultDrawingAttributes.AntiAliased = false;
+			IC.DefaultDrawingAttributes.FitToCurve = true;
+			IC.DefaultDrawingAttributes.Width = 100;
+			IC.DefaultDrawingAttributes.Transparency = 0xF0;
+			IC.DefaultDrawingAttributes.AntiAliased = true;
 			cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
 			cursoryellow = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursoryellow.Handle);
 			cursorblue = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorblue.Handle);
@@ -124,6 +132,7 @@ namespace gInk
 		{
 			UInt32 dwExStyle = GetWindowLong(this.Handle, -20);
 			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
+			SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 80, 0x00000002);
 			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0020);
 		}
 
@@ -157,20 +166,22 @@ namespace gInk
 
 		private void tiSlide_Tick(object sender, EventArgs e)
 		{
-			int primwidth = Screen.PrimaryScreen.Bounds.Width;
-			int primheight = Screen.PrimaryScreen.Bounds.Height;
+			int primwidth = Screen.PrimaryScreen.WorkingArea.Width;
+			int primheight = Screen.PrimaryScreen.WorkingArea.Height;
+			int primright = Screen.PrimaryScreen.WorkingArea.Right;
+			int primbottom = Screen.PrimaryScreen.WorkingArea.Bottom;
 			if (ButtonsEntering == 1)
 			{
 				gpButtons.Left -= 15;
 				Root.FormDisplay.DrawButtons();
-				if (gpButtons.Left <= primwidth - gpButtons.Width)
+				if (gpButtons.Left <= gpButtonsLeft)
 					ButtonsEntering = 0;
 			}
 			else if (ButtonsEntering == -1)
 			{
 				gpButtons.Left += 15;
 				Root.FormDisplay.DrawButtons();
-				if (gpButtons.Left >= primwidth)
+				if (gpButtons.Left >= gpButtonsLeft + gpButtons.Width)
 				{
 					tiSlide.Enabled = false;
 					Root.StopInk();

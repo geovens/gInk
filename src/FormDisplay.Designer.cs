@@ -49,7 +49,7 @@
 			this.MinimizeBox = false;
 			this.Name = "FormDisplay";
 			this.ShowInTaskbar = false;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Form1";
 			this.ResumeLayout(false);
 
