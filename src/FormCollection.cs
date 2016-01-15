@@ -64,9 +64,9 @@ namespace gInk
 			IC.CursorInRange += IC_CursorInRange;
 			IC.MouseUp += IC_MouseUp;
 			IC.Ink = Root.FormDisplay.IC.Ink;
-			IC.DefaultDrawingAttributes.Width = 60;
+			IC.DefaultDrawingAttributes.Width = 80;
 			//IC.DefaultDrawingAttributes.RasterOperation = RasterOperation.Black;
-			IC.DefaultDrawingAttributes.Transparency = 60;
+			IC.DefaultDrawingAttributes.Transparency = 30;
 			IC.DefaultDrawingAttributes.AntiAliased = true;
 
 			cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
@@ -96,11 +96,22 @@ namespace gInk
 			g.DrawImage(global::gInk.Properties.Resources.eraserinact, 0, 0, btEraser.Width, btEraser.Height);
 			btEraser.Image = eraserinactimage;
 
-			checkimage = new Bitmap(btColorRed.Width, btColorRed.Height);
-			g = Graphics.FromImage(checkimage);
+			//checkimage = new Bitmap(btColorRed.Width, btColorRed.Height);
+			//g = Graphics.FromImage(checkimage);
+			//g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			//g.DrawImage(global::gInk.Properties.Resources.check, 0, 0, btColorRed.Width, btColorRed.Height);
+			//btColorRed.Image = checkimage;
+			Bitmap pencilimage = new Bitmap(btColorRed.Width, btColorRed.Height);
+			g = Graphics.FromImage(pencilimage);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.check, 0, 0, btColorRed.Width, btColorRed.Height);
-			btColorRed.Image = checkimage;
+			g.DrawImage(global::gInk.Properties.Resources.pencil1, 0, 0, btColorRed.Width, btColorRed.Height);
+			Bitmap highlighterimage = new Bitmap(btColorRed.Width, btColorRed.Height);
+			g = Graphics.FromImage(highlighterimage);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.highlighter1, 0, 0, btColorRed.Width, btColorRed.Height);
+			btColorRed.Image = pencilimage;
+			btColorBlue.Image = pencilimage;
+			btColorYellow.Image = highlighterimage;
 
 			LastTick = DateTime.Now;
 			tiSlide.Enabled = true;
@@ -179,19 +190,19 @@ namespace gInk
 			int primbottom = Screen.PrimaryScreen.WorkingArea.Bottom;
 			if (ButtonsEntering == 1)
 			{
-				gpButtons.Left -= (int)(DateTime.Now - LastTick).TotalMilliseconds;
+				gpButtons.Left -= (int)(DateTime.Now - LastTick).TotalMilliseconds * 2;
 				LastTick = DateTime.Now;
-				Root.FormDisplay.DrawButtons(false);
-				Root.FormDisplay.UpdateFormDisplay();
 				if (gpButtons.Left <= gpButtonsLeft)
 				{
 					gpButtons.Left = gpButtonsLeft;
 					ButtonsEntering = 0;
 				}
+				Root.FormDisplay.DrawButtons(false);
+				Root.FormDisplay.UpdateFormDisplay();
 			}
 			else if (ButtonsEntering == -1)
 			{
-				gpButtons.Left += (int)(DateTime.Now - LastTick).TotalMilliseconds;
+				gpButtons.Left += (int)(DateTime.Now - LastTick).TotalMilliseconds * 2;
 				LastTick = DateTime.Now;
 				Root.FormDisplay.DrawButtons(false);
 				Root.FormDisplay.UpdateFormDisplay();
@@ -222,19 +233,19 @@ namespace gInk
 			if ((Button)sender == btColorBlue)
 			{
 				Root.SetInkColor(Color.FromArgb(50, 50, 250));
-				btColorBlue.Image = checkimage;
-				btColorYellow.Image = null;
-				btColorRed.Image = null;
+				//btColorBlue.Image = checkimage;
+				//btColorYellow.Image = null;
+				//btColorRed.Image = null;
 				IC.DefaultDrawingAttributes.Width = 80;
-				IC.DefaultDrawingAttributes.Transparency = 50;
+				IC.DefaultDrawingAttributes.Transparency = 30;
 				//IC.Cursor = cursorblue;  causing error
 			}
 			else if ((Button)sender == btColorYellow)
 			{
 				Root.SetInkColor(Color.FromArgb(240, 240, 0));
-				btColorBlue.Image = null;
-				btColorYellow.Image = checkimage;
-				btColorRed.Image = null;
+				//btColorBlue.Image = null;
+				//btColorYellow.Image = checkimage;
+				//btColorRed.Image = null;
 				IC.DefaultDrawingAttributes.Width = 800;
 				IC.DefaultDrawingAttributes.Transparency = 160;
 				//IC.Cursor = cursoryellow;  causing error
@@ -242,11 +253,11 @@ namespace gInk
 			else if ((Button)sender == btColorRed)
 			{
 				Root.SetInkColor(Color.FromArgb(250, 50, 50));
-				btColorBlue.Image = null;
-				btColorYellow.Image = null;
-				btColorRed.Image = checkimage;
+				//btColorBlue.Image = null;
+				//btColorYellow.Image = null;
+				//btColorRed.Image = checkimage;
 				IC.DefaultDrawingAttributes.Width = 80;
-				IC.DefaultDrawingAttributes.Transparency = 50;
+				IC.DefaultDrawingAttributes.Transparency = 30;
 				//IC.Cursor = cursorred;  causing error
 			}
 			Root.FormDisplay.DrawButtons(true);

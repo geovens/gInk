@@ -145,7 +145,6 @@ namespace gInk
 		{
 			UpdateFormDisplay();
 		}
-		
 
 		public void UpdateFormDisplay()
 		{
@@ -157,12 +156,12 @@ namespace gInk
 			try
 			{
 				//Display-image
-				Bitmap bmp = new Bitmap(Canvus);
-				hBitmap = bmp.GetHbitmap(Color.FromArgb(0));  //Set the fact that background is transparent
+				//Bitmap bmp = new Bitmap(Canvus);
+				hBitmap = Canvus.GetHbitmap(Color.FromArgb(0));  //Set the fact that background is transparent
 				oldBitmap = SelectObject(memDc, hBitmap);
 
 				//Display-rectangle
-				Size size = bmp.Size;
+				Size size = Canvus.Size;
 				Point pointSource = new Point(0, 0);
 				Point topPos = new Point(this.Left, this.Top);
 
@@ -176,7 +175,7 @@ namespace gInk
 				UpdateLayeredWindow(this.Handle, screenDc, ref topPos, ref size, memDc, ref pointSource, 0, ref blend, ULW_ALPHA);
 
 				//Clean-up
-				bmp.Dispose();
+				//bmp.Dispose();
 				ReleaseDC(IntPtr.Zero, screenDc);
 				if (hBitmap != IntPtr.Zero)
 				{
