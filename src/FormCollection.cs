@@ -64,7 +64,6 @@ namespace gInk
 			IC.CursorInRange += IC_CursorInRange;
 			IC.MouseUp += IC_MouseUp;
 			IC.Ink = Root.FormDisplay.IC.Ink;
-			IC.DefaultDrawingAttributes.FitToCurve = true;
 			IC.DefaultDrawingAttributes.Width = 60;
 			IC.DefaultDrawingAttributes.AntiAliased = true;
 			cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
