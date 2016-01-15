@@ -19,10 +19,11 @@ namespace gInk
 		public FormCollection FormCollection;
 		public FormDisplay FormDisplay;
 
-		public Color LastColor = Color.FromArgb(220, 0, 0);
+		public int CurrentPen;
 
 		public Root()
 		{
+			CurrentPen = 3;
 			ReadOptions();
 
 			trayMenu = new ContextMenu();
@@ -46,14 +47,13 @@ namespace gInk
 		{
 			FormDisplay = new FormDisplay(this);
 			FormCollection = new FormCollection(this);
-			SetInkColor(LastColor);
+			SelectPen(CurrentPen);
 			FormDisplay.Show();
 			FormCollection.Show();
 			FormDisplay.DrawButtons(true);
 		}
 		public void StopInk()
 		{
-			LastColor = FormDisplay.IC.DefaultDrawingAttributes.Color;
 			FormCollection.Close();
 			FormDisplay.Close();
 		}
@@ -66,10 +66,9 @@ namespace gInk
 			FormDisplay.UpdateFormDisplay();
 		}
 
-		public void SetInkColor(Color color)
+		public void SelectPen(int pen)
 		{
-			FormDisplay.IC.DefaultDrawingAttributes.Color = color;
-			FormCollection.IC.DefaultDrawingAttributes.Color = color;
+			FormCollection.SelectPen(pen);
 		}
 
 		public void ReadOptions()

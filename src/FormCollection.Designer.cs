@@ -169,13 +169,13 @@
 
 		#endregion
 
-		private System.Windows.Forms.Button btStop;
-		private System.Windows.Forms.Button btClear;
-		private System.Windows.Forms.Button btColorRed;
-		private System.Windows.Forms.Button btColorYellow;
-		private System.Windows.Forms.Button btColorBlue;
+		public System.Windows.Forms.Button btStop;
+		public System.Windows.Forms.Button btClear;
+		public System.Windows.Forms.Button btColorRed;
+		public System.Windows.Forms.Button btColorYellow;
+		public System.Windows.Forms.Button btColorBlue;
 		public System.Windows.Forms.Panel gpButtons;
-		private System.Windows.Forms.Button btEraser;
+		public System.Windows.Forms.Button btEraser;
 		private System.Windows.Forms.Timer tiSlide;
 	}
 }

@@ -94,10 +94,10 @@ namespace gInk
 
 			IC = new InkOverlay(this);
 			IC.CollectionMode = CollectionMode.InkOnly;
-			IC.DefaultDrawingAttributes.Width = 60;
+			//IC.DefaultDrawingAttributes.Width = 60;
 			//IC.DefaultDrawingAttributes.RasterOperation = RasterOperation.Black;
-			IC.DefaultDrawingAttributes.Transparency = 60;
-			IC.DefaultDrawingAttributes.AntiAliased = true;
+			//IC.DefaultDrawingAttributes.Transparency = 60;
+			//IC.DefaultDrawingAttributes.AntiAliased = true;
 			IC.Enabled = true;
 
 			ToTopMost();
