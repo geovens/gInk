@@ -16,7 +16,7 @@ namespace gInk
 		Graphics g;
 		Bitmap gpButtonsImage;
 		Bitmap Canvus;
-		SolidBrush WhiteBrush;
+		SolidBrush WhiteBrush, TransparentBrush;
 
 		[DllImport("user32.dll")]
 		static extern IntPtr GetDC(IntPtr hWnd);
@@ -90,6 +90,7 @@ namespace gInk
 
 			gpButtonsImage = new Bitmap(1000, 100);
 			WhiteBrush = new SolidBrush(Color.White);
+			TransparentBrush = new SolidBrush(Color.Transparent);
 
 			IC = new InkOverlay(this);
 			IC.CollectionMode = CollectionMode.InkOnly;
@@ -108,28 +109,31 @@ namespace gInk
 			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
 			//SetWindowPos(this.Handle, (IntPtr)0, 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0004 | 0x0010 | 0x0020);
 			//SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000 | 0x00000020);
-			//SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0020);
+			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0020);
 		}
 
-		public void DrawButtons()
+		public void ClearCanvus()
+		{
+			g = Graphics.FromImage(Canvus);
+			g.Clear(Color.Transparent);
+		}
+
+		public void DrawButtons(bool redrawbuttons)
 		{
 			int top = Root.FormCollection.gpButtons.Top;
 			int height = Root.FormCollection.gpButtons.Height;
 			int left = Root.FormCollection.gpButtons.Left;
 			int width = Root.FormCollection.gpButtons.Width;
-			Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
-			//g = IC.CreateGraphics();
+			if (redrawbuttons)
+				Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
 			g = Graphics.FromImage(Canvus);
-			g.FillRectangle(WhiteBrush, left - 20, top, width + 40, height); 
+			g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+			g.FillRectangle(TransparentBrush, left - 60, top, width + 60, height);
 			g.DrawImage(gpButtonsImage, left, top);
-			//UpdateFormDisplay(Canvus);
 		}
 
-		public void DrawCanvus()
+		public void DrawStrokes()
 		{
-			g = Graphics.FromImage(Canvus);
-			g.Clear(Color.Transparent);
-			//IC.Renderer.Draw(g, IC.Ink.Strokes);
 			//foreach (Stroke stroke in IC.Ink.Strokes)
 			//	if (!stroke.Deleted)
 			//		IC.Renderer.Draw(Canvus, stroke, stroke.DrawingAttributes);
@@ -139,15 +143,12 @@ namespace gInk
 		
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			UpdateFormDisplay(Canvus);
+			UpdateFormDisplay();
 		}
 		
 
-		public void UpdateFormDisplay(Image image)
+		public void UpdateFormDisplay()
 		{
-			if (image == null)
-				Console.WriteLine("NULL");
-
 			IntPtr screenDc = GetDC(IntPtr.Zero);
 			IntPtr memDc = CreateCompatibleDC(screenDc);
 			IntPtr hBitmap = IntPtr.Zero;
@@ -156,7 +157,7 @@ namespace gInk
 			try
 			{
 				//Display-image
-				Bitmap bmp = new Bitmap(image);
+				Bitmap bmp = new Bitmap(Canvus);
 				hBitmap = bmp.GetHbitmap(Color.FromArgb(0));  //Set the fact that background is transparent
 				oldBitmap = SelectObject(memDc, hBitmap);
 
@@ -192,44 +193,22 @@ namespace gInk
 
 		private void timer1_Tick(object sender, EventArgs e)
 		{
-			/*
+			
 			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false)
 			{
-				DrawCanvus();
-				UpdateFormDisplay(this.BackgroundImage);
+				ClearCanvus();
+				DrawStrokes();
+				DrawButtons(false);
+				UpdateFormDisplay();
 			}
 
 			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == true)
 			{
-				DrawCanvus();
-				UpdateFormDisplay(this.BackgroundImage);
+				ClearCanvus();
+				DrawStrokes();
+				DrawButtons(false);
+				UpdateFormDisplay();
 			}
-			*/
-
-			DrawCanvus();
-			DrawButtons();
-
-			//for (int i = 0; i < this.Width; i++)
-			//	for (int j = 0; j < this.Height; j++)
-			//	{
-			//		Color c = Canvus.GetPixel(i, j);
-			//		int a = (c.R + c.B + c.G) / 3;
-			//		Color newc = Color.FromArgb(a, c);
-			//		Canvus.SetPixel(i, j, newc);
-			//	}
-
-			//Graphics gfxBack = Graphics.FromImage(this.BackgroundImage);
-			//IntPtr hdcBack = gfxBack.GetHdc();
-			//Graphics gfxIC = Graphics.FromImage(Canvus);
-			//IntPtr hdcIC = gfxIC.GetHdc();
-			//BitBlt(hdcBack, 5, 5, this.Width, this.Height, hdcIC, 0, 0, 0x00CC0020);
-			//gfxBack.ReleaseHdc(hdcBack);
-			//gfxIC.ReleaseHdc(hdcIC);
-
-
-			UpdateFormDisplay(Canvus);
-			//this.Refresh();
-
 		}
 	}
 }

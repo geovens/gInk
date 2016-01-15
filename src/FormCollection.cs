@@ -102,15 +102,17 @@ namespace gInk
 			g.DrawImage(global::gInk.Properties.Resources.check, 0, 0, btColorRed.Width, btColorRed.Height);
 			btColorRed.Image = checkimage;
 
+			LastTick = DateTime.Now;
+			tiSlide.Enabled = true;
+
 			ToTopMost();
 		}
 
 		private void IC_MouseUp(object sender, CancelMouseEventArgs e)
 		{
-			if (Root.EraserMode)
+			//if (Root.EraserMode)
 			{
-				Root.FormDisplay.Refresh();
-				Root.FormDisplay.DrawButtons();
+				//Root.FormDisplay.DrawButtons(true);
 			}
 		}
 
@@ -120,11 +122,15 @@ namespace gInk
 			{
 				Root.EraserMode = true;
 				EnterEraserMode(Root.EraserMode);
+				Root.FormDisplay.DrawButtons(true);
+				Root.FormDisplay.UpdateFormDisplay();
 			}
 			else if (!e.Cursor.Inverted && Root.EraserMode == true && !Root.EraserLock)
 			{
 				Root.EraserMode = false;
 				EnterEraserMode(Root.EraserMode);
+				Root.FormDisplay.DrawButtons(true);
+				Root.FormDisplay.UpdateFormDisplay();
 			}
 		}
 
@@ -141,14 +147,14 @@ namespace gInk
 			{
 				IC.EditingMode = InkOverlayEditingMode.Delete;
 				btEraser.Image = eraseractimage;
-				Root.FormDisplay.DrawButtons();
+				Root.FormDisplay.DrawButtons(true);
 				Root.FormDisplay.timer1.Interval = 300;
 			}
 			else
 			{
 				IC.EditingMode = InkOverlayEditingMode.Ink;
 				btEraser.Image = eraserinactimage;
-				Root.FormDisplay.DrawButtons();
+				Root.FormDisplay.DrawButtons(true);
 				Root.FormDisplay.timer1.Interval = 30;
 			}
 		}
@@ -159,10 +165,12 @@ namespace gInk
 
 		private void btStop_Click(object sender, EventArgs e)
 		{
+			LastTick = DateTime.Now;
 			ButtonsEntering = -1;
 			//tiSlide.Enabled = true;
 		}
 
+		DateTime LastTick;
 		private void tiSlide_Tick(object sender, EventArgs e)
 		{
 			int primwidth = Screen.PrimaryScreen.WorkingArea.Width;
@@ -171,15 +179,22 @@ namespace gInk
 			int primbottom = Screen.PrimaryScreen.WorkingArea.Bottom;
 			if (ButtonsEntering == 1)
 			{
-				gpButtons.Left -= 15;
-				Root.FormDisplay.DrawButtons();
+				gpButtons.Left -= (int)(DateTime.Now - LastTick).TotalMilliseconds;
+				LastTick = DateTime.Now;
+				Root.FormDisplay.DrawButtons(false);
+				Root.FormDisplay.UpdateFormDisplay();
 				if (gpButtons.Left <= gpButtonsLeft)
+				{
+					gpButtons.Left = gpButtonsLeft;
 					ButtonsEntering = 0;
+				}
 			}
 			else if (ButtonsEntering == -1)
 			{
-				gpButtons.Left += 15;
-				Root.FormDisplay.DrawButtons();
+				gpButtons.Left += (int)(DateTime.Now - LastTick).TotalMilliseconds;
+				LastTick = DateTime.Now;
+				Root.FormDisplay.DrawButtons(false);
+				Root.FormDisplay.UpdateFormDisplay();
 				if (gpButtons.Left >= gpButtonsLeft + gpButtons.Width)
 				{
 					tiSlide.Enabled = false;
@@ -191,6 +206,7 @@ namespace gInk
 				short retVal = GetKeyState(27);
 				if ((retVal & 0x8000) == 0x8000)
 				{
+					LastTick = DateTime.Now;
 					ButtonsEntering = -1;
 				}
 			}
@@ -205,17 +221,17 @@ namespace gInk
 		{
 			if ((Button)sender == btColorBlue)
 			{
-				Root.SetInkColor(Color.FromArgb(0, 0, 220));
+				Root.SetInkColor(Color.FromArgb(50, 50, 250));
 				btColorBlue.Image = checkimage;
 				btColorYellow.Image = null;
 				btColorRed.Image = null;
-				IC.DefaultDrawingAttributes.Width = 60;
-				IC.DefaultDrawingAttributes.Transparency = 60;
+				IC.DefaultDrawingAttributes.Width = 80;
+				IC.DefaultDrawingAttributes.Transparency = 50;
 				//IC.Cursor = cursorblue;  causing error
 			}
 			else if ((Button)sender == btColorYellow)
 			{
-				Root.SetInkColor(Color.FromArgb(220, 220, 0));
+				Root.SetInkColor(Color.FromArgb(240, 240, 0));
 				btColorBlue.Image = null;
 				btColorYellow.Image = checkimage;
 				btColorRed.Image = null;
@@ -225,15 +241,16 @@ namespace gInk
 			}
 			else if ((Button)sender == btColorRed)
 			{
-				Root.SetInkColor(Color.FromArgb(220, 0, 0));
+				Root.SetInkColor(Color.FromArgb(250, 50, 50));
 				btColorBlue.Image = null;
 				btColorYellow.Image = null;
 				btColorRed.Image = checkimage;
-				IC.DefaultDrawingAttributes.Width = 60;
-				IC.DefaultDrawingAttributes.Transparency = 60;
+				IC.DefaultDrawingAttributes.Width = 80;
+				IC.DefaultDrawingAttributes.Transparency = 50;
 				//IC.Cursor = cursorred;  causing error
 			}
-			Root.FormDisplay.DrawButtons();
+			Root.FormDisplay.DrawButtons(true);
+			Root.FormDisplay.UpdateFormDisplay();
 		}
 
 		private void btEraser_Click(object sender, EventArgs e)
@@ -241,6 +258,8 @@ namespace gInk
 			Root.EraserLock = !Root.EraserLock;
 			Root.EraserMode = !Root.EraserMode;
 			EnterEraserMode(Root.EraserMode);
+			Root.FormDisplay.DrawButtons(true);
+			Root.FormDisplay.UpdateFormDisplay();
 		}
 	}
 }

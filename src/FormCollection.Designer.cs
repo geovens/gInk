@@ -42,7 +42,7 @@
 			// 
 			// btColorRed
 			// 
-			this.btColorRed.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+			this.btColorRed.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
 			this.btColorRed.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
 			this.btColorRed.FlatAppearance.BorderSize = 0;
 			this.btColorRed.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -57,7 +57,7 @@
 			// 
 			// btColorYellow
 			// 
-			this.btColorYellow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(0)))));
+			this.btColorYellow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(0)))));
 			this.btColorYellow.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
 			this.btColorYellow.FlatAppearance.BorderSize = 0;
 			this.btColorYellow.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(0)))));
@@ -72,7 +72,7 @@
 			// 
 			// btColorBlue
 			// 
-			this.btColorBlue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(220)))));
+			this.btColorBlue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(250)))));
 			this.btColorBlue.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
 			this.btColorBlue.FlatAppearance.BorderSize = 0;
 			this.btColorBlue.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(220)))));
@@ -143,8 +143,7 @@
 			// 
 			// tiSlide
 			// 
-			this.tiSlide.Enabled = true;
-			this.tiSlide.Interval = 15;
+			this.tiSlide.Interval = 30;
 			this.tiSlide.Tick += new System.EventHandler(this.tiSlide_Tick);
 			// 
 			// FormCollection

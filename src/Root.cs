@@ -49,7 +49,7 @@ namespace gInk
 			SetInkColor(LastColor);
 			FormDisplay.Show();
 			FormCollection.Show();
-			FormDisplay.DrawButtons();
+			FormDisplay.DrawButtons(true);
 		}
 		public void StopInk()
 		{
@@ -61,8 +61,9 @@ namespace gInk
 		public void ClearInk()
 		{
 			FormDisplay.IC.Ink.DeleteStrokes();
-			FormDisplay.Refresh();
-			FormDisplay.DrawButtons();
+			FormDisplay.ClearCanvus();
+			FormDisplay.DrawButtons(true);
+			FormDisplay.UpdateFormDisplay();
 		}
 
 		public void SetInkColor(Color color)
