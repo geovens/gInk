@@ -154,6 +154,7 @@
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(1410, 921);
 			this.Controls.Add(this.gpButtons);
+			this.ForeColor = System.Drawing.Color.LawnGreen;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;

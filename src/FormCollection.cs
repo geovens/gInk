@@ -65,7 +65,10 @@ namespace gInk
 			IC.MouseUp += IC_MouseUp;
 			IC.Ink = Root.FormDisplay.IC.Ink;
 			IC.DefaultDrawingAttributes.Width = 60;
+			//IC.DefaultDrawingAttributes.RasterOperation = RasterOperation.Black;
+			IC.DefaultDrawingAttributes.Transparency = 60;
 			IC.DefaultDrawingAttributes.AntiAliased = true;
+
 			cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
 			cursoryellow = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursoryellow.Handle);
 			cursorblue = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorblue.Handle);
@@ -129,7 +132,6 @@ namespace gInk
 		{
 			UInt32 dwExStyle = GetWindowLong(this.Handle, -20);
 			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
-			//SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 80, 0x00000002);
 			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0020);
 		}
 
@@ -207,6 +209,8 @@ namespace gInk
 				btColorBlue.Image = checkimage;
 				btColorYellow.Image = null;
 				btColorRed.Image = null;
+				IC.DefaultDrawingAttributes.Width = 60;
+				IC.DefaultDrawingAttributes.Transparency = 60;
 				//IC.Cursor = cursorblue;  causing error
 			}
 			else if ((Button)sender == btColorYellow)
@@ -215,6 +219,8 @@ namespace gInk
 				btColorBlue.Image = null;
 				btColorYellow.Image = checkimage;
 				btColorRed.Image = null;
+				IC.DefaultDrawingAttributes.Width = 800;
+				IC.DefaultDrawingAttributes.Transparency = 160;
 				//IC.Cursor = cursoryellow;  causing error
 			}
 			else if ((Button)sender == btColorRed)
@@ -223,6 +229,8 @@ namespace gInk
 				btColorBlue.Image = null;
 				btColorYellow.Image = null;
 				btColorRed.Image = checkimage;
+				IC.DefaultDrawingAttributes.Width = 60;
+				IC.DefaultDrawingAttributes.Transparency = 60;
 				//IC.Cursor = cursorred;  causing error
 			}
 			Root.FormDisplay.DrawButtons();

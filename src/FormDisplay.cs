@@ -94,8 +94,9 @@ namespace gInk
 			IC = new InkOverlay(this);
 			IC.CollectionMode = CollectionMode.InkOnly;
 			IC.DefaultDrawingAttributes.Width = 60;
+			//IC.DefaultDrawingAttributes.RasterOperation = RasterOperation.Black;
+			IC.DefaultDrawingAttributes.Transparency = 60;
 			IC.DefaultDrawingAttributes.AntiAliased = true;
-			IC.DefaultDrawingAttributes.Transparency = 255;
 			IC.Enabled = true;
 
 			ToTopMost();
@@ -106,7 +107,6 @@ namespace gInk
 			UInt32 dwExStyle = GetWindowLong(this.Handle, -20);
 			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
 			//SetWindowPos(this.Handle, (IntPtr)0, 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0004 | 0x0010 | 0x0020);
-			//SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 0, 0x00000001);
 			//SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000 | 0x00000020);
 			//SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0020);
 		}
@@ -128,9 +128,12 @@ namespace gInk
 		public void DrawCanvus()
 		{
 			g = Graphics.FromImage(Canvus);
-			//g.Clear(Color.Black);
-			g.Clear(Color.Black);
-			IC.Renderer.Draw(g, IC.Ink.Strokes);
+			g.Clear(Color.Transparent);
+			//IC.Renderer.Draw(g, IC.Ink.Strokes);
+			//foreach (Stroke stroke in IC.Ink.Strokes)
+			//	if (!stroke.Deleted)
+			//		IC.Renderer.Draw(Canvus, stroke, stroke.DrawingAttributes);
+			IC.Renderer.Draw(Canvus, IC.Ink.Strokes);
 		}
 
 		
@@ -206,14 +209,14 @@ namespace gInk
 			DrawCanvus();
 			DrawButtons();
 
-			for (int i = 0; i < this.Width; i++)
-				for (int j = 0; j < this.Height; j++)
-				{
-					Color c = Canvus.GetPixel(i, j);
-					int a = (c.R + c.B + c.G) / 3;
-					Color newc = Color.FromArgb(a, c);
-					Canvus.SetPixel(i, j, newc);
-				}
+			//for (int i = 0; i < this.Width; i++)
+			//	for (int j = 0; j < this.Height; j++)
+			//	{
+			//		Color c = Canvus.GetPixel(i, j);
+			//		int a = (c.R + c.B + c.G) / 3;
+			//		Color newc = Color.FromArgb(a, c);
+			//		Canvus.SetPixel(i, j, newc);
+			//	}
 
 			//Graphics gfxBack = Graphics.FromImage(this.BackgroundImage);
 			//IntPtr hdcBack = gfxBack.GetHdc();
