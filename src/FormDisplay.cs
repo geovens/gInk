@@ -50,8 +50,7 @@ namespace gInk
 			IC = new InkOverlay(this.Handle);
 			IC.CollectionMode = CollectionMode.InkOnly;
 			IC.DefaultDrawingAttributes.FitToCurve = true;
-			IC.DefaultDrawingAttributes.Width = 100;
-			IC.DefaultDrawingAttributes.Transparency = 0xF0;
+			IC.DefaultDrawingAttributes.Width = 60;
 			IC.DefaultDrawingAttributes.AntiAliased = true;
 			IC.Enabled = true;
 
@@ -63,7 +62,7 @@ namespace gInk
 			UInt32 dwExStyle = GetWindowLong(this.Handle, -20);
 			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
 			SetWindowPos(this.Handle, (IntPtr)0, 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0004 | 0x0010 | 0x0020);
-			SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 0, 0x00000001);
+			//SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 0, 0x00000001);
 			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000 | 0x00000020);
 			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0020);
 		}

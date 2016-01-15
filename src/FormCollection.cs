@@ -64,10 +64,8 @@ namespace gInk
 			IC.CursorInRange += IC_CursorInRange;
 			IC.MouseUp += IC_MouseUp;
 			IC.Ink = Root.FormDisplay.IC.Ink;
-			//IC.DefaultDrawingAttributes.PenTip = PenTip.Rectangle;
 			IC.DefaultDrawingAttributes.FitToCurve = true;
-			IC.DefaultDrawingAttributes.Width = 100;
-			IC.DefaultDrawingAttributes.Transparency = 0xF0;
+			IC.DefaultDrawingAttributes.Width = 60;
 			IC.DefaultDrawingAttributes.AntiAliased = true;
 			cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
 			cursoryellow = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursoryellow.Handle);
@@ -132,7 +130,7 @@ namespace gInk
 		{
 			UInt32 dwExStyle = GetWindowLong(this.Handle, -20);
 			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
-			SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 80, 0x00000002);
+			//SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 80, 0x00000002);
 			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0020);
 		}
 

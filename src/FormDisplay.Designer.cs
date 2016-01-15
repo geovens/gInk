@@ -51,6 +51,7 @@
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Form1";
+			this.TransparencyKey = System.Drawing.Color.Transparent;
 			this.ResumeLayout(false);
 
 		}
