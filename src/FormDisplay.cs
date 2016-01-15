@@ -12,7 +12,7 @@ namespace gInk
 	public partial class FormDisplay : Form
 	{
 		public Root Root;
-		public InkOverlay IC;
+		//public InkOverlay IC;
 		Graphics g;
 		Bitmap gpButtonsImage;
 		Bitmap Canvus;
@@ -92,13 +92,13 @@ namespace gInk
 			WhiteBrush = new SolidBrush(Color.White);
 			TransparentBrush = new SolidBrush(Color.Transparent);
 
-			IC = new InkOverlay(this);
-			IC.CollectionMode = CollectionMode.InkOnly;
+			//IC = new InkOverlay(this);
+			//IC.CollectionMode = CollectionMode.InkOnly;
 			//IC.DefaultDrawingAttributes.Width = 60;
 			//IC.DefaultDrawingAttributes.RasterOperation = RasterOperation.Black;
 			//IC.DefaultDrawingAttributes.Transparency = 60;
 			//IC.DefaultDrawingAttributes.AntiAliased = true;
-			IC.Enabled = true;
+			//IC.Enabled = true;
 
 			ToTopMost();
 		}
@@ -137,7 +137,7 @@ namespace gInk
 			//foreach (Stroke stroke in IC.Ink.Strokes)
 			//	if (!stroke.Deleted)
 			//		IC.Renderer.Draw(Canvus, stroke, stroke.DrawingAttributes);
-			IC.Renderer.Draw(Canvus, IC.Ink.Strokes);
+			Root.FormCollection.IC.Renderer.Draw(Canvus, Root.FormCollection.IC.Ink.Strokes);
 		}
 
 		

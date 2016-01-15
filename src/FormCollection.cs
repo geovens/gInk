@@ -63,7 +63,7 @@ namespace gInk
 			IC.EraserMode = InkOverlayEraserMode.StrokeErase;
 			IC.CursorInRange += IC_CursorInRange;
 			IC.MouseUp += IC_MouseUp;
-			IC.Ink = Root.FormDisplay.IC.Ink;
+			//IC.Ink = Root.FormDisplay.IC.Ink;
 			IC.DefaultDrawingAttributes.Width = 80;
 			IC.DefaultDrawingAttributes.Transparency = 30;
 			IC.DefaultDrawingAttributes.AntiAliased = true;

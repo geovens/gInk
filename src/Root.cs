@@ -19,11 +19,10 @@ namespace gInk
 		public FormCollection FormCollection;
 		public FormDisplay FormDisplay;
 
-		public int CurrentPen;
+		public int CurrentPen = 1;  // defaut pen
 
 		public Root()
 		{
-			CurrentPen = 3;
 			ReadOptions();
 
 			trayMenu = new ContextMenu();
@@ -60,7 +59,7 @@ namespace gInk
 
 		public void ClearInk()
 		{
-			FormDisplay.IC.Ink.DeleteStrokes();
+			FormCollection.IC.Ink.DeleteStrokes();
 			FormDisplay.ClearCanvus();
 			FormDisplay.DrawButtons(true);
 			FormDisplay.UpdateFormDisplay();
