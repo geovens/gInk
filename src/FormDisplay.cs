@@ -12,62 +12,13 @@ namespace gInk
 	public partial class FormDisplay : Form
 	{
 		public Root Root;
-		//public InkOverlay IC;
-		Graphics g;
-		Bitmap gpButtonsImage;
 		Bitmap Canvus;
-		SolidBrush WhiteBrush, TransparentBrush;
+		Graphics g;
 
-		[DllImport("user32.dll")]
-		static extern IntPtr GetDC(IntPtr hWnd);
-		[DllImport("user32.dll")]
-		static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
-		[DllImport("gdi32.dll", EntryPoint = "DeleteDC")]
-		public static extern bool DeleteDC([In] IntPtr hdc);
-		[DllImport("gdi32.dll", EntryPoint = "CreateCompatibleDC", SetLastError = true)]
-		static extern IntPtr CreateCompatibleDC([In] IntPtr hdc);
-		[DllImport("gdi32.dll", EntryPoint = "SelectObject")]
-		public static extern IntPtr SelectObject([In] IntPtr hdc, [In] IntPtr hgdiobj);
-		[DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeleteObject([In] IntPtr hObject);
-		[DllImport("user32.dll", ExactSpelling = true, SetLastError = true)]
-		static extern bool UpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDst, ref Point pptDst, ref Size psize, IntPtr hdcSrc, ref Point pptSrc, uint crKey, [In] ref BLENDFUNCTION pblend, uint dwFlags);
-		[DllImport("gdi32.dll")]
-		public static extern bool BitBlt(IntPtr hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, long dwRop);
+		Bitmap gpButtonsImage;
+		SolidBrush TransparentBrush;
 
-
-		[StructLayout(LayoutKind.Sequential)]
-		public struct BLENDFUNCTION
-		{
-			public byte BlendOp;
-			public byte BlendFlags;
-			public byte SourceConstantAlpha;
-			public byte AlphaFormat;
-
-			public BLENDFUNCTION(byte op, byte flags, byte alpha, byte format)
-			{
-				BlendOp = op;
-				BlendFlags = flags;
-				SourceConstantAlpha = alpha;
-				AlphaFormat = format;
-			}
-		}
-
-		const int ULW_ALPHA = 2;
-		const int AC_SRC_OVER = 0x00;
-		const int AC_SRC_ALPHA = 0x01;
-
-
-		[DllImport("user32.dll")]
-		static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-		[DllImport("user32.dll", SetLastError = true)]
-		static extern UInt32 GetWindowLong(IntPtr hWnd, int nIndex);
-		[DllImport("user32.dll")]
-		static extern int SetWindowLong(IntPtr hWnd, int nIndex, UInt32 dwNewLong);
-		[DllImport("user32.dll")]
-		public extern static bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
-
+		
 		public FormDisplay(Root root)
 		{
 			Root = root;
@@ -89,7 +40,6 @@ namespace gInk
 			this.DoubleBuffered = true;
 
 			gpButtonsImage = new Bitmap(1000, 100);
-			WhiteBrush = new SolidBrush(Color.White);
 			TransparentBrush = new SolidBrush(Color.Transparent);
 
 			//IC = new InkOverlay(this);
@@ -209,5 +159,56 @@ namespace gInk
 				UpdateFormDisplay();
 			}
 		}
+
+		[DllImport("user32.dll")]
+		static extern IntPtr GetDC(IntPtr hWnd);
+		[DllImport("user32.dll")]
+		static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
+		[DllImport("gdi32.dll", EntryPoint = "DeleteDC")]
+		public static extern bool DeleteDC([In] IntPtr hdc);
+		[DllImport("gdi32.dll", EntryPoint = "CreateCompatibleDC", SetLastError = true)]
+		static extern IntPtr CreateCompatibleDC([In] IntPtr hdc);
+		[DllImport("gdi32.dll", EntryPoint = "SelectObject")]
+		public static extern IntPtr SelectObject([In] IntPtr hdc, [In] IntPtr hgdiobj);
+		[DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool DeleteObject([In] IntPtr hObject);
+		[DllImport("user32.dll", ExactSpelling = true, SetLastError = true)]
+		static extern bool UpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDst, ref Point pptDst, ref Size psize, IntPtr hdcSrc, ref Point pptSrc, uint crKey, [In] ref BLENDFUNCTION pblend, uint dwFlags);
+		[DllImport("gdi32.dll")]
+		public static extern bool BitBlt(IntPtr hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, long dwRop);
+
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct BLENDFUNCTION
+		{
+			public byte BlendOp;
+			public byte BlendFlags;
+			public byte SourceConstantAlpha;
+			public byte AlphaFormat;
+
+			public BLENDFUNCTION(byte op, byte flags, byte alpha, byte format)
+			{
+				BlendOp = op;
+				BlendFlags = flags;
+				SourceConstantAlpha = alpha;
+				AlphaFormat = format;
+			}
+		}
+
+		const int ULW_ALPHA = 2;
+		const int AC_SRC_OVER = 0x00;
+		const int AC_SRC_ALPHA = 0x01;
+
+
+		[DllImport("user32.dll")]
+		static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+		[DllImport("user32.dll", SetLastError = true)]
+		static extern UInt32 GetWindowLong(IntPtr hWnd, int nIndex);
+		[DllImport("user32.dll")]
+		static extern int SetWindowLong(IntPtr hWnd, int nIndex, UInt32 dwNewLong);
+		[DllImport("user32.dll")]
+		public extern static bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+
 	}
 }

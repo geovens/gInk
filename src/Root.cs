@@ -6,6 +6,7 @@ using System.IO;
 using System.Drawing;
 using System.Net;
 using System.Threading;
+using System.Runtime.InteropServices;
 using Microsoft.Ink;
 
 namespace gInk
@@ -15,7 +16,6 @@ namespace gInk
 		public DrawingAttributes Pen1, Pen2, Pen3;
 
 		public bool EraserMode = false;
-		public bool EraserLock = false;
 
 		private NotifyIcon trayIcon;
 		private ContextMenu trayMenu;
@@ -204,6 +204,11 @@ namespace gInk
 			trayIcon.Dispose();
 			Application.Exit();
 		}
+
+		[DllImport("user32.dll")]
+		private static extern int RegisterHotKey(IntPtr hwnd, int id, int fsModifiers, int vk);
+		[DllImport("user32.dll")]
+		private static extern int UnregisterHotKey(IntPtr hwnd, int id);
 	}
 }
 

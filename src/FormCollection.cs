@@ -15,26 +15,17 @@ namespace gInk
 	{
 		public Root Root;
 		public InkOverlay IC;
-		Image image_exit, image_clear, image_eraser_act, image_eraser;
+
+		Bitmap image_exit, image_clear;
 		Bitmap image_pencil, image_highlighter, image_pencil_act, image_highlighter_act;
 		Bitmap image_pen1, image_pen2, image_pen3;
 		Bitmap image_pen1_act, image_pen2_act, image_pen3_act;
+		Bitmap image_eraser_act, image_eraser;
 		System.Windows.Forms.Cursor cursorred, cursorblue, cursoryellow;
-		int gpButtonsLeft, gpButtonsTop;
-		public int ButtonsEntering = 1;
 
-		[DllImport("user32.dll")]
-		static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-		[DllImport("user32.dll", SetLastError = true)]
-		static extern UInt32 GetWindowLong(IntPtr hWnd, int nIndex);
-		[DllImport("user32.dll")]
-		static extern int SetWindowLong(IntPtr hWnd, int nIndex, UInt32 dwNewLong);
-		[DllImport("user32.dll")]
-		public extern static bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
-		[DllImport("user32.dll", SetLastError = false)]
-		static extern IntPtr GetDesktopWindow();
-		[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-		private static extern short GetKeyState(int keyCode);
+		public int ButtonsEntering = 1;  // 1 = entering, 0 = staying, -1 = exiting
+
+		int gpButtonsLeft, gpButtonsTop;
 
 		public FormCollection(Root root)
 		{
@@ -358,5 +349,18 @@ namespace gInk
 			Root.FormDisplay.DrawButtons(true);
 			Root.FormDisplay.UpdateFormDisplay();
 		}
+
+		[DllImport("user32.dll")]
+		static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+		[DllImport("user32.dll", SetLastError = true)]
+		static extern UInt32 GetWindowLong(IntPtr hWnd, int nIndex);
+		[DllImport("user32.dll")]
+		static extern int SetWindowLong(IntPtr hWnd, int nIndex, UInt32 dwNewLong);
+		[DllImport("user32.dll")]
+		public extern static bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+		[DllImport("user32.dll", SetLastError = false)]
+		static extern IntPtr GetDesktopWindow();
+		[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+		private static extern short GetKeyState(int keyCode);
 	}
 }
