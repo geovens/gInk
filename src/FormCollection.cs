@@ -61,10 +61,10 @@ namespace gInk
 			IC.DefaultDrawingAttributes.AntiAliased = true;
 
 			cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
-			cursoryellow = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursoryellow.Handle);
-			cursorblue = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorblue.Handle);
+			//cursoryellow = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursoryellow.Handle);
+			//cursorblue = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorblue.Handle);
 			IC.Cursor = cursorred;
-			
+
 			IC.Enabled = true;
 
 			image_exit = new Bitmap(btStop.Width, btStop.Height);
@@ -144,7 +144,7 @@ namespace gInk
 				image_pen3_act = image_pencil_act;
 			}
 
-			LastTick = DateTime.Now;
+			LastTickTime = DateTime.Now;
 			tiSlide.Enabled = true;
 
 			ToTopMost();
@@ -255,7 +255,7 @@ namespace gInk
 
 		public void RetreatAndExit()
 		{
-			LastTick = DateTime.Now;
+			LastTickTime = DateTime.Now;
 			ButtonsEntering = -1;
 		}
 
@@ -268,7 +268,7 @@ namespace gInk
 			RetreatAndExit();
 		}
 
-		DateTime LastTick;
+		DateTime LastTickTime;
 		private void tiSlide_Tick(object sender, EventArgs e)
 		{
 			int primwidth = Screen.PrimaryScreen.WorkingArea.Width;
@@ -277,8 +277,8 @@ namespace gInk
 			int primbottom = Screen.PrimaryScreen.WorkingArea.Bottom;
 			if (ButtonsEntering == 1)
 			{
-				gpButtons.Left -= (int)(DateTime.Now - LastTick).TotalMilliseconds * 2;
-				LastTick = DateTime.Now;
+				gpButtons.Left -= (int)(DateTime.Now - LastTickTime).TotalMilliseconds * 2;
+				LastTickTime = DateTime.Now;
 				if (gpButtons.Left <= gpButtonsLeft)
 				{
 					gpButtons.Left = gpButtonsLeft;
@@ -289,8 +289,8 @@ namespace gInk
 			}
 			else if (ButtonsEntering == -1)
 			{
-				gpButtons.Left += (int)(DateTime.Now - LastTick).TotalMilliseconds * 2;
-				LastTick = DateTime.Now;
+				gpButtons.Left += (int)(DateTime.Now - LastTickTime).TotalMilliseconds * 2;
+				LastTickTime = DateTime.Now;
 				Root.FormDisplay.DrawButtons(false);
 				Root.FormDisplay.UpdateFormDisplay();
 				if (gpButtons.Left >= gpButtonsLeft + gpButtons.Width)
@@ -319,29 +319,14 @@ namespace gInk
 			if ((Button)sender == btPen1)
 			{
 				SelectPen(1);
-				try
-				{
-					IC.Cursor = cursorred;  //causing error
-				}
-				catch { }
 			}
 			else if ((Button)sender == btPen2)
 			{
 				SelectPen(2);
-				try
-				{
-					IC.Cursor = cursorblue; //causing error
-				}
-				catch { }
 			}
 			else if ((Button)sender == btPen3)
 			{
 				SelectPen(3);
-				try
-				{
-					IC.Cursor = cursoryellow;  //causing error
-				}
-				catch { }
 			}
 			Root.FormDisplay.DrawButtons(true);
 			Root.FormDisplay.UpdateFormDisplay();
