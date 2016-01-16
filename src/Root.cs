@@ -66,7 +66,7 @@ namespace gInk
 			trayMenu.MenuItems.Add("Exit", OnExit);
 
 			trayIcon = new NotifyIcon();
-			trayIcon.Text = "MyTrayApp";
+			trayIcon.Text = "gInk";
 			trayIcon.Icon = new Icon(gInk.Properties.Resources.icon_white, 40, 40);
 			trayIcon.ContextMenu = trayMenu;
 			trayIcon.Visible = true;

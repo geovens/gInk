@@ -191,6 +191,7 @@ namespace gInk
 		{
 			UInt32 dwExStyle = GetWindowLong(this.Handle, -20);
 			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
+			SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 10, 0x2);
 			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0020);
 		}
 
