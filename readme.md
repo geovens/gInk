@@ -13,3 +13,8 @@ Pen pressure support.
 Hotkey support.  
 Multiple displays support.  
 Open source.  
+
+#### Planed or Possible Future Features
+
+Select a rectangle region and copy the region to clipboard 
+Click-through mode
