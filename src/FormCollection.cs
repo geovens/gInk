@@ -253,14 +253,19 @@ namespace gInk
 			Root.CurrentPen = pen;
 		}
 
+		public void RetreatAndExit()
+		{
+			LastTick = DateTime.Now;
+			ButtonsEntering = -1;
+		}
+
 		private void Form1_Load(object sender, EventArgs e)
 		{
 		}
 
 		private void btStop_Click(object sender, EventArgs e)
 		{
-			LastTick = DateTime.Now;
-			ButtonsEntering = -1;
+			RetreatAndExit();
 		}
 
 		DateTime LastTick;
@@ -299,8 +304,7 @@ namespace gInk
 				short retVal = GetKeyState(27);
 				if ((retVal & 0x8000) == 0x8000)
 				{
-					LastTick = DateTime.Now;
-					ButtonsEntering = -1;
+					RetreatAndExit();
 				}
 			}
 		}

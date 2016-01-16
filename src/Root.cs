@@ -11,9 +11,39 @@ using Microsoft.Ink;
 
 namespace gInk
 {
+	public class TestMessageFilter : IMessageFilter
+	{
+		public Root Root;
+
+		public TestMessageFilter(Root root)
+		{
+			Root = root;
+		}
+
+		public bool PreFilterMessage(ref Message m)
+		{
+			if (m.Msg == 0x0312)
+			{
+				//Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);                  // The key of the hotkey that was pressed.
+				//int modifier = (int)m.LParam & 0xFFFF;       // The modifier of the hotkey that was pressed.
+				//int id = m.WParam.ToInt32();                                        // The id of the hotkey that was pressed.
+
+				if (Root.FormCollection == null && Root.FormDisplay == null)
+					Root.StartInk();
+				else
+				{
+					Root.FormCollection.RetreatAndExit();
+				}
+			}
+			return false;
+		}
+	}
+
 	public class Root
 	{
 		public DrawingAttributes Pen1, Pen2, Pen3;
+		public bool Hotkey_Control, Hotkey_Alt, Hotkey_Shift, Hotkey_Win;
+		public int Hotkey;
 
 		public bool EraserMode = false;
 
@@ -27,6 +57,7 @@ namespace gInk
 		public Root()
 		{
 			SetDefaultPens();
+			SetDefaultConfig();
 			ReadOptions("pens.ini");
 			ReadOptions("config.ini");
 
@@ -39,7 +70,17 @@ namespace gInk
 			trayIcon.ContextMenu = trayMenu;
 			trayIcon.Visible = true;
 			trayIcon.Click += TrayIcon_Click;
-			
+
+			int modifier = 0;
+			if (Hotkey_Control) modifier |= 0x2;
+			if (Hotkey_Alt) modifier |= 0x1;
+			if (Hotkey_Shift) modifier |= 0x4;
+			if (Hotkey_Win) modifier |= 0x8;
+			if (modifier != 0)
+				RegisterHotKey(IntPtr.Zero, 0, modifier, Hotkey);
+
+			TestMessageFilter mf = new TestMessageFilter(this);
+			Application.AddMessageFilter(mf);
 		}
 
 		private void TrayIcon_Click(object sender, EventArgs e)
@@ -60,6 +101,10 @@ namespace gInk
 		{
 			FormCollection.Close();
 			FormDisplay.Close();
+			//FormCollection.Dispose();
+			//FormDisplay.Dispose();
+			FormCollection = null;
+			FormDisplay = null;
 		}
 
 		public void ClearInk()
@@ -93,6 +138,15 @@ namespace gInk
 			Pen3.Transparency = 160;
 		}
 
+		public void SetDefaultConfig()
+		{
+			Hotkey_Control = true;
+			Hotkey_Alt = true;
+			Hotkey_Shift = false;
+			Hotkey_Win = false;
+			Hotkey = 'G';
+		}
+
 		public void ReadOptions(string file)
 		{
 			if (!File.Exists(file))
@@ -117,6 +171,7 @@ namespace gInk
 					sLine.Substring(0, 1) != "/" &&
 					sLine.Substring(0, 1) != "!" &&
 					sLine.Substring(0, 1) != "[" &&
+					sLine.Substring(0, 1) != "#" &&
 					sLine.Contains("=") &&
 					!sLine.Substring(sLine.IndexOf("=") + 1).Contains("=")
 				)
@@ -193,6 +248,27 @@ namespace gInk
 								Pen3.Width = o;
 							break;
 
+						case "HOTKEY":
+							sPara = sPara.ToUpper();
+							if (sPara.Contains("CONTROL"))
+								Hotkey_Control = true;
+							else
+								Hotkey_Control = false;
+							if (sPara.Contains("ALT"))
+								Hotkey_Alt = true;
+							else
+								Hotkey_Alt = false;
+							if (sPara.Contains("SHIFT"))
+								Hotkey_Shift = true;
+							else
+								Hotkey_Shift = false;
+							if (sPara.Contains("WIN"))
+								Hotkey_Win = true;
+							else
+								Hotkey_Win = false;
+							Hotkey = sPara.Substring(sPara.Length - 1).ToCharArray()[0];
+
+							break;
 					}
 				}
 			}
@@ -201,6 +277,14 @@ namespace gInk
 
 		private void OnExit(object sender, EventArgs e)
 		{
+			int modifier = 0;
+			if (Hotkey_Control) modifier |= 0x2;
+			if (Hotkey_Alt) modifier |= 0x1;
+			if (Hotkey_Shift) modifier |= 0x4;
+			if (Hotkey_Win) modifier |= 0x8;
+			if (modifier != 0)
+				UnregisterHotKey(IntPtr.Zero, 0);
+
 			trayIcon.Dispose();
 			Application.Exit();
 		}
