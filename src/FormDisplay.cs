@@ -13,6 +13,7 @@ namespace gInk
 	{
 		public Root Root;
 		Bitmap Canvus;
+		Bitmap ScreenBitmap;
 		Graphics g;
 
 		Bitmap gpButtonsImage;
@@ -36,6 +37,7 @@ namespace gInk
 			this.Width = virwidth;
 			this.Height = targetbottom - this.Top;
 			Canvus = new Bitmap(this.Width, this.Height);
+			ScreenBitmap = new Bitmap(this.Width, this.Height);
 			this.BackgroundImage = new Bitmap(this.Width, this.Height);
 			this.DoubleBuffered = true;
 
@@ -97,6 +99,164 @@ namespace gInk
 			UpdateFormDisplay();
 		}
 
+		
+		Random random = new Random(DateTime.Now.Millisecond);
+		int j0 = 9000;
+		uint[] lastc = new uint[801];
+		byte[] canvusbits = new byte[50000000];
+		byte[] screenbits = new byte[50000000];
+		public uint C(int i, int j)
+		{
+			return BitConverter.ToUInt32(canvusbits, (this.Width * j + i) * 4);
+		}
+		public uint S(int i, int j)
+		{
+			return BitConverter.ToUInt32(screenbits, (this.Width * j + i) * 4);
+		}
+		public bool Test()
+		{
+			bool moved = false;
+
+			IntPtr screenDc = GetDC(IntPtr.Zero);
+			IntPtr canvusDc = CreateCompatibleDC(screenDc);
+			IntPtr hBitmap = Canvus.GetHbitmap(Color.FromArgb(0));
+			IntPtr oldBitmap = SelectObject(canvusDc, hBitmap);
+			IntPtr screenbitmapDc = CreateCompatibleDC(screenDc);
+			IntPtr hscreenBitmap = ScreenBitmap.GetHbitmap(Color.FromArgb(0));
+			IntPtr oldscreenBitmap = SelectObject(screenbitmapDc, hscreenBitmap);
+
+			GetBitmapBits(hBitmap, this.Width * this.Height * 4, canvusbits);
+			BitBlt(screenbitmapDc, 0, 0, this.Width, this.Height, screenDc, 0, 0, 0x00CC0020);
+			GetBitmapBits(hscreenBitmap, this.Width * this.Height * 4, screenbits);
+			
+		 //Console.WriteLine(C(this.Width / 2, this.Height / 2));
+
+			
+			int iindex;
+			int matchn = 0;
+			int matchj = 9000;
+			for (int j = 5; j < this.Height - 5; j++)
+			{
+				iindex = -1;
+				bool linematch = true;
+				for (int i = Canvus.Width / 2 - Canvus.Width / 4; linematch && i < Canvus.Width / 2 + Canvus.Width / 4; i += 2)
+				{
+					iindex++;
+					if (lastc[iindex] == 0x7E0649B8)
+						continue;
+					uint c = C(i, j);
+					if (c != 0x00000000)
+						continue;
+
+					uint minb = 0xFF, ming = 0xFF, minr = 0xFF;
+					uint lastcb = (lastc[iindex] >> 4) & 0xFF;
+					uint lastcg = (lastc[iindex] >> 2) & 0xFF;
+					uint lastcr = lastc[iindex] & 0xFF;
+					for (int scan = 0; scan <= 0; scan++)
+					{
+						c = S(i, j + scan);
+						uint cb = (c >> 4) & 0xFF;
+						uint cg = (c >> 2) & 0xFF;
+						uint cr = c & 0xFF;
+						if (Math.Abs(cb - lastcb) < minb) minb = (uint)Math.Abs(cb - lastcb);
+						if (Math.Abs(cg - lastcg) < ming) ming = (uint)Math.Abs(cg - lastcg);
+						if (Math.Abs(cr - lastcr) < minr) minr = (uint)Math.Abs(cr - lastcr);
+					}
+					
+					if (minb > 10 || ming > 10 || minr > 10)
+						linematch = false;
+				}
+				if (linematch)
+				{
+					matchn++;
+					if (Math.Abs(j - j0) < Math.Abs(matchj - j0))
+						matchj = j;
+				}
+
+			}
+
+			if (matchn > 0 && matchn <= 5)
+			{
+				if (matchj != j0)
+				{
+					g = Graphics.FromImage(Canvus);
+					Point po1 = new Point(1, 100);
+					Point po2 = new Point(1, 200);
+					Root.FormCollection.IC.Renderer.PixelToInkSpace(g, ref po1);
+					Root.FormCollection.IC.Renderer.PixelToInkSpace(g, ref po2);
+					foreach (Stroke stroke in Root.FormCollection.IC.Ink.Strokes)
+					{
+						stroke.Move(0, (matchj - j0) * (po2.Y - po1.Y) / 100.0f);
+					}
+					moved = true;
+				}
+			}
+
+			if (moved || j0 == 9000)
+			{
+				float maxdr = 0;
+				int maxdrj0 = 300;
+				uint[] crs = new uint[801];
+				for (int j0 = Canvus.Height / 2 - 100; j0 < Canvus.Height / 2 + 100; j0 += 2)
+				{
+					uint sumr = 0;
+					iindex = -1;
+					for (int i = Canvus.Width / 2 - Canvus.Width / 4; i < Canvus.Width / 2 + Canvus.Width / 4; i += 2)
+					{
+						iindex++;
+						uint c = S(i, j0);
+						uint cr = c & 0xFF;
+						sumr += cr;
+						crs[iindex] = cr;
+					}
+					iindex++;
+					float aver = (float)sumr / iindex;
+
+					float sumdr = 0;
+					for (int ii = 0; ii < iindex; ii++)
+					{
+						sumdr += (crs[ii] - aver) * (crs[ii] - aver);
+					}
+					if (sumdr > maxdr)
+					{
+						maxdr = sumdr;
+						maxdrj0 = j0;
+					}
+				}
+				j0 = maxdrj0;
+				Console.WriteLine(j0);
+			}
+
+			iindex = -1;
+			for (int i = Canvus.Width / 2 - Canvus.Width / 4; i < Canvus.Width / 2 + Canvus.Width / 4; i += 2)
+			{
+				iindex++;
+				uint c = C(i, j0);
+				if (c != 0x00000000)
+				{
+					lastc[iindex] = 0x7E0649B8;
+					continue;
+				}
+				c = S(i, j0);
+				lastc[iindex] = c;
+			}
+			
+			ReleaseDC(IntPtr.Zero, screenDc);
+			if (hBitmap != IntPtr.Zero)
+			{
+				SelectObject(canvusDc, oldBitmap);
+				DeleteObject(hBitmap);
+			}
+			DeleteDC(canvusDc);
+			if (hscreenBitmap != IntPtr.Zero)
+			{
+				SelectObject(screenbitmapDc, oldscreenBitmap);
+				DeleteObject(hscreenBitmap);
+			}
+			DeleteDC(screenbitmapDc);
+			return moved;
+		}
+
 		public void UpdateFormDisplay()
 		{
 			IntPtr screenDc = GetDC(IntPtr.Zero);
@@ -143,7 +303,6 @@ namespace gInk
 
 		private void timer1_Tick(object sender, EventArgs e)
 		{
-			
 			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false)
 			{
 				ClearCanvus();
@@ -153,6 +312,15 @@ namespace gInk
 			}
 
 			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == true)
+			{
+				ClearCanvus();
+				DrawStrokes();
+				DrawButtons(false);
+				UpdateFormDisplay();
+			}
+
+			bool moved = Test();
+			if (moved)
 			{
 				ClearCanvus();
 				DrawStrokes();
@@ -178,6 +346,8 @@ namespace gInk
 		static extern bool UpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDst, ref Point pptDst, ref Size psize, IntPtr hdcSrc, ref Point pptSrc, uint crKey, [In] ref BLENDFUNCTION pblend, uint dwFlags);
 		[DllImport("gdi32.dll")]
 		public static extern bool BitBlt(IntPtr hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, long dwRop);
+		[DllImport("gdi32.dll")]
+		public static extern bool StretchBlt(IntPtr hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, int nWidthSrc, int nHeightSrc, long dwRop);
 
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -211,5 +381,11 @@ namespace gInk
 		[DllImport("user32.dll")]
 		public extern static bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
 
+		[DllImport("gdi32.dll")]
+		static extern int GetBitmapBits(IntPtr hbmp, int cbBuffer, [Out] byte[] lpvBits);
+		[DllImport("gdi32.dll")]
+		static extern uint GetPixel(IntPtr hdc, int nXPos, int nYPos);
+		[DllImport("gdi32.dll")]
+		static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
 	}
 }
