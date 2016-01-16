@@ -51,6 +51,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "FormAbout";
+			this.ShowInTaskbar = false;
 			this.Text = "About";
 			this.Load += new System.EventHandler(this.FormAbout_Load);
 			this.ResumeLayout(false);

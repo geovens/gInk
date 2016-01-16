@@ -291,7 +291,7 @@ namespace gInk
 			{
 				gpButtons.Left += (int)(DateTime.Now - LastTickTime).TotalMilliseconds * 2;
 				LastTickTime = DateTime.Now;
-				Root.FormDisplay.DrawButtons(false);
+				Root.FormDisplay.DrawButtons(false, true);
 				Root.FormDisplay.UpdateFormDisplay();
 				if (gpButtons.Left >= gpButtonsLeft + gpButtons.Width)
 				{

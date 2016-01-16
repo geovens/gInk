@@ -68,7 +68,7 @@ namespace gInk
 			g.Clear(Color.Transparent);
 		}
 
-		public void DrawButtons(bool redrawbuttons)
+		public void DrawButtons(bool redrawbuttons, bool exiting = false)
 		{
 			int top = Root.FormCollection.gpButtons.Top;
 			int height = Root.FormCollection.gpButtons.Height;
@@ -78,15 +78,16 @@ namespace gInk
 				Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
 			g = Graphics.FromImage(Canvus);
 			g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-			g.FillRectangle(TransparentBrush, left - 60, top, width + 60, height);
+			if (exiting)
+				g.FillRectangle(TransparentBrush, left - 120, top, width + 80, height);
 			g.DrawImage(gpButtonsImage, left, top);
 		}
 
 		public void DrawStrokes()
 		{
-			//foreach (Stroke stroke in IC.Ink.Strokes)
-			//	if (!stroke.Deleted)
-			//		IC.Renderer.Draw(Canvus, stroke, stroke.DrawingAttributes);
+			//foreach (Stroke stroke in Root.FormCollection.IC.Ink.Strokes)
+			//	if (!stroke.Deleted && stroke.DrawingAttributes.AntiAliased == false)
+			//		Console.WriteLine("not anti-aliased?");
 			Root.FormCollection.IC.Renderer.Draw(Canvus, Root.FormCollection.IC.Ink.Strokes);
 		}
 
