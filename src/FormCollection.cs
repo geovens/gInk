@@ -17,6 +17,8 @@ namespace gInk
 		public InkOverlay IC;
 		Image image_exit, image_clear, image_eraser_act, image_eraser;
 		Bitmap image_pencil, image_highlighter, image_pencil_act, image_highlighter_act;
+		Bitmap image_pen1, image_pen2, image_pen3;
+		Bitmap image_pen1_act, image_pen2_act, image_pen3_act;
 		System.Windows.Forms.Cursor cursorred, cursorblue, cursoryellow;
 		int gpButtonsLeft, gpButtonsTop;
 		public int ButtonsEntering = 1;
@@ -50,9 +52,8 @@ namespace gInk
 			int virwidth = SystemInformation.VirtualScreen.Width;
 			this.Width = virwidth;
 			this.Height = targetbottom - this.Top;
-			Console.WriteLine(this.Left.ToString() + " " + this.Top.ToString());
-			Console.WriteLine(this.Width.ToString() + " " + this.Height.ToString());
 			this.DoubleBuffered = true;
+
 			gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width + (Screen.PrimaryScreen.WorkingArea.Left - SystemInformation.VirtualScreen.Left);
 			gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 10 + (Screen.PrimaryScreen.WorkingArea.Top - SystemInformation.VirtualScreen.Top);
 			gpButtons.Left = gpButtonsLeft + gpButtons.Width;
@@ -88,37 +89,69 @@ namespace gInk
 			image_eraser_act = new Bitmap(btEraser.Width, btEraser.Height);
 			g = Graphics.FromImage(image_eraser_act);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.eraseract, 0, 0, btEraser.Width, btEraser.Height);
+			g.DrawImage(global::gInk.Properties.Resources.eraser_act, 0, 0, btEraser.Width, btEraser.Height);
 			image_eraser = new Bitmap(btEraser.Width, btEraser.Height);
 			g = Graphics.FromImage(image_eraser);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.eraser, 0, 0, btEraser.Width, btEraser.Height);
 			btEraser.Image = image_eraser;
 
-			//checkimage = new Bitmap(btColorRed.Width, btColorRed.Height);
-			//g = Graphics.FromImage(checkimage);
-			//g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			//g.DrawImage(global::gInk.Properties.Resources.check, 0, 0, btColorRed.Width, btColorRed.Height);
-			//btColorRed.Image = checkimage;
-			image_pencil = new Bitmap(btColorRed.Width, btColorRed.Height);
+			image_pencil = new Bitmap(btPen3.Width, btPen3.Height);
 			g = Graphics.FromImage(image_pencil);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pencil1, 0, 0, btColorRed.Width, btColorRed.Height);
-			image_highlighter = new Bitmap(btColorRed.Width, btColorRed.Height);
+			g.DrawImage(global::gInk.Properties.Resources.pencil, 0, 0, btPen3.Width, btPen3.Height);
+			image_highlighter = new Bitmap(btPen3.Width, btPen3.Height);
 			g = Graphics.FromImage(image_highlighter);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.highlighter1, 0, 0, btColorRed.Width, btColorRed.Height);
-			image_pencil_act = new Bitmap(btColorRed.Width, btColorRed.Height);
+			g.DrawImage(global::gInk.Properties.Resources.highlighter, 0, 0, btPen3.Width, btPen3.Height);
+			image_pencil_act = new Bitmap(btPen3.Width, btPen3.Height);
 			g = Graphics.FromImage(image_pencil_act);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pencil_act, 0, 0, btColorRed.Width, btColorRed.Height);
-			image_highlighter_act = new Bitmap(btColorRed.Width, btColorRed.Height);
+			g.DrawImage(global::gInk.Properties.Resources.pencil_act, 0, 0, btPen3.Width, btPen3.Height);
+			image_highlighter_act = new Bitmap(btPen3.Width, btPen3.Height);
 			g = Graphics.FromImage(image_highlighter_act);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.highlighter_act, 0, 0, btColorRed.Width, btColorRed.Height);
-			btColorRed.Image = image_pencil_act;
-			btColorBlue.Image = image_pencil;
-			btColorYellow.Image = image_highlighter;
+			g.DrawImage(global::gInk.Properties.Resources.highlighter_act, 0, 0, btPen3.Width, btPen3.Height);
+
+			btPen1.BackColor = Root.Pen1.Color;
+			btPen2.BackColor = Root.Pen2.Color;
+			btPen3.BackColor = Root.Pen3.Color;
+			btPen1.FlatAppearance.MouseDownBackColor = Root.Pen1.Color;
+			btPen2.FlatAppearance.MouseDownBackColor = Root.Pen2.Color;
+			btPen3.FlatAppearance.MouseDownBackColor = Root.Pen3.Color;
+			btPen1.FlatAppearance.MouseOverBackColor = Root.Pen1.Color;
+			btPen2.FlatAppearance.MouseOverBackColor = Root.Pen2.Color;
+			btPen3.FlatAppearance.MouseOverBackColor = Root.Pen3.Color;
+			if (Root.Pen1.Transparency >= 100)
+			{
+				image_pen1 = image_highlighter;
+				image_pen1_act = image_highlighter_act;
+			}
+			else
+			{
+				image_pen1 = image_pencil;
+				image_pen1_act = image_pencil_act;
+			}
+			if (Root.Pen2.Transparency >= 100)
+			{
+				image_pen2 = image_highlighter;
+				image_pen2_act = image_highlighter_act;
+			}
+			else
+			{
+				image_pen2 = image_pencil;
+				image_pen2_act = image_pencil_act;
+			}
+			if (Root.Pen3.Transparency >= 100)
+			{
+				image_pen3 = image_highlighter;
+				image_pen3_act = image_highlighter_act;
+			}
+			else
+			{
+				image_pen3 = image_pencil;
+				image_pen3_act = image_pencil_act;
+			}
 
 			LastTick = DateTime.Now;
 			tiSlide.Enabled = true;
@@ -186,48 +219,42 @@ namespace gInk
 		{
 			if (pen == 0)
 			{
-				btColorBlue.Image = image_pencil;
-				btColorYellow.Image = image_highlighter;
-				btColorRed.Image = image_pencil;
+				btPen1.Image = image_pen1;
+				btPen2.Image = image_pen2;
+				btPen3.Image = image_pen3;
 				btEraser.Image = image_eraser_act;
 				Root.EraserMode = true;
 				EnterEraserMode(true);
 			}
 			else if (pen == 1)
 			{
-				IC.DefaultDrawingAttributes.Color = Color.FromArgb(250, 50, 50);
-				IC.DefaultDrawingAttributes.Width = 80;
-				IC.DefaultDrawingAttributes.Transparency = 30;
+				IC.DefaultDrawingAttributes = Root.Pen1;
 
-				btColorBlue.Image = image_pencil;
-				btColorYellow.Image = image_highlighter;
-				btColorRed.Image = image_pencil_act;
+				btPen1.Image = image_pen1_act;
+				btPen2.Image = image_pen2;
+				btPen3.Image = image_pen3;
 				btEraser.Image = image_eraser;
 				Root.EraserMode = false;
 				EnterEraserMode(false);
 			}
 			else if (pen == 2)
 			{
-				IC.DefaultDrawingAttributes.Color = Color.FromArgb(240, 240, 0);
-				IC.DefaultDrawingAttributes.Width = 800;
-				IC.DefaultDrawingAttributes.Transparency = 160;
+				IC.DefaultDrawingAttributes = Root.Pen2;
 
-				btColorBlue.Image = image_pencil;
-				btColorYellow.Image = image_highlighter_act;
-				btColorRed.Image = image_pencil;
+				btPen1.Image = image_pen1;
+				btPen2.Image = image_pen2_act;
+				btPen3.Image = image_pen3;
 				btEraser.Image = image_eraser;
 				Root.EraserMode = false;
 				EnterEraserMode(false);
 			}
 			else if (pen == 3)
 			{
-				IC.DefaultDrawingAttributes.Color = Color.FromArgb(50, 50, 250);
-				IC.DefaultDrawingAttributes.Width = 80;
-				IC.DefaultDrawingAttributes.Transparency = 30;
+				IC.DefaultDrawingAttributes = Root.Pen3;
 
-				btColorBlue.Image = image_pencil_act;
-				btColorYellow.Image = image_highlighter;
-				btColorRed.Image = image_pencil;
+				btPen1.Image = image_pen1;
+				btPen2.Image = image_pen2;
+				btPen3.Image = image_pen3_act;
 				btEraser.Image = image_eraser;
 				Root.EraserMode = false;
 				EnterEraserMode(false);
@@ -294,30 +321,30 @@ namespace gInk
 
 		private void btColor_Click(object sender, EventArgs e)
 		{
-			if ((Button)sender == btColorBlue)
-			{
-				SelectPen(3);
-				try
-				{
-					IC.Cursor = cursorblue;  //causing error
-				}
-				catch { }
-			}
-			else if ((Button)sender == btColorYellow)
-			{
-				SelectPen(2);
-				try
-				{
-					IC.Cursor = cursoryellow; //causing error
-				}
-				catch { }
-			}
-			else if ((Button)sender == btColorRed)
+			if ((Button)sender == btPen1)
 			{
 				SelectPen(1);
 				try
 				{
 					IC.Cursor = cursorred;  //causing error
+				}
+				catch { }
+			}
+			else if ((Button)sender == btPen2)
+			{
+				SelectPen(2);
+				try
+				{
+					IC.Cursor = cursorblue; //causing error
+				}
+				catch { }
+			}
+			else if ((Button)sender == btPen3)
+			{
+				SelectPen(3);
+				try
+				{
+					IC.Cursor = cursoryellow;  //causing error
 				}
 				catch { }
 			}

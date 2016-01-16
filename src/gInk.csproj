@@ -38,6 +38,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon_red.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Ink, Version=6.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
@@ -131,9 +134,6 @@
     <None Include="check.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="mouse.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="cursorblue.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +159,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="buttonback.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon_red.ico" />
+    <None Include="icon_white.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
