@@ -62,6 +62,7 @@ namespace gInk
 			ReadOptions("config.ini");
 
 			trayMenu = new ContextMenu();
+			trayMenu.MenuItems.Add("About", OnAbout);
 			trayMenu.MenuItems.Add("Exit", OnExit);
 
 			trayIcon = new NotifyIcon();
@@ -69,7 +70,7 @@ namespace gInk
 			trayIcon.Icon = new Icon(gInk.Properties.Resources.icon_white, 40, 40);
 			trayIcon.ContextMenu = trayMenu;
 			trayIcon.Visible = true;
-			trayIcon.Click += TrayIcon_Click;
+			trayIcon.MouseClick += TrayIcon_Click;
 
 			int modifier = 0;
 			if (Hotkey_Control) modifier |= 0x2;
@@ -83,9 +84,10 @@ namespace gInk
 			Application.AddMessageFilter(mf);
 		}
 
-		private void TrayIcon_Click(object sender, EventArgs e)
+		private void TrayIcon_Click(object sender, MouseEventArgs e)
 		{
-			StartInk();
+			if (e.Button == MouseButtons.Left)
+				StartInk();
 		}
 
 		public void StartInk()
@@ -273,6 +275,12 @@ namespace gInk
 				}
 			}
 			fini.Close();
+		}
+
+		private void OnAbout(object sender, EventArgs e)
+		{
+			FormAbout FormAbout = new FormAbout();
+			FormAbout.Show();
 		}
 
 		private void OnExit(object sender, EventArgs e)
