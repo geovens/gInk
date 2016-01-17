@@ -177,9 +177,9 @@ namespace gInk
 		{		
 			IntPtr screenDc = GetDC(IntPtr.Zero);
 
-			// 5% CPU
+			// big time consuming, but not CPU consuming
 			BitBlt(memscreenDc, Width / 4, 0, Width / 2, this.Height, screenDc, Width / 4, 0, 0x00CC0020);
-			// 1% CPU
+			// <1% CPU
 			GetBitmapBits(hScreenBitmap, this.Width * this.Height * 4, screenbits);
 			
 			int dj;
@@ -187,7 +187,8 @@ namespace gInk
 			float maxidchdrio = 0;
 			int maxdj = 0;
 			
-			// 6% CPU with 1x10x10 sample rate
+			
+			// 25% CPU with 1x10x10 sample rate?
 			int istart = Width / 2 - Width / 4;
 			int iend = Width / 2 + Width / 4;
 			for (dj = -Height * 3 / 8 + 1; dj < Height * 3 / 8 - 1; dj++)
@@ -230,6 +231,7 @@ namespace gInk
 			if (maxidpixels < 100)
 				maxdj = 0;
 			
+
 			// 2% CPU
 			IntPtr pscreenbits = Marshal.UnsafeAddrOfPinnedArrayElement(screenbits, (int)(this.Width * this.Height * 4 * 0.375));
 			IntPtr plastscreenbits = Marshal.UnsafeAddrOfPinnedArrayElement(lastscreenbits, (int)(this.Width * this.Height * 4 * 0.375));
