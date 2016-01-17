@@ -272,6 +272,7 @@ namespace gInk
 		private void timer1_Tick(object sender, EventArgs e)
 		{
 			Tick++;
+			/*
 			if (Tick == 1)
 				TickStartTime = DateTime.Now;
 			else if (Tick % 60 == 0)
@@ -279,6 +280,7 @@ namespace gInk
 				Console.WriteLine(60 / (DateTime.Now - TickStartTime).TotalMilliseconds * 1000);
 				TickStartTime = DateTime.Now;
 			}
+			*/
 
 			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false)
 			{
@@ -299,17 +301,20 @@ namespace gInk
 				UpdateFormDisplay(true);
 			}
 
-			int moved = Test();
-			stackmove += moved;
-
-			if (stackmove != 0 && Tick % 10 == 1)
+			if (Root.AutoScroll)
 			{
-				MoveStrokes(stackmove);
-				ClearCanvus();
-				DrawStrokes();
-				DrawButtons(false);
-				UpdateFormDisplay(true);
-				stackmove = 0;
+				int moved = Test();
+				stackmove += moved;
+
+				if (stackmove != 0 && Tick % 10 == 1)
+				{
+					MoveStrokes(stackmove);
+					ClearCanvus();
+					DrawStrokes();
+					DrawButtons(false);
+					UpdateFormDisplay(true);
+					stackmove = 0;
+				}
 			}
 		}
 

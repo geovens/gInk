@@ -41,9 +41,11 @@ namespace gInk
 
 	public class Root
 	{
+		// options
 		public DrawingAttributes Pen1, Pen2, Pen3;
 		public bool Hotkey_Control, Hotkey_Alt, Hotkey_Shift, Hotkey_Win;
 		public int Hotkey;
+		public bool AutoScroll;
 
 		public bool EraserMode = false;
 
@@ -147,6 +149,8 @@ namespace gInk
 			Hotkey_Shift = false;
 			Hotkey_Win = false;
 			Hotkey = 'G';
+
+			AutoScroll = false;
 		}
 
 		public void ReadOptions(string file)
@@ -268,8 +272,15 @@ namespace gInk
 								Hotkey_Win = true;
 							else
 								Hotkey_Win = false;
-							Hotkey = sPara.Substring(sPara.Length - 1).ToCharArray()[0];
-
+							if (sPara.Length > 0)
+								Hotkey = sPara.Substring(sPara.Length - 1).ToCharArray()[0];
+							break;
+						case "ENABLEAUTOSCROLL":
+							sPara = sPara.ToUpper();
+							if (sPara.Contains("TRUE"))
+								AutoScroll = true;
+							else
+								AutoScroll = false;
 							break;
 					}
 				}
