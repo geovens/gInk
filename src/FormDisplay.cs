@@ -87,174 +87,136 @@ namespace gInk
 
 		public void DrawStrokes()
 		{
-			//foreach (Stroke stroke in Root.FormCollection.IC.Ink.Strokes)
-			//	if (!stroke.Deleted && stroke.DrawingAttributes.AntiAliased == false)
-			//		Console.WriteLine("not anti-aliased?");
 			Root.FormCollection.IC.Renderer.Draw(Canvus, Root.FormCollection.IC.Ink.Strokes);
 		}
 
+		public void MoveStrokes(int dy)
+		{
+			g = Graphics.FromImage(Canvus);
+			Point pt1 = new Point(0, 0);
+			Point pt2 = new Point(0, 100);
+			Root.FormCollection.IC.Renderer.PixelToInkSpace(g, ref pt1);
+			Root.FormCollection.IC.Renderer.PixelToInkSpace(g, ref pt2);
+			float unitperpixel = (pt2.Y - pt1.Y) / 100.0f;
+			float shouldmove = dy * unitperpixel;
+			foreach (Stroke stroke in Root.FormCollection.IC.Ink.Strokes)
+				if (!stroke.Deleted)
+					stroke.Move(0, shouldmove);
+		}
 		
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			UpdateFormDisplay();
 		}
 
-		
-		Random random = new Random(DateTime.Now.Millisecond);
-		int j0 = 9000;
-		uint[] lastc = new uint[801];
-		byte[] canvusbits = new byte[50000000];
 		byte[] screenbits = new byte[50000000];
-		public uint C(int i, int j)
+		byte[] lastscreenbits = new byte[50000000];
+		public uint N1(int i, int j)
 		{
-			return BitConverter.ToUInt32(canvusbits, (this.Width * j + i) * 4);
+			//return BitConverter.ToUInt32(screenbits, (this.Width * j + i) * 4);
+			Nlastp1 = (this.Width * j + i) * 4 + 1;
+			return screenbits[Nlastp1];
 		}
-		public uint S(int i, int j)
+		public uint N2(int i, int j)
 		{
-			return BitConverter.ToUInt32(screenbits, (this.Width * j + i) * 4);
+			//return BitConverter.ToUInt32(screenbits, (this.Width * j + i) * 4);
+			Nlastp2 = (this.Width * j + i) * 4 + 1;
+			return screenbits[Nlastp2];
 		}
-		public bool Test()
+		public uint L(int i, int j)
 		{
-			bool moved = false;
-
+			//return BitConverter.ToUInt32(lastscreenbits, (this.Width * j + i) * 4);
+			Llastp = (this.Width * j + i) * 4 + 1;
+			return lastscreenbits[Llastp];
+		}
+		int Nlastp1, Nlastp2, Llastp;
+		public uint Nnext1()
+		{
+			Nlastp1 += 40;
+			return screenbits[Nlastp1];
+		}
+		public uint Nnext2()
+		{
+			Nlastp2 += 40;
+			return screenbits[Nlastp2];
+		}
+		public uint Lnext()
+		{
+			Llastp += 40;
+			return lastscreenbits[Llastp];
+		}
+		public int Test()
+		{
 			IntPtr screenDc = GetDC(IntPtr.Zero);
-			IntPtr canvusDc = CreateCompatibleDC(screenDc);
-			IntPtr hBitmap = Canvus.GetHbitmap(Color.FromArgb(0));
-			IntPtr oldBitmap = SelectObject(canvusDc, hBitmap);
-			IntPtr screenbitmapDc = CreateCompatibleDC(screenDc);
-			IntPtr hscreenBitmap = ScreenBitmap.GetHbitmap(Color.FromArgb(0));
-			IntPtr oldscreenBitmap = SelectObject(screenbitmapDc, hscreenBitmap);
+			IntPtr memDc = CreateCompatibleDC(screenDc);
+			IntPtr hBitmap = ScreenBitmap.GetHbitmap(Color.FromArgb(0));
+			IntPtr oldscreenBitmap = SelectObject(memDc, hBitmap);
 
-			GetBitmapBits(hBitmap, this.Width * this.Height * 4, canvusbits);
-			BitBlt(screenbitmapDc, 0, 0, this.Width, this.Height, screenDc, 0, 0, 0x00CC0020);
-			GetBitmapBits(hscreenBitmap, this.Width * this.Height * 4, screenbits);
-			
-		 //Console.WriteLine(C(this.Width / 2, this.Height / 2));
+			BitBlt(memDc, 0, 0, this.Width, this.Height, screenDc, 0, 0, 0x00CC0020);
+			GetBitmapBits(hBitmap, this.Width * this.Height * 4, screenbits);
 
 			
-			int iindex;
-			int matchn = 0;
-			int matchj = 9000;
-			for (int j = 5; j < this.Height - 5; j++)
+			int dj;
+			int maxidpixels = 0;
+			float maxidchdrio = 0;
+			int maxdj = 0;
+			
+			int istart = Width / 2 - Width / 4;
+			int iend = Width / 2 + Width / 4;
+			for (dj = -Height / 4 + 5; dj < Height / 4 - 5; dj++)
 			{
-				iindex = -1;
-				bool linematch = true;
-				for (int i = Canvus.Width / 2 - Canvus.Width / 4; linematch && i < Canvus.Width / 2 + Canvus.Width / 4; i += 2)
+				int chdpixels = 0, idpixels = 0;
+				for (int j = Height / 2 - Height / 8; j < Height / 2 + Height / 8; j += 10)
 				{
-					iindex++;
-					if (lastc[iindex] == 0x7E0649B8)
-						continue;
-					uint c = C(i, j);
-					if (c != 0x00000000)
-						continue;
-
-					uint minb = 0xFF, ming = 0xFF, minr = 0xFF;
-					uint lastcb = (lastc[iindex] >> 4) & 0xFF;
-					uint lastcg = (lastc[iindex] >> 2) & 0xFF;
-					uint lastcr = lastc[iindex] & 0xFF;
-					for (int scan = 0; scan <= 0; scan++)
+					L(istart - 10, j);
+					N1(istart - 10, j);
+					N2(istart - 10, j + dj);
+					for (int i = istart; i < iend; i += 10)
 					{
-						c = S(i, j + scan);
-						uint cb = (c >> 4) & 0xFF;
-						uint cg = (c >> 2) & 0xFF;
-						uint cr = c & 0xFF;
-						if (Math.Abs(cb - lastcb) < minb) minb = (uint)Math.Abs(cb - lastcb);
-						if (Math.Abs(cg - lastcg) < ming) ming = (uint)Math.Abs(cg - lastcg);
-						if (Math.Abs(cr - lastcr) < minr) minr = (uint)Math.Abs(cr - lastcr);
+						//uint l = Lnext();
+						//uint n1 = Nnext1();
+						//uint n2 = Nnext2();
+						//if (l != n1)
+						//{
+						//	chdpixels++;
+						//	if (l == n2)
+						//		idpixels++;
+						//}
+						
+
+						if (Lnext() == Nnext2())
+							idpixels++;
 					}
-					
-					if (minb > 10 || ming > 10 || minr > 10)
-						linematch = false;
-				}
-				if (linematch)
-				{
-					matchn++;
-					if (Math.Abs(j - j0) < Math.Abs(matchj - j0))
-						matchj = j;
 				}
 
-			}
-
-			if (matchn > 0 && matchn <= 5)
-			{
-				if (matchj != j0)
+				//float idchdrio = (float)idpixels / chdpixels;
+				if (idpixels > maxidpixels)
+				//if (idchdrio > maxidchdrio)
 				{
-					g = Graphics.FromImage(Canvus);
-					Point po1 = new Point(1, 100);
-					Point po2 = new Point(1, 200);
-					Root.FormCollection.IC.Renderer.PixelToInkSpace(g, ref po1);
-					Root.FormCollection.IC.Renderer.PixelToInkSpace(g, ref po2);
-					foreach (Stroke stroke in Root.FormCollection.IC.Ink.Strokes)
-					{
-						stroke.Move(0, (matchj - j0) * (po2.Y - po1.Y) / 100.0f);
-					}
-					moved = true;
+					//maxidchdrio = idchdrio;
+					maxidpixels = idpixels;
+					maxdj = dj;
 				}
 			}
 
-			if (moved || j0 == 9000)
-			{
-				float maxdr = 0;
-				int maxdrj0 = 300;
-				uint[] crs = new uint[801];
-				for (int j0 = Canvus.Height / 2 - 100; j0 < Canvus.Height / 2 + 100; j0 += 2)
-				{
-					uint sumr = 0;
-					iindex = -1;
-					for (int i = Canvus.Width / 2 - Canvus.Width / 4; i < Canvus.Width / 2 + Canvus.Width / 4; i += 2)
-					{
-						iindex++;
-						uint c = S(i, j0);
-						uint cr = c & 0xFF;
-						sumr += cr;
-						crs[iindex] = cr;
-					}
-					iindex++;
-					float aver = (float)sumr / iindex;
+			//if (maxidchdrio < 0.1 || maxidpixels < 30)
+			if (maxidpixels < 100)
+				maxdj = 0;
 
-					float sumdr = 0;
-					for (int ii = 0; ii < iindex; ii++)
-					{
-						sumdr += (crs[ii] - aver) * (crs[ii] - aver);
-					}
-					if (sumdr > maxdr)
-					{
-						maxdr = sumdr;
-						maxdrj0 = j0;
-					}
-				}
-				j0 = maxdrj0;
-				Console.WriteLine(j0);
-			}
+			if (maxdj != 0)
+				Console.WriteLine(maxdj + ": " + maxidpixels);
+			
 
-			iindex = -1;
-			for (int i = Canvus.Width / 2 - Canvus.Width / 4; i < Canvus.Width / 2 + Canvus.Width / 4; i += 2)
-			{
-				iindex++;
-				uint c = C(i, j0);
-				if (c != 0x00000000)
-				{
-					lastc[iindex] = 0x7E0649B8;
-					continue;
-				}
-				c = S(i, j0);
-				lastc[iindex] = c;
-			}
+			screenbits.CopyTo(lastscreenbits, 0);
 			
 			ReleaseDC(IntPtr.Zero, screenDc);
 			if (hBitmap != IntPtr.Zero)
 			{
-				SelectObject(canvusDc, oldBitmap);
+				SelectObject(memDc, oldscreenBitmap);
 				DeleteObject(hBitmap);
 			}
-			DeleteDC(canvusDc);
-			if (hscreenBitmap != IntPtr.Zero)
-			{
-				SelectObject(screenbitmapDc, oldscreenBitmap);
-				DeleteObject(hscreenBitmap);
-			}
-			DeleteDC(screenbitmapDc);
-			return moved;
+			DeleteDC(memDc);
+			return maxdj;
 		}
 
 		public void UpdateFormDisplay()
@@ -301,8 +263,11 @@ namespace gInk
 			}
 		}
 
+		int stackmove = 0;
+		int Tick = 0;
 		private void timer1_Tick(object sender, EventArgs e)
 		{
+			Tick++;
 			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false)
 			{
 				ClearCanvus();
@@ -319,13 +284,20 @@ namespace gInk
 				UpdateFormDisplay();
 			}
 
-			bool moved = Test();
-			if (moved)
+			if (Tick % 2 == 0)
 			{
+				int moved = Test();
+				stackmove += moved;
+			}
+
+			if (stackmove != 0)
+			{
+				MoveStrokes(stackmove);
 				ClearCanvus();
 				DrawStrokes();
 				DrawButtons(false);
 				UpdateFormDisplay();
+				stackmove = 0;
 			}
 		}
 
