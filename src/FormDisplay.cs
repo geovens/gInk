@@ -301,7 +301,7 @@ namespace gInk
 			int moved = Test();
 			stackmove += moved;
 
-			if (stackmove != 0 && Tick % 30 == 1)
+			if (stackmove != 0 && Tick % 10 == 1)
 			{
 				MoveStrokes(stackmove);
 				ClearCanvus();
@@ -328,7 +328,7 @@ namespace gInk
 		[DllImport("user32.dll", ExactSpelling = true, SetLastError = true)]
 		static extern bool UpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDst, ref Point pptDst, ref Size psize, IntPtr hdcSrc, ref Point pptSrc, uint crKey, [In] ref BLENDFUNCTION pblend, uint dwFlags);
 		[DllImport("gdi32.dll")]
-		public static extern bool BitBlt(IntPtr hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, long dwRop);
+		public static extern bool BitBlt(IntPtr hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, uint dwRop);
 		[DllImport("gdi32.dll")]
 		public static extern bool StretchBlt(IntPtr hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, int nWidthSrc, int nHeightSrc, long dwRop);
 

@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows.Input;
+//using System.Windows.Input;
 using Microsoft.Ink;
 
 namespace gInk
