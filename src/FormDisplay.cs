@@ -169,7 +169,7 @@ namespace gInk
 			// 6% CPU with 1x10x10 sample rate
 			int istart = Width / 2 - Width / 4;
 			int iend = Width / 2 + Width / 4;
-			for (dj = -Height / 4 + 5; dj < Height / 4 - 5; dj++)
+			for (dj = -Height * 3 / 8 + 1; dj < Height * 3 / 8 - 1; dj++)
 			{
 				int chdpixels = 0, idpixels = 0;
 				for (int j = Height / 2 - Height / 8; j < Height / 2 + Height / 8; j += 10)
@@ -208,10 +208,6 @@ namespace gInk
 			//if (maxidchdrio < 0.1 || maxidpixels < 30)
 			if (maxidpixels < 100)
 				maxdj = 0;
-
-			if (maxdj != 0)
-				Console.WriteLine(maxdj + ": " + maxidpixels);
-			
 			
 			// 2% CPU
 			IntPtr pscreenbits = Marshal.UnsafeAddrOfPinnedArrayElement(screenbits, (int)(this.Width * this.Height * 4 * 0.375));
@@ -274,9 +270,18 @@ namespace gInk
 
 		int stackmove = 0;
 		int Tick = 0;
+		DateTime TickStartTime;
 		private void timer1_Tick(object sender, EventArgs e)
 		{
 			Tick++;
+			if (Tick == 1)
+				TickStartTime = DateTime.Now;
+			else if (Tick % 60 == 0)
+			{
+				Console.WriteLine(60 / (DateTime.Now - TickStartTime).TotalMilliseconds * 1000);
+				TickStartTime = DateTime.Now;
+			}
+
 			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false)
 			{
 				ClearCanvus();
@@ -293,13 +298,10 @@ namespace gInk
 				UpdateFormDisplay();
 			}
 
-			if (Tick % 2 == 0)
-			{
-				int moved = Test();
-				stackmove += moved;
-			}
+			int moved = Test();
+			stackmove += moved;
 
-			if (stackmove != 0)
+			if (stackmove != 0 && Tick % 30 == 1)
 			{
 				MoveStrokes(stackmove);
 				ClearCanvus();
