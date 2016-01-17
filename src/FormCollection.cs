@@ -24,7 +24,6 @@ namespace gInk
 		System.Windows.Forms.Cursor cursorred, cursorblue, cursoryellow;
 
 		public int ButtonsEntering = 0;  // -1 = exiting
-
 		int gpButtonsLeft, gpButtonsTop;
 
 		public FormCollection(Root root)
@@ -54,8 +53,9 @@ namespace gInk
 			IC.CollectionMode = CollectionMode.InkOnly;
 			IC.EraserMode = InkOverlayEraserMode.StrokeErase;
 			IC.CursorInRange += IC_CursorInRange;
+			IC.MouseDown += IC_MouseDown;
+			IC.MouseMove += IC_MouseMove;
 			IC.MouseUp += IC_MouseUp;
-			//IC.Ink = Root.FormDisplay.IC.Ink;
 			IC.DefaultDrawingAttributes.Width = 80;
 			IC.DefaultDrawingAttributes.Transparency = 30;
 			IC.DefaultDrawingAttributes.AntiAliased = true;
@@ -150,11 +150,39 @@ namespace gInk
 			ToTopMost();
 		}
 
+		private void IC_MouseDown(object sender, CancelMouseEventArgs e)
+		{
+			if (Root.Snapping == 1)
+			{
+				Root.SnappingX = e.X;
+				Root.SnappingY = e.Y;
+				Root.SnappingRect = new Rectangle(e.X, e.Y, 0, 0);
+				Root.Snapping = 2;
+			}
+		}
+
+		private void IC_MouseMove(object sender, CancelMouseEventArgs e)
+		{
+			if (Root.Snapping == 2)
+			{
+				int left = Math.Min(Root.SnappingX, e.X);
+				int top = Math.Min(Root.SnappingY, e.Y);
+				int width = Math.Abs(Root.SnappingX - e.X);
+				int height = Math.Abs(Root.SnappingY - e.Y);
+				Root.SnappingRect = new Rectangle(left, top, width, height);
+			}
+		}
+
 		private void IC_MouseUp(object sender, CancelMouseEventArgs e)
 		{
-			//if (Root.EraserMode)
+			if (Root.Snapping == 2)
 			{
-				//Root.FormDisplay.DrawButtons(true);
+				int left = Math.Min(Root.SnappingX, e.X);
+				int top = Math.Min(Root.SnappingY, e.Y);
+				int width = Math.Abs(Root.SnappingX - e.X);
+				int height = Math.Abs(Root.SnappingY - e.Y);
+				Root.SnappingRect = new Rectangle(left, top, width, height);
+				ExitSnapping();
 			}
 		}
 
@@ -205,6 +233,12 @@ namespace gInk
 			{
 				IC.EditingMode = InkOverlayEditingMode.Ink;
 			}
+		}
+
+		public void ExitSnapping()
+		{
+			IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+			Root.Snapping = -60;
 		}
 
 		public void SelectPen(int pen)
@@ -280,8 +314,11 @@ namespace gInk
 			if (Root.Snapping > 0)
 				return;
 
+			IC.SetWindowInputRectangle(new Rectangle(0, 0, 1, 1));
+			Root.SnappingX = -1;
+			Root.SnappingY = -1;
+			Root.SnappingRect = new Rectangle(0, 0, 0, 0);
 			Root.Snapping = 1;
-			IC.Enabled = false;
 		}
 
 		private void btStop_Click(object sender, EventArgs e)
@@ -293,6 +330,7 @@ namespace gInk
 		DateTime LastTickTime;
 		private void tiSlide_Tick(object sender, EventArgs e)
 		{
+			// ignore the first tick
 			if (LastTickTime.Year == 1987)
 			{
 				LastTickTime = DateTime.Now;
@@ -307,7 +345,7 @@ namespace gInk
 			int aimedleft = gpButtonsLeft;
 			if (ButtonsEntering == 0)
 			{
-				if (Root.Docked)
+				if (Root.Docked || Root.Snapping > 0)
 					aimedleft = gpButtonsLeft + gpButtons.Width - btDock.Right;
 				else
 					aimedleft = gpButtonsLeft;
@@ -321,6 +359,7 @@ namespace gInk
 				dleft /= 70;
 				if (dleft > 4) dleft = 4;
 				dleft *= (float)(DateTime.Now - LastTickTime).TotalMilliseconds;
+				if (dleft > 60) dleft = 60;
 				if (dleft < 1) dleft = 1;
 				gpButtons.Left -= (int)dleft;
 				LastTickTime = DateTime.Now;
@@ -328,8 +367,7 @@ namespace gInk
 				{
 					gpButtons.Left = aimedleft;
 				}
-				Root.FormDisplay.DrawButtons(false);
-				Root.FormDisplay.UpdateFormDisplay(true);
+				Root.ButtonsUpdated = true;
 			}
 			else if (gpButtons.Left < aimedleft)
 			{
@@ -340,6 +378,7 @@ namespace gInk
 				if (ButtonsEntering == -1 && !Root.Docked)
 					dleft = 4;
 				dleft *= (float)(DateTime.Now - LastTickTime).TotalMilliseconds;
+				if (dleft > 60) dleft = 60;
 				if (dleft < 1) dleft = 1;
 				// fast exiting when docked
 				if (ButtonsEntering == -1 && dleft == 1)
@@ -350,8 +389,7 @@ namespace gInk
 				{
 					gpButtons.Left = aimedleft;
 				}
-				Root.FormDisplay.DrawButtons(false, true);
-				Root.FormDisplay.UpdateFormDisplay(true);
+				Root.ButtonsUpdated = true;
 			}
 
 			if (ButtonsEntering == -1 && gpButtons.Left == aimedleft)
@@ -366,8 +404,7 @@ namespace gInk
 			{
 				if (Root.Snapping > 0)
 				{
-					Root.Snapping = -60;
-					IC.Enabled = true;
+					ExitSnapping();
 				}
 				else if (Root.Snapping == 0)
 					RetreatAndExit();
@@ -396,15 +433,13 @@ namespace gInk
 			{
 				SelectPen(3);
 			}
-			Root.FormDisplay.DrawButtons(true);
-			Root.FormDisplay.UpdateFormDisplay(true);
+			Root.ButtonsUpdated = true;
 		}
 
 		private void btEraser_Click(object sender, EventArgs e)
 		{
 			SelectPen(0);
-			Root.FormDisplay.DrawButtons(true);
-			Root.FormDisplay.UpdateFormDisplay(true);
+			Root.ButtonsUpdated = true;
 		}
 
 		[DllImport("user32.dll")]

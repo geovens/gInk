@@ -300,18 +300,18 @@ namespace gInk
 			}
 			*/
 
-			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false)
+			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false && Root.Snapping <= 0)
 			{
 				ClearCanvus();
 				DrawStrokes();
 				DrawButtons(false);
 				UpdateFormDisplay(true);
-				
+
 				//DrawLastStroke();
 				//UpdateFormDisplay();
 			}
 
-			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == true)
+			else if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == true && Root.Snapping <= 0)
 			{
 				ClearCanvus();
 				DrawStrokes();
@@ -319,14 +319,27 @@ namespace gInk
 				UpdateFormDisplay(true);
 			}
 
-			if (Root.Snapping > 0)
+			else if (Root.Snapping > 0)
 			{
 				ClearCanvus();
 				DrawStrokes();
 				DrawButtons(false);
-				DrawSnapping(new Rectangle(200, 200, 200, 200));
+				DrawSnapping(Root.SnappingRect);
 				UpdateFormDisplay(true);
+			}
 
+			else if (Root.Snapping < -55)
+			{
+				ClearCanvus();
+				DrawStrokes();
+				DrawButtons(false);
+				UpdateFormDisplay(true);
+			}
+
+			else if (Root.ButtonsUpdated)
+			{
+				DrawButtons(true, true);
+				UpdateFormDisplay(true);
 			}
 
 			if (Root.AutoScroll)
