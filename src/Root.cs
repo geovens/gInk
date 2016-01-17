@@ -46,6 +46,7 @@ namespace gInk
 		public bool Hotkey_Control, Hotkey_Alt, Hotkey_Shift, Hotkey_Win;
 		public int Hotkey;
 		public bool AutoScroll;
+		public bool WhiteTrayIcon;
 
 		public bool EraserMode = false;
 
@@ -69,7 +70,10 @@ namespace gInk
 
 			trayIcon = new NotifyIcon();
 			trayIcon.Text = "gInk";
-			trayIcon.Icon = new Icon(gInk.Properties.Resources.icon_white, 40, 40);
+			if (WhiteTrayIcon)
+				trayIcon.Icon = new Icon(gInk.Properties.Resources.icon_white, 40, 40);
+			else
+				trayIcon.Icon = new Icon(gInk.Properties.Resources.icon_red, 40, 40);
 			trayIcon.ContextMenu = trayMenu;
 			trayIcon.Visible = true;
 			trayIcon.MouseClick += TrayIcon_Click;
@@ -84,6 +88,9 @@ namespace gInk
 
 			TestMessageFilter mf = new TestMessageFilter(this);
 			Application.AddMessageFilter(mf);
+
+			FormCollection = null;
+			FormDisplay = null;
 		}
 
 		private void TrayIcon_Click(object sender, MouseEventArgs e)
@@ -94,6 +101,9 @@ namespace gInk
 
 		public void StartInk()
 		{
+			if (FormDisplay != null || FormCollection != null)
+				return;
+
 			FormDisplay = new FormDisplay(this);
 			FormCollection = new FormCollection(this);
 			SelectPen(CurrentPen);
@@ -151,6 +161,7 @@ namespace gInk
 			Hotkey = 'G';
 
 			AutoScroll = false;
+			WhiteTrayIcon = false;
 		}
 
 		public void ReadOptions(string file)
@@ -281,6 +292,13 @@ namespace gInk
 								AutoScroll = true;
 							else
 								AutoScroll = false;
+							break;
+						case "WHITETRAYICON":
+							sPara = sPara.ToUpper();
+							if (sPara.Contains("TRUE"))
+								WhiteTrayIcon = true;
+							else
+								WhiteTrayIcon = false;
 							break;
 					}
 				}
