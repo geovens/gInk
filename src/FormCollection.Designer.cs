@@ -38,6 +38,8 @@
 			this.btClear = new System.Windows.Forms.Button();
 			this.tiSlide = new System.Windows.Forms.Timer(this.components);
 			this.btDock = new System.Windows.Forms.Button();
+			this.btPointer = new System.Windows.Forms.Button();
+			this.btSnap = new System.Windows.Forms.Button();
 			this.gpButtons.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -91,6 +93,8 @@
 			this.gpButtons.BackColor = System.Drawing.Color.WhiteSmoke;
 			this.gpButtons.Controls.Add(this.btDock);
 			this.gpButtons.Controls.Add(this.btEraser);
+			this.gpButtons.Controls.Add(this.btSnap);
+			this.gpButtons.Controls.Add(this.btPointer);
 			this.gpButtons.Controls.Add(this.btStop);
 			this.gpButtons.Controls.Add(this.btPen1);
 			this.gpButtons.Controls.Add(this.btPen3);
@@ -98,7 +102,7 @@
 			this.gpButtons.Controls.Add(this.btPen2);
 			this.gpButtons.Location = new System.Drawing.Point(42, 84);
 			this.gpButtons.Name = "gpButtons";
-			this.gpButtons.Size = new System.Drawing.Size(720, 92);
+			this.gpButtons.Size = new System.Drawing.Size(918, 92);
 			this.gpButtons.TabIndex = 3;
 			// 
 			// btEraser
@@ -163,6 +167,34 @@
 			this.btDock.UseVisualStyleBackColor = false;
 			this.btDock.Click += new System.EventHandler(this.btDock_Click);
 			// 
+			// btPointer
+			// 
+			this.btPointer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btPointer.FlatAppearance.BorderSize = 0;
+			this.btPointer.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btPointer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btPointer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btPointer.Location = new System.Drawing.Point(670, 5);
+			this.btPointer.Name = "btPointer";
+			this.btPointer.Size = new System.Drawing.Size(80, 80);
+			this.btPointer.TabIndex = 0;
+			this.btPointer.UseVisualStyleBackColor = true;
+			this.btPointer.Click += new System.EventHandler(this.btPointer_Click);
+			// 
+			// btSnap
+			// 
+			this.btSnap.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btSnap.FlatAppearance.BorderSize = 0;
+			this.btSnap.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btSnap.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btSnap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btSnap.Location = new System.Drawing.Point(770, 5);
+			this.btSnap.Name = "btSnap";
+			this.btSnap.Size = new System.Drawing.Size(80, 80);
+			this.btSnap.TabIndex = 0;
+			this.btSnap.UseVisualStyleBackColor = true;
+			this.btSnap.Click += new System.EventHandler(this.btSnap_Click);
+			// 
 			// FormCollection
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(168F, 168F);
@@ -195,6 +227,8 @@
 		public System.Windows.Forms.Button btEraser;
 		private System.Windows.Forms.Timer tiSlide;
 		public System.Windows.Forms.Button btDock;
+		public System.Windows.Forms.Button btSnap;
+		public System.Windows.Forms.Button btPointer;
 	}
 }
 

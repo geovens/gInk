@@ -270,6 +270,20 @@ namespace gInk
 			Root.Docked = !Root.Docked;
 		}
 
+		private void btPointer_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btSnap_Click(object sender, EventArgs e)
+		{
+			if (Root.Snapping > 0)
+				return;
+
+			Root.Snapping = 1;
+			IC.Enabled = false;
+		}
+
 		private void btStop_Click(object sender, EventArgs e)
 		{
 			Root.ClearInk();
@@ -350,8 +364,17 @@ namespace gInk
 			short retVal = GetKeyState(27);
 			if ((retVal & 0x8000) == 0x8000)
 			{
-				RetreatAndExit();
+				if (Root.Snapping > 0)
+				{
+					Root.Snapping = -60;
+					IC.Enabled = true;
+				}
+				else if (Root.Snapping == 0)
+					RetreatAndExit();
 			}
+
+			if (Root.Snapping < 0)
+				Root.Snapping++;
 		}
 
 		private void btClear_Click(object sender, EventArgs e)

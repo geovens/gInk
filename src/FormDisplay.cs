@@ -23,6 +23,7 @@ namespace gInk
 
 		Bitmap gpButtonsImage;
 		SolidBrush TransparentBrush;
+		SolidBrush SemiTransparentBrush;
 
 		byte[] screenbits;
 		byte[] lastscreenbits;
@@ -70,7 +71,7 @@ namespace gInk
 
 			gpButtonsImage = new Bitmap(1000, 100);
 			TransparentBrush = new SolidBrush(Color.Transparent);
-
+			SemiTransparentBrush = new SolidBrush(Color.FromArgb(150, 255, 255, 255));
 
 
 			ToTopMost();
@@ -88,6 +89,26 @@ namespace gInk
 		public void ClearCanvus()
 		{
 			gCanvus.Clear(Color.Transparent);
+		}
+
+		public void DrawSnapping(Rectangle rect)
+		{
+			gCanvus.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+			if (rect.Width > 0 && rect.Height > 0)
+			{
+				gCanvus.FillRectangle(SemiTransparentBrush, new Rectangle(0, 0, rect.Left, this.Height));
+				gCanvus.FillRectangle(SemiTransparentBrush, new Rectangle(rect.Right, 0, this.Width - rect.Right, this.Height));
+				gCanvus.FillRectangle(SemiTransparentBrush, new Rectangle(rect.Left, 0, rect.Width, rect.Top));
+				gCanvus.FillRectangle(SemiTransparentBrush, new Rectangle(rect.Left, rect.Bottom, rect.Width, this.Height - rect.Bottom));
+				Pen pen = new Pen(Color.FromArgb(200, 80, 80, 80));
+				pen.Width = 3;
+				gCanvus.DrawRectangle(pen, rect);
+			}
+			else
+			{
+				gCanvus.FillRectangle(SemiTransparentBrush, new Rectangle(0, 0, this.Width, this.Height));
+			}
+			gCanvus.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
 		}
 
 		public void DrawButtons(bool redrawbuttons, bool exiting = false)
@@ -296,6 +317,16 @@ namespace gInk
 				DrawStrokes();
 				DrawButtons(false);
 				UpdateFormDisplay(true);
+			}
+
+			if (Root.Snapping > 0)
+			{
+				ClearCanvus();
+				DrawStrokes();
+				DrawButtons(false);
+				DrawSnapping(new Rectangle(200, 200, 200, 200));
+				UpdateFormDisplay(true);
+
 			}
 
 			if (Root.AutoScroll)

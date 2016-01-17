@@ -50,6 +50,7 @@ namespace gInk
 
 		public bool EraserMode = false;
 		public bool Docked = false;
+		public int Snapping = 0;  // <=0: not snapping, 1: waiting finger, 2:dragging
 
 		private NotifyIcon trayIcon;
 		private ContextMenu trayMenu;
