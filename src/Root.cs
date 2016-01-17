@@ -49,6 +49,7 @@ namespace gInk
 		public bool WhiteTrayIcon;
 
 		public bool EraserMode = false;
+		public bool Docked = false;
 
 		private NotifyIcon trayIcon;
 		private ContextMenu trayMenu;

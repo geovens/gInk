@@ -23,7 +23,7 @@ namespace gInk
 		Bitmap image_eraser_act, image_eraser;
 		System.Windows.Forms.Cursor cursorred, cursorblue, cursoryellow;
 
-		public int ButtonsEntering = 1;  // 1 = entering, 0 = staying, -1 = exiting
+		public int ButtonsEntering = 0;  // -1 = exiting
 
 		int gpButtonsLeft, gpButtonsTop;
 
@@ -144,7 +144,7 @@ namespace gInk
 				image_pen3_act = image_pencil_act;
 			}
 
-			LastTickTime = DateTime.Now;
+			LastTickTime = DateTime.Parse("1987-01-01");
 			tiSlide.Enabled = true;
 
 			ToTopMost();
@@ -264,49 +264,93 @@ namespace gInk
 		{
 		}
 
+		private void btDock_Click(object sender, EventArgs e)
+		{
+			LastTickTime = DateTime.Now;
+			Root.Docked = !Root.Docked;
+		}
+
 		private void btStop_Click(object sender, EventArgs e)
 		{
+			Root.ClearInk();
 			RetreatAndExit();
 		}
 
 		DateTime LastTickTime;
 		private void tiSlide_Tick(object sender, EventArgs e)
 		{
+			if (LastTickTime.Year == 1987)
+			{
+				LastTickTime = DateTime.Now;
+				return;
+			}
+
 			int primwidth = Screen.PrimaryScreen.WorkingArea.Width;
 			int primheight = Screen.PrimaryScreen.WorkingArea.Height;
 			int primright = Screen.PrimaryScreen.WorkingArea.Right;
 			int primbottom = Screen.PrimaryScreen.WorkingArea.Bottom;
-			if (ButtonsEntering == 1)
+
+			int aimedleft = gpButtonsLeft;
+			if (ButtonsEntering == 0)
 			{
-				gpButtons.Left -= (int)(DateTime.Now - LastTickTime).TotalMilliseconds * 2;
+				if (Root.Docked)
+					aimedleft = gpButtonsLeft + gpButtons.Width - btDock.Right;
+				else
+					aimedleft = gpButtonsLeft;
+			}
+			else if (ButtonsEntering == -1)
+				aimedleft = gpButtonsLeft + gpButtons.Width;
+
+			if (gpButtons.Left > aimedleft)
+			{
+				float dleft = gpButtons.Left - aimedleft;
+				dleft /= 70;
+				if (dleft > 4) dleft = 4;
+				dleft *= (float)(DateTime.Now - LastTickTime).TotalMilliseconds;
+				if (dleft < 1) dleft = 1;
+				gpButtons.Left -= (int)dleft;
 				LastTickTime = DateTime.Now;
-				if (gpButtons.Left <= gpButtonsLeft)
+				if (gpButtons.Left < aimedleft)
 				{
-					gpButtons.Left = gpButtonsLeft;
-					ButtonsEntering = 0;
+					gpButtons.Left = aimedleft;
 				}
 				Root.FormDisplay.DrawButtons(false);
 				Root.FormDisplay.UpdateFormDisplay(true);
 			}
-			else if (ButtonsEntering == -1)
+			else if (gpButtons.Left < aimedleft)
 			{
-				gpButtons.Left += (int)(DateTime.Now - LastTickTime).TotalMilliseconds * 2;
+				float dleft = aimedleft - gpButtons.Left;
+				dleft /= 70;
+				if (dleft > 4) dleft = 4;
+				// fast exiting when not docked
+				if (ButtonsEntering == -1 && !Root.Docked)
+					dleft = 4;
+				dleft *= (float)(DateTime.Now - LastTickTime).TotalMilliseconds;
+				if (dleft < 1) dleft = 1;
+				// fast exiting when docked
+				if (ButtonsEntering == -1 && dleft == 1)
+					dleft = 2;
+				gpButtons.Left += (int)dleft;
 				LastTickTime = DateTime.Now;
+				if (gpButtons.Left > aimedleft)
+				{
+					gpButtons.Left = aimedleft;
+				}
 				Root.FormDisplay.DrawButtons(false, true);
 				Root.FormDisplay.UpdateFormDisplay(true);
-				if (gpButtons.Left >= gpButtonsLeft + gpButtons.Width)
-				{
-					tiSlide.Enabled = false;
-					Root.StopInk();
-				}
 			}
-			else
+
+			if (ButtonsEntering == -1 && gpButtons.Left == aimedleft)
 			{
-				short retVal = GetKeyState(27);
-				if ((retVal & 0x8000) == 0x8000)
-				{
-					RetreatAndExit();
-				}
+				tiSlide.Enabled = false;
+				Root.StopInk();
+				return;
+			}
+
+			short retVal = GetKeyState(27);
+			if ((retVal & 0x8000) == 0x8000)
+			{
+				RetreatAndExit();
 			}
 		}
 
