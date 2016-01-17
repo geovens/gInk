@@ -1,0 +1,8 @@
+
+v0.1.1 (Jan. 17, 2016)
+=================
+- CPU usage greatly reduced when drawing.
+
+v0.1 (Jan. 15, 2016)
+=================
+- First alpha release.
