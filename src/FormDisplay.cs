@@ -14,6 +14,7 @@ namespace gInk
 		public Root Root;
 		Bitmap Canvus;
 		Bitmap ScreenBitmap;
+		IntPtr hScreenBitmap;
 		Graphics g;
 
 		Bitmap gpButtonsImage;
@@ -37,7 +38,9 @@ namespace gInk
 			this.Width = virwidth;
 			this.Height = targetbottom - this.Top;
 			Canvus = new Bitmap(this.Width, this.Height);
+
 			ScreenBitmap = new Bitmap(this.Width, this.Height);
+			hScreenBitmap = ScreenBitmap.GetHbitmap(Color.FromArgb(0));
 			this.BackgroundImage = new Bitmap(this.Width, this.Height);
 			this.DoubleBuffered = true;
 
@@ -147,20 +150,23 @@ namespace gInk
 		}
 		public int Test()
 		{
+			
 			IntPtr screenDc = GetDC(IntPtr.Zero);
 			IntPtr memDc = CreateCompatibleDC(screenDc);
-			IntPtr hBitmap = ScreenBitmap.GetHbitmap(Color.FromArgb(0));
-			IntPtr oldscreenBitmap = SelectObject(memDc, hBitmap);
+			IntPtr oldscreenBitmap = SelectObject(memDc, hScreenBitmap);
 
-			BitBlt(memDc, 0, 0, this.Width, this.Height, screenDc, 0, 0, 0x00CC0020);
-			GetBitmapBits(hBitmap, this.Width * this.Height * 4, screenbits);
-
+			// 5% CPU
+			BitBlt(memDc, Width / 4, 0, Width / 2, this.Height, screenDc, Width / 4, 0, 0x00CC0020);
+			// 1% CPU
+			GetBitmapBits(hScreenBitmap, this.Width * this.Height * 4, screenbits);
+			
 			
 			int dj;
 			int maxidpixels = 0;
 			float maxidchdrio = 0;
 			int maxdj = 0;
 			
+			// 6% CPU with 1x10x10 sample rate
 			int istart = Width / 2 - Width / 4;
 			int iend = Width / 2 + Width / 4;
 			for (dj = -Height / 4 + 5; dj < Height / 4 - 5; dj++)
@@ -206,14 +212,17 @@ namespace gInk
 			if (maxdj != 0)
 				Console.WriteLine(maxdj + ": " + maxidpixels);
 			
-
-			screenbits.CopyTo(lastscreenbits, 0);
 			
+			// 2% CPU
+			IntPtr pscreenbits = Marshal.UnsafeAddrOfPinnedArrayElement(screenbits, (int)(this.Width * this.Height * 4 * 0.375));
+			IntPtr plastscreenbits = Marshal.UnsafeAddrOfPinnedArrayElement(lastscreenbits, (int)(this.Width * this.Height * 4 * 0.375));
+			memcpy(plastscreenbits, pscreenbits, this.Width * this.Height * 4 / 4);
+
 			ReleaseDC(IntPtr.Zero, screenDc);
-			if (hBitmap != IntPtr.Zero)
+			if (hScreenBitmap != IntPtr.Zero)
 			{
 				SelectObject(memDc, oldscreenBitmap);
-				DeleteObject(hBitmap);
+				//DeleteObject(hScreenBitmap);
 			}
 			DeleteDC(memDc);
 			return maxdj;
@@ -222,16 +231,16 @@ namespace gInk
 		public void UpdateFormDisplay()
 		{
 			IntPtr screenDc = GetDC(IntPtr.Zero);
-			IntPtr memDc = CreateCompatibleDC(screenDc);
-			IntPtr hBitmap = IntPtr.Zero;
+			IntPtr hbitmapDc = CreateCompatibleDC(screenDc);
+			IntPtr hBitmap = Canvus.GetHbitmap(Color.FromArgb(0));
 			IntPtr oldBitmap = IntPtr.Zero;
+			oldBitmap = SelectObject(hbitmapDc, hBitmap);
 
 			try
 			{
 				//Display-image
 				//Bitmap bmp = new Bitmap(Canvus);
-				hBitmap = Canvus.GetHbitmap(Color.FromArgb(0));  //Set the fact that background is transparent
-				oldBitmap = SelectObject(memDc, hBitmap);
+				
 
 				//Display-rectangle
 				Size size = Canvus.Size;
@@ -245,17 +254,17 @@ namespace gInk
 				blend.SourceConstantAlpha = 255;  // additional alpha multiplier to the whole image. value 255 means multiply with 1.
 				blend.AlphaFormat = AC_SRC_ALPHA;
 
-				UpdateLayeredWindow(this.Handle, screenDc, ref topPos, ref size, memDc, ref pointSource, 0, ref blend, ULW_ALPHA);
+				UpdateLayeredWindow(this.Handle, screenDc, ref topPos, ref size, hbitmapDc, ref pointSource, 0, ref blend, ULW_ALPHA);
 
 				//Clean-up
 				//bmp.Dispose();
 				ReleaseDC(IntPtr.Zero, screenDc);
 				if (hBitmap != IntPtr.Zero)
 				{
-					SelectObject(memDc, oldBitmap);
+					SelectObject(hbitmapDc, oldBitmap);
 					DeleteObject(hBitmap);
 				}
-				DeleteDC(memDc);
+				DeleteDC(hbitmapDc);
 			}
 			catch (Exception)
 			{
@@ -359,5 +368,9 @@ namespace gInk
 		static extern uint GetPixel(IntPtr hdc, int nXPos, int nYPos);
 		[DllImport("gdi32.dll")]
 		static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+
+		[DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
+		public static extern IntPtr memcpy(IntPtr dest, IntPtr src, int count);
+
 	}
 }
