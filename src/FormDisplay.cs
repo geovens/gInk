@@ -12,11 +12,13 @@ namespace gInk
 	public partial class FormDisplay : Form
 	{
 		public Root Root;
-		Bitmap Canvus;
+		IntPtr Canvus;
+		//IntPtr screenDc;
+		IntPtr canvusDc;
+		Graphics gCanvus;
 		Bitmap ScreenBitmap;
 		IntPtr hScreenBitmap;
-		Graphics g;
-
+		
 		Bitmap gpButtonsImage;
 		SolidBrush TransparentBrush;
 
@@ -37,7 +39,15 @@ namespace gInk
 			int virwidth = SystemInformation.VirtualScreen.Width;
 			this.Width = virwidth;
 			this.Height = targetbottom - this.Top;
-			Canvus = new Bitmap(this.Width, this.Height);
+
+			IntPtr screenDc = GetDC(IntPtr.Zero);
+			canvusDc = CreateCompatibleDC(screenDc);
+			Bitmap InitCanvus = new Bitmap(this.Width, this.Height);
+			Canvus = InitCanvus.GetHbitmap(Color.FromArgb(0));
+			SelectObject(canvusDc, Canvus);
+			gCanvus = Graphics.FromHdc(canvusDc);
+			gCanvus.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+			ReleaseDC(IntPtr.Zero, screenDc);
 
 			ScreenBitmap = new Bitmap(this.Width, this.Height);
 			hScreenBitmap = ScreenBitmap.GetHbitmap(Color.FromArgb(0));
@@ -69,8 +79,7 @@ namespace gInk
 
 		public void ClearCanvus()
 		{
-			g = Graphics.FromImage(Canvus);
-			g.Clear(Color.Transparent);
+			gCanvus.Clear(Color.Transparent);
 		}
 
 		public void DrawButtons(bool redrawbuttons, bool exiting = false)
@@ -81,25 +90,31 @@ namespace gInk
 			int width = Root.FormCollection.gpButtons.Width;
 			if (redrawbuttons)
 				Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
-			g = Graphics.FromImage(Canvus);
-			g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+			
 			if (exiting)
-				g.FillRectangle(TransparentBrush, left - 120, top, width + 80, height);
-			g.DrawImage(gpButtonsImage, left, top);
+				gCanvus.FillRectangle(TransparentBrush, left - 120, top, width + 80, height);
+			gCanvus.DrawImage(gpButtonsImage, left, top);
 		}
 
 		public void DrawStrokes()
 		{
-			Root.FormCollection.IC.Renderer.Draw(Canvus, Root.FormCollection.IC.Ink.Strokes);
+			Root.FormCollection.IC.Renderer.Draw(gCanvus, Root.FormCollection.IC.Ink.Strokes);
+		}
+
+		// drawing attributes not working
+		public void DrawLastStroke()
+		{
+			Stroke stroke = Root.FormCollection.IC.Ink.Strokes[Root.FormCollection.IC.Ink.Strokes.Count - 1];
+			if (!stroke.Deleted)
+				Root.FormCollection.IC.Renderer.Draw(gCanvus, stroke, Root.FormCollection.IC.DefaultDrawingAttributes);
 		}
 
 		public void MoveStrokes(int dy)
 		{
-			g = Graphics.FromImage(Canvus);
 			Point pt1 = new Point(0, 0);
 			Point pt2 = new Point(0, 100);
-			Root.FormCollection.IC.Renderer.PixelToInkSpace(g, ref pt1);
-			Root.FormCollection.IC.Renderer.PixelToInkSpace(g, ref pt2);
+			Root.FormCollection.IC.Renderer.PixelToInkSpace(gCanvus, ref pt1);
+			Root.FormCollection.IC.Renderer.PixelToInkSpace(gCanvus, ref pt2);
 			float unitperpixel = (pt2.Y - pt1.Y) / 100.0f;
 			float shouldmove = dy * unitperpixel;
 			foreach (Stroke stroke in Root.FormCollection.IC.Ink.Strokes)
@@ -227,45 +242,23 @@ namespace gInk
 		public void UpdateFormDisplay()
 		{
 			IntPtr screenDc = GetDC(IntPtr.Zero);
-			IntPtr hbitmapDc = CreateCompatibleDC(screenDc);
-			IntPtr hBitmap = Canvus.GetHbitmap(Color.FromArgb(0));
-			IntPtr oldBitmap = IntPtr.Zero;
-			oldBitmap = SelectObject(hbitmapDc, hBitmap);
 
-			try
-			{
-				//Display-image
-				//Bitmap bmp = new Bitmap(Canvus);
-				
+			//Display-rectangle
+			Size size = new Size(this.Width, this.Height);
+			Point pointSource = new Point(0, 0);
+			Point topPos = new Point(this.Left, this.Top);
 
-				//Display-rectangle
-				Size size = Canvus.Size;
-				Point pointSource = new Point(0, 0);
-				Point topPos = new Point(this.Left, this.Top);
+			//Set up blending options
+			BLENDFUNCTION blend = new BLENDFUNCTION();
+			blend.BlendOp = AC_SRC_OVER;
+			blend.BlendFlags = 0;
+			blend.SourceConstantAlpha = 255;  // additional alpha multiplier to the whole image. value 255 means multiply with 1.
+			blend.AlphaFormat = AC_SRC_ALPHA;
 
-				//Set up blending options
-				BLENDFUNCTION blend = new BLENDFUNCTION();
-				blend.BlendOp = AC_SRC_OVER;
-				blend.BlendFlags = 0;
-				blend.SourceConstantAlpha = 255;  // additional alpha multiplier to the whole image. value 255 means multiply with 1.
-				blend.AlphaFormat = AC_SRC_ALPHA;
+			UpdateLayeredWindow(this.Handle, screenDc, ref topPos, ref size, canvusDc, ref pointSource, 0, ref blend, ULW_ALPHA);
 
-				UpdateLayeredWindow(this.Handle, screenDc, ref topPos, ref size, hbitmapDc, ref pointSource, 0, ref blend, ULW_ALPHA);
-
-				//Clean-up
-				//bmp.Dispose();
-				ReleaseDC(IntPtr.Zero, screenDc);
-				if (hBitmap != IntPtr.Zero)
-				{
-					SelectObject(hbitmapDc, oldBitmap);
-					DeleteObject(hBitmap);
-				}
-				DeleteDC(hbitmapDc);
-			}
-			catch (Exception)
-			{
-				Console.WriteLine("Catched");
-			}
+			//Clean-up
+			ReleaseDC(IntPtr.Zero, screenDc);	
 		}
 
 		int stackmove = 0;
@@ -288,6 +281,9 @@ namespace gInk
 				DrawStrokes();
 				DrawButtons(false);
 				UpdateFormDisplay();
+				
+				//DrawLastStroke();
+				//UpdateFormDisplay();
 			}
 
 			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == true)
@@ -298,8 +294,8 @@ namespace gInk
 				UpdateFormDisplay();
 			}
 
-			int moved = Test();
-			stackmove += moved;
+			//int moved = Test();
+			//stackmove += moved;
 
 			if (stackmove != 0 && Tick % 10 == 1)
 			{
