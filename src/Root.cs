@@ -114,7 +114,7 @@ namespace gInk
 			FormCollection.IC.Ink.DeleteStrokes();
 			FormDisplay.ClearCanvus();
 			FormDisplay.DrawButtons(true);
-			FormDisplay.UpdateFormDisplay();
+			FormDisplay.UpdateFormDisplay(true);
 		}
 
 		public void SelectPen(int pen)

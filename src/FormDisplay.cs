@@ -13,12 +13,15 @@ namespace gInk
 	{
 		public Root Root;
 		IntPtr Canvus;
-		//IntPtr screenDc;
 		IntPtr canvusDc;
+		IntPtr BlankCanvus;
+		IntPtr blankcanvusDc;
 		Graphics gCanvus;
 		Bitmap ScreenBitmap;
 		IntPtr hScreenBitmap;
-		
+		IntPtr memscreenDc;
+			
+
 		Bitmap gpButtonsImage;
 		SolidBrush TransparentBrush;
 
@@ -40,17 +43,24 @@ namespace gInk
 			this.Width = virwidth;
 			this.Height = targetbottom - this.Top;
 
-			IntPtr screenDc = GetDC(IntPtr.Zero);
-			canvusDc = CreateCompatibleDC(screenDc);
 			Bitmap InitCanvus = new Bitmap(this.Width, this.Height);
 			Canvus = InitCanvus.GetHbitmap(Color.FromArgb(0));
+			BlankCanvus = InitCanvus.GetHbitmap(Color.FromArgb(0));
+			hScreenBitmap = InitCanvus.GetHbitmap(Color.FromArgb(0));
+
+			IntPtr screenDc = GetDC(IntPtr.Zero);
+			canvusDc = CreateCompatibleDC(screenDc);
+			blankcanvusDc = CreateCompatibleDC(screenDc);
 			SelectObject(canvusDc, Canvus);
+			SelectObject(blankcanvusDc, BlankCanvus);
 			gCanvus = Graphics.FromHdc(canvusDc);
 			gCanvus.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+
+
+			memscreenDc = CreateCompatibleDC(screenDc);
+			SelectObject(memscreenDc, hScreenBitmap);
 			ReleaseDC(IntPtr.Zero, screenDc);
 
-			ScreenBitmap = new Bitmap(this.Width, this.Height);
-			hScreenBitmap = ScreenBitmap.GetHbitmap(Color.FromArgb(0));
 			this.BackgroundImage = new Bitmap(this.Width, this.Height);
 			this.DoubleBuffered = true;
 
@@ -124,7 +134,7 @@ namespace gInk
 		
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			UpdateFormDisplay();
+			UpdateFormDisplay(true);
 		}
 
 		byte[] screenbits = new byte[50000000];
@@ -164,17 +174,13 @@ namespace gInk
 			return lastscreenbits[Llastp];
 		}
 		public int Test()
-		{
-			
+		{		
 			IntPtr screenDc = GetDC(IntPtr.Zero);
-			IntPtr memDc = CreateCompatibleDC(screenDc);
-			IntPtr oldscreenBitmap = SelectObject(memDc, hScreenBitmap);
 
 			// 5% CPU
-			BitBlt(memDc, Width / 4, 0, Width / 2, this.Height, screenDc, Width / 4, 0, 0x00CC0020);
+			BitBlt(memscreenDc, Width / 4, 0, Width / 2, this.Height, screenDc, Width / 4, 0, 0x00CC0020);
 			// 1% CPU
 			GetBitmapBits(hScreenBitmap, this.Width * this.Height * 4, screenbits);
-			
 			
 			int dj;
 			int maxidpixels = 0;
@@ -230,16 +236,10 @@ namespace gInk
 			memcpy(plastscreenbits, pscreenbits, this.Width * this.Height * 4 / 4);
 
 			ReleaseDC(IntPtr.Zero, screenDc);
-			if (hScreenBitmap != IntPtr.Zero)
-			{
-				SelectObject(memDc, oldscreenBitmap);
-				//DeleteObject(hScreenBitmap);
-			}
-			DeleteDC(memDc);
 			return maxdj;
 		}
 
-		public void UpdateFormDisplay()
+		public void UpdateFormDisplay(bool draw)
 		{
 			IntPtr screenDc = GetDC(IntPtr.Zero);
 
@@ -255,7 +255,10 @@ namespace gInk
 			blend.SourceConstantAlpha = 255;  // additional alpha multiplier to the whole image. value 255 means multiply with 1.
 			blend.AlphaFormat = AC_SRC_ALPHA;
 
-			UpdateLayeredWindow(this.Handle, screenDc, ref topPos, ref size, canvusDc, ref pointSource, 0, ref blend, ULW_ALPHA);
+			if (draw)
+				UpdateLayeredWindow(this.Handle, screenDc, ref topPos, ref size, canvusDc, ref pointSource, 0, ref blend, ULW_ALPHA);
+			else
+				UpdateLayeredWindow(this.Handle, screenDc, ref topPos, ref size, blankcanvusDc, ref pointSource, 0, ref blend, ULW_ALPHA);
 
 			//Clean-up
 			ReleaseDC(IntPtr.Zero, screenDc);	
@@ -280,7 +283,7 @@ namespace gInk
 				ClearCanvus();
 				DrawStrokes();
 				DrawButtons(false);
-				UpdateFormDisplay();
+				UpdateFormDisplay(true);
 				
 				//DrawLastStroke();
 				//UpdateFormDisplay();
@@ -291,11 +294,11 @@ namespace gInk
 				ClearCanvus();
 				DrawStrokes();
 				DrawButtons(false);
-				UpdateFormDisplay();
+				UpdateFormDisplay(true);
 			}
 
-			//int moved = Test();
-			//stackmove += moved;
+			int moved = Test();
+			stackmove += moved;
 
 			if (stackmove != 0 && Tick % 10 == 1)
 			{
@@ -303,7 +306,7 @@ namespace gInk
 				ClearCanvus();
 				DrawStrokes();
 				DrawButtons(false);
-				UpdateFormDisplay();
+				UpdateFormDisplay(true);
 				stackmove = 0;
 			}
 		}

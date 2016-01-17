@@ -286,14 +286,14 @@ namespace gInk
 					ButtonsEntering = 0;
 				}
 				Root.FormDisplay.DrawButtons(false);
-				Root.FormDisplay.UpdateFormDisplay();
+				Root.FormDisplay.UpdateFormDisplay(true);
 			}
 			else if (ButtonsEntering == -1)
 			{
 				gpButtons.Left += (int)(DateTime.Now - LastTickTime).TotalMilliseconds * 2;
 				LastTickTime = DateTime.Now;
 				Root.FormDisplay.DrawButtons(false, true);
-				Root.FormDisplay.UpdateFormDisplay();
+				Root.FormDisplay.UpdateFormDisplay(true);
 				if (gpButtons.Left >= gpButtonsLeft + gpButtons.Width)
 				{
 					tiSlide.Enabled = false;
@@ -330,14 +330,14 @@ namespace gInk
 				SelectPen(3);
 			}
 			Root.FormDisplay.DrawButtons(true);
-			Root.FormDisplay.UpdateFormDisplay();
+			Root.FormDisplay.UpdateFormDisplay(true);
 		}
 
 		private void btEraser_Click(object sender, EventArgs e)
 		{
 			SelectPen(0);
 			Root.FormDisplay.DrawButtons(true);
-			Root.FormDisplay.UpdateFormDisplay();
+			Root.FormDisplay.UpdateFormDisplay(true);
 		}
 
 		[DllImport("user32.dll")]
