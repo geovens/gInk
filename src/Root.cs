@@ -117,6 +117,7 @@ namespace gInk
 			FormDisplay.Close();
 			//FormCollection.Dispose();
 			//FormDisplay.Dispose();
+			GC.Collect();
 			FormCollection = null;
 			FormDisplay = null;
 		}

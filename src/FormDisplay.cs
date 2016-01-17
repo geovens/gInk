@@ -17,15 +17,16 @@ namespace gInk
 		IntPtr BlankCanvus;
 		IntPtr blankcanvusDc;
 		Graphics gCanvus;
-		Bitmap ScreenBitmap;
+		//Bitmap ScreenBitmap;
 		IntPtr hScreenBitmap;
 		IntPtr memscreenDc;
-			
 
 		Bitmap gpButtonsImage;
 		SolidBrush TransparentBrush;
 
-		
+		byte[] screenbits;
+		byte[] lastscreenbits;
+
 		public FormDisplay(Root root)
 		{
 			Root = root;
@@ -45,35 +46,32 @@ namespace gInk
 
 			Bitmap InitCanvus = new Bitmap(this.Width, this.Height);
 			Canvus = InitCanvus.GetHbitmap(Color.FromArgb(0));
-			BlankCanvus = InitCanvus.GetHbitmap(Color.FromArgb(0));
-			hScreenBitmap = InitCanvus.GetHbitmap(Color.FromArgb(0));
+			//BlankCanvus = InitCanvus.GetHbitmap(Color.FromArgb(0));
+			InitCanvus.Dispose();
 
 			IntPtr screenDc = GetDC(IntPtr.Zero);
 			canvusDc = CreateCompatibleDC(screenDc);
-			blankcanvusDc = CreateCompatibleDC(screenDc);
 			SelectObject(canvusDc, Canvus);
-			SelectObject(blankcanvusDc, BlankCanvus);
+			//blankcanvusDc = CreateCompatibleDC(screenDc);
+			//SelectObject(blankcanvusDc, BlankCanvus);
 			gCanvus = Graphics.FromHdc(canvusDc);
 			gCanvus.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-
-
-			memscreenDc = CreateCompatibleDC(screenDc);
-			SelectObject(memscreenDc, hScreenBitmap);
+			if (Root.AutoScroll)
+			{
+				hScreenBitmap = InitCanvus.GetHbitmap(Color.FromArgb(0));
+				memscreenDc = CreateCompatibleDC(screenDc);
+				SelectObject(memscreenDc, hScreenBitmap);
+				screenbits = new byte[50000000];
+				lastscreenbits = new byte[50000000];
+			}
 			ReleaseDC(IntPtr.Zero, screenDc);
 
-			this.BackgroundImage = new Bitmap(this.Width, this.Height);
-			this.DoubleBuffered = true;
+			//this.DoubleBuffered = true;
 
 			gpButtonsImage = new Bitmap(1000, 100);
 			TransparentBrush = new SolidBrush(Color.Transparent);
 
-			//IC = new InkOverlay(this);
-			//IC.CollectionMode = CollectionMode.InkOnly;
-			//IC.DefaultDrawingAttributes.Width = 60;
-			//IC.DefaultDrawingAttributes.RasterOperation = RasterOperation.Black;
-			//IC.DefaultDrawingAttributes.Transparency = 60;
-			//IC.DefaultDrawingAttributes.AntiAliased = true;
-			//IC.Enabled = true;
+
 
 			ToTopMost();
 		}
@@ -137,8 +135,7 @@ namespace gInk
 			UpdateFormDisplay(true);
 		}
 
-		byte[] screenbits = new byte[50000000];
-		byte[] lastscreenbits = new byte[50000000];
+
 		public uint N1(int i, int j)
 		{
 			//return BitConverter.ToUInt32(screenbits, (this.Width * j + i) * 4);
@@ -318,6 +315,18 @@ namespace gInk
 			}
 		}
 
+		private void FormDisplay_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			DeleteObject(Canvus);
+			//DeleteObject(BlankCanvus);
+			DeleteDC(canvusDc);
+			if (Root.AutoScroll)
+			{
+				DeleteObject(hScreenBitmap);
+				DeleteDC(memscreenDc);
+			}
+		}
+
 		[DllImport("user32.dll")]
 		static extern IntPtr GetDC(IntPtr hWnd);
 		[DllImport("user32.dll")]
@@ -374,6 +383,7 @@ namespace gInk
 		static extern int GetBitmapBits(IntPtr hbmp, int cbBuffer, [Out] byte[] lpvBits);
 		[DllImport("gdi32.dll")]
 		static extern uint GetPixel(IntPtr hdc, int nXPos, int nYPos);
+
 		[DllImport("gdi32.dll")]
 		static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
 
