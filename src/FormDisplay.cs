@@ -191,6 +191,16 @@ namespace gInk
 			Llastp += 40;
 			return lastscreenbits[Llastp];
 		}
+
+		public void SnapShot(Rectangle rect)
+		{
+			Bitmap tempbmp = new Bitmap(rect.Width, rect.Height);
+			Graphics g = Graphics.FromImage(tempbmp);
+			g.CopyFromScreen(rect.X, rect.Y, 0, 0, new Size(rect.Width, rect.Height));
+			Clipboard.SetImage(tempbmp);
+			tempbmp.Dispose();
+		}
+
 		public int Test()
 		{		
 			IntPtr screenDc = GetDC(IntPtr.Zero);
@@ -336,10 +346,18 @@ namespace gInk
 				UpdateFormDisplay(true);
 			}
 
-			else if (Root.ButtonsUpdated)
+			else if (Root.UponButtonsUpdate)
 			{
 				DrawButtons(true, true);
 				UpdateFormDisplay(true);
+				Root.UponButtonsUpdate = false;
+			}
+
+			if (Root.UponTakingSnap)
+			{
+				SnapShot(Root.SnappingRect);
+				Root.UponTakingSnap = false;
+				Root.StopInk();
 			}
 
 			if (Root.AutoScroll)

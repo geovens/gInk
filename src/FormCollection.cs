@@ -182,6 +182,7 @@ namespace gInk
 				int width = Math.Abs(Root.SnappingX - e.X);
 				int height = Math.Abs(Root.SnappingY - e.Y);
 				Root.SnappingRect = new Rectangle(left, top, width, height);
+				Root.UponTakingSnap = true;
 				ExitSnapping();
 			}
 		}
@@ -367,7 +368,7 @@ namespace gInk
 				{
 					gpButtons.Left = aimedleft;
 				}
-				Root.ButtonsUpdated = true;
+				Root.UponButtonsUpdate = true;
 			}
 			else if (gpButtons.Left < aimedleft)
 			{
@@ -389,7 +390,7 @@ namespace gInk
 				{
 					gpButtons.Left = aimedleft;
 				}
-				Root.ButtonsUpdated = true;
+				Root.UponButtonsUpdate = true;
 			}
 
 			if (ButtonsEntering == -1 && gpButtons.Left == aimedleft)
@@ -433,13 +434,13 @@ namespace gInk
 			{
 				SelectPen(3);
 			}
-			Root.ButtonsUpdated = true;
+			Root.UponButtonsUpdate = true;
 		}
 
 		private void btEraser_Click(object sender, EventArgs e)
 		{
 			SelectPen(0);
-			Root.ButtonsUpdated = true;
+			Root.UponButtonsUpdate = true;
 		}
 
 		[DllImport("user32.dll")]
