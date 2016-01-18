@@ -71,7 +71,7 @@ namespace gInk
 
 			gpButtonsImage = new Bitmap(1000, 100);
 			TransparentBrush = new SolidBrush(Color.Transparent);
-			SemiTransparentBrush = new SolidBrush(Color.FromArgb(150, 255, 255, 255));
+			SemiTransparentBrush = new SolidBrush(Color.FromArgb(120, 255, 255, 255));
 
 
 			ToTopMost();
@@ -310,7 +310,18 @@ namespace gInk
 			}
 			*/
 
-			if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false && Root.Snapping <= 0)
+			if (Root.UponTakingSnap)
+			{
+				ClearCanvus();
+				DrawStrokes();
+				DrawButtons(false);
+				UpdateFormDisplay(true);
+				SnapShot(Root.SnappingRect);
+				Root.UponTakingSnap = false;
+				Root.FormCollection.RetreatAndExit();
+			}
+
+			else if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false && Root.Snapping <= 0)
 			{
 				ClearCanvus();
 				DrawStrokes();
@@ -338,7 +349,7 @@ namespace gInk
 				UpdateFormDisplay(true);
 			}
 
-			else if (Root.Snapping < -55)
+			else if (Root.Snapping < -58)
 			{
 				ClearCanvus();
 				DrawStrokes();
@@ -351,13 +362,6 @@ namespace gInk
 				DrawButtons(true, true);
 				UpdateFormDisplay(true);
 				Root.UponButtonsUpdate = false;
-			}
-
-			if (Root.UponTakingSnap)
-			{
-				SnapShot(Root.SnappingRect);
-				Root.UponTakingSnap = false;
-				Root.StopInk();
 			}
 
 			if (Root.AutoScroll)

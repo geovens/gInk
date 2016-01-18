@@ -33,13 +33,13 @@
 			this.btPen2 = new System.Windows.Forms.Button();
 			this.btPen1 = new System.Windows.Forms.Button();
 			this.gpButtons = new System.Windows.Forms.Panel();
+			this.btDock = new System.Windows.Forms.Button();
 			this.btEraser = new System.Windows.Forms.Button();
+			this.btSnap = new System.Windows.Forms.Button();
+			this.btPointer = new System.Windows.Forms.Button();
 			this.btStop = new System.Windows.Forms.Button();
 			this.btClear = new System.Windows.Forms.Button();
 			this.tiSlide = new System.Windows.Forms.Timer(this.components);
-			this.btDock = new System.Windows.Forms.Button();
-			this.btPointer = new System.Windows.Forms.Button();
-			this.btSnap = new System.Windows.Forms.Button();
 			this.gpButtons.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -105,6 +105,21 @@
 			this.gpButtons.Size = new System.Drawing.Size(918, 92);
 			this.gpButtons.TabIndex = 3;
 			// 
+			// btDock
+			// 
+			this.btDock.BackColor = System.Drawing.Color.WhiteSmoke;
+			this.btDock.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btDock.FlatAppearance.BorderSize = 0;
+			this.btDock.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btDock.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btDock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btDock.Location = new System.Drawing.Point(0, 5);
+			this.btDock.Name = "btDock";
+			this.btDock.Size = new System.Drawing.Size(60, 80);
+			this.btDock.TabIndex = 0;
+			this.btDock.UseVisualStyleBackColor = false;
+			this.btDock.Click += new System.EventHandler(this.btDock_Click);
+			// 
 			// btEraser
 			// 
 			this.btEraser.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -119,6 +134,34 @@
 			this.btEraser.UseVisualStyleBackColor = true;
 			this.btEraser.Click += new System.EventHandler(this.btEraser_Click);
 			// 
+			// btSnap
+			// 
+			this.btSnap.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btSnap.FlatAppearance.BorderSize = 0;
+			this.btSnap.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btSnap.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btSnap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btSnap.Location = new System.Drawing.Point(570, 5);
+			this.btSnap.Name = "btSnap";
+			this.btSnap.Size = new System.Drawing.Size(80, 80);
+			this.btSnap.TabIndex = 0;
+			this.btSnap.UseVisualStyleBackColor = true;
+			this.btSnap.Click += new System.EventHandler(this.btSnap_Click);
+			// 
+			// btPointer
+			// 
+			this.btPointer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btPointer.FlatAppearance.BorderSize = 0;
+			this.btPointer.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btPointer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btPointer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btPointer.Location = new System.Drawing.Point(670, 5);
+			this.btPointer.Name = "btPointer";
+			this.btPointer.Size = new System.Drawing.Size(80, 80);
+			this.btPointer.TabIndex = 0;
+			this.btPointer.UseVisualStyleBackColor = true;
+			this.btPointer.Click += new System.EventHandler(this.btPointer_Click);
+			// 
 			// btStop
 			// 
 			this.btStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -126,7 +169,7 @@
 			this.btStop.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btStop.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btStop.Location = new System.Drawing.Point(570, 5);
+			this.btStop.Location = new System.Drawing.Point(770, 5);
 			this.btStop.Name = "btStop";
 			this.btStop.Size = new System.Drawing.Size(80, 80);
 			this.btStop.TabIndex = 0;
@@ -151,49 +194,6 @@
 			// 
 			this.tiSlide.Interval = 15;
 			this.tiSlide.Tick += new System.EventHandler(this.tiSlide_Tick);
-			// 
-			// btDock
-			// 
-			this.btDock.BackColor = System.Drawing.Color.DarkGray;
-			this.btDock.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btDock.FlatAppearance.BorderSize = 0;
-			this.btDock.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
-			this.btDock.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
-			this.btDock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btDock.Location = new System.Drawing.Point(0, 5);
-			this.btDock.Name = "btDock";
-			this.btDock.Size = new System.Drawing.Size(60, 80);
-			this.btDock.TabIndex = 0;
-			this.btDock.UseVisualStyleBackColor = false;
-			this.btDock.Click += new System.EventHandler(this.btDock_Click);
-			// 
-			// btPointer
-			// 
-			this.btPointer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btPointer.FlatAppearance.BorderSize = 0;
-			this.btPointer.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
-			this.btPointer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
-			this.btPointer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btPointer.Location = new System.Drawing.Point(670, 5);
-			this.btPointer.Name = "btPointer";
-			this.btPointer.Size = new System.Drawing.Size(80, 80);
-			this.btPointer.TabIndex = 0;
-			this.btPointer.UseVisualStyleBackColor = true;
-			this.btPointer.Click += new System.EventHandler(this.btPointer_Click);
-			// 
-			// btSnap
-			// 
-			this.btSnap.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btSnap.FlatAppearance.BorderSize = 0;
-			this.btSnap.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
-			this.btSnap.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
-			this.btSnap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btSnap.Location = new System.Drawing.Point(770, 5);
-			this.btSnap.Name = "btSnap";
-			this.btSnap.Size = new System.Drawing.Size(80, 80);
-			this.btSnap.TabIndex = 0;
-			this.btSnap.UseVisualStyleBackColor = true;
-			this.btSnap.Click += new System.EventHandler(this.btSnap_Click);
 			// 
 			// FormCollection
 			// 

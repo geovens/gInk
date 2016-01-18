@@ -73,6 +73,26 @@ namespace gInk.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap dock {
+            get {
+                object obj = ResourceManager.GetObject("dock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap dockback {
+            get {
+                object obj = ResourceManager.GetObject("dockback", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap eraser {
             get {
                 object obj = ResourceManager.GetObject("eraser", resourceCulture);
@@ -166,6 +186,16 @@ namespace gInk.Properties {
         public static System.Drawing.Bitmap pencil_act {
             get {
                 object obj = ResourceManager.GetObject("pencil_act", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap snap {
+            get {
+                object obj = ResourceManager.GetObject("snap", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

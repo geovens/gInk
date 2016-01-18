@@ -16,7 +16,8 @@ namespace gInk
 		public Root Root;
 		public InkOverlay IC;
 
-		Bitmap image_exit, image_clear;
+		Bitmap image_exit, image_clear, image_snap, image_pointer;
+		Bitmap image_dock, image_dockback;
 		Bitmap image_pencil, image_highlighter, image_pencil_act, image_highlighter_act;
 		Bitmap image_pen1, image_pen2, image_pen3;
 		Bitmap image_pen1_act, image_pen2_act, image_pen3_act;
@@ -86,6 +87,20 @@ namespace gInk
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.eraser, 0, 0, btEraser.Width, btEraser.Height);
 			btEraser.Image = image_eraser;
+			image_snap = new Bitmap(btSnap.Width, btSnap.Height);
+			g = Graphics.FromImage(image_snap);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.snap, 0, 0, btSnap.Width, btSnap.Height);
+			btSnap.Image = image_snap;
+			image_dock = new Bitmap(btDock.Width, btDock.Height);
+			g = Graphics.FromImage(image_dock);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.dock, 0, 0, btDock.Width, btDock.Height);
+			btDock.Image = image_dock;
+			image_dockback = new Bitmap(btDock.Width, btDock.Height);
+			g = Graphics.FromImage(image_dockback);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.dockback, 0, 0, btDock.Width, btDock.Height);
 
 			image_pencil = new Bitmap(btPen3.Width, btPen3.Height);
 			g = Graphics.FromImage(image_pencil);
@@ -181,6 +196,13 @@ namespace gInk
 				int top = Math.Min(Root.SnappingY, e.Y);
 				int width = Math.Abs(Root.SnappingX - e.X);
 				int height = Math.Abs(Root.SnappingY - e.Y);
+				if (width < 5 || height < 5)
+				{
+					left = 0;
+					top = 0;
+					width = this.Width;
+					height = this.Height;
+				}
 				Root.SnappingRect = new Rectangle(left, top, width, height);
 				Root.UponTakingSnap = true;
 				ExitSnapping();
@@ -239,6 +261,8 @@ namespace gInk
 		public void ExitSnapping()
 		{
 			IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+			Root.SnappingX = -1;
+			Root.SnappingY = -1;
 			Root.Snapping = -60;
 		}
 
@@ -303,6 +327,10 @@ namespace gInk
 		{
 			LastTickTime = DateTime.Now;
 			Root.Docked = !Root.Docked;
+			if (Root.Docked)
+				btDock.Image = image_dockback;
+			else
+				btDock.Image = image_dock;
 		}
 
 		private void btPointer_Click(object sender, EventArgs e)

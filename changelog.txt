@@ -1,4 +1,9 @@
 
+v0.2.0 (Jan. 17, 2016)
+=================
+- Snapshot to clipboard (new feature)
+- Dock (new feature) 
+
 v0.1.1 (Jan. 17, 2016)
 =================
 - CPU usage greatly reduced when drawing.
