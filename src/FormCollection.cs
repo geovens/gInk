@@ -96,11 +96,14 @@ namespace gInk
 			g = Graphics.FromImage(image_dock);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.dock, 0, 0, btDock.Width, btDock.Height);
-			btDock.Image = image_dock;
 			image_dockback = new Bitmap(btDock.Width, btDock.Height);
 			g = Graphics.FromImage(image_dockback);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.dockback, 0, 0, btDock.Width, btDock.Height);
+			if (Root.Docked)
+				btDock.Image = image_dockback;
+			else
+				btDock.Image = image_dock;
 
 			image_pencil = new Bitmap(btPen3.Width, btPen3.Height);
 			g = Graphics.FromImage(image_pencil);
