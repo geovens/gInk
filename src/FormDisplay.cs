@@ -48,7 +48,6 @@ namespace gInk
 			Bitmap InitCanvus = new Bitmap(this.Width, this.Height);
 			Canvus = InitCanvus.GetHbitmap(Color.FromArgb(0));
 			//BlankCanvus = InitCanvus.GetHbitmap(Color.FromArgb(0));
-			InitCanvus.Dispose();
 
 			IntPtr screenDc = GetDC(IntPtr.Zero);
 			canvusDc = CreateCompatibleDC(screenDc);
@@ -66,6 +65,7 @@ namespace gInk
 				lastscreenbits = new byte[50000000];
 			}
 			ReleaseDC(IntPtr.Zero, screenDc);
+			InitCanvus.Dispose();
 
 			//this.DoubleBuffered = true;
 
