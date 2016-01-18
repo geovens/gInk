@@ -22,6 +22,11 @@ Hotkey support.
 
 Click-through mode.  
 
+#### Screen Shots
+
+![screenshot](https://raw.githubusercontent.com/geovens/gInk/master/screenshot1.jpg)  
+![screenshot](https://raw.githubusercontent.com/geovens/gInk/master/screenshot2.jpg)  
+
 ----
 gInk  
 https://github.com/geovens/gInk  
