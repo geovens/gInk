@@ -13,9 +13,9 @@ Click the exit button or press ESC to exit drawing.
 Compact and intuitive interface.  
 Inks rendered on dynamic desktops.  
 Stylus w/ eraser, touch screen and mouse compatable.  
-Multiple displays support.
+Multiple displays support.  
 Pen pressure support.  
-Snapshot support.
+Snapshot support.  
 Hotkey support.  
 
 #### Planed Features
