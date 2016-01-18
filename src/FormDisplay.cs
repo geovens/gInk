@@ -194,11 +194,24 @@ namespace gInk
 
 		public void SnapShot(Rectangle rect)
 		{
+			//Bitmap tempbmp = new Bitmap(rect.Width, rect.Height);
+			//Graphics g = Graphics.FromImage(tempbmp);
+			//g.CopyFromScreen(rect.X, rect.Y, 0, 0, new Size(rect.Width, rect.Height), CopyPixelOperation.CaptureBlt | CopyPixelOperation.SourceCopy);
+			//Clipboard.SetImage(tempbmp);
+			//tempbmp.Dispose();
+
+			IntPtr screenDc = GetDC(IntPtr.Zero);
+			IntPtr hDest = CreateCompatibleDC(screenDc);
 			Bitmap tempbmp = new Bitmap(rect.Width, rect.Height);
-			Graphics g = Graphics.FromImage(tempbmp);
-			g.CopyFromScreen(rect.X, rect.Y, 0, 0, new Size(rect.Width, rect.Height));
+			IntPtr hBmp = tempbmp.GetHbitmap();
+			SelectObject(hDest, hBmp);
+			bool b = BitBlt(hDest, 0, 0, rect.Width, rect.Height, screenDc, rect.Left, rect.Top, (uint)(CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt));
+			tempbmp = Bitmap.FromHbitmap(hBmp);
 			Clipboard.SetImage(tempbmp);
 			tempbmp.Dispose();
+			DeleteObject(hBmp);
+			ReleaseDC(IntPtr.Zero, screenDc);
+			DeleteDC(hDest);
 		}
 
 		public int Test()
