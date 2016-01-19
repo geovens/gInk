@@ -52,11 +52,14 @@ namespace gInk
 
 			IC = new InkOverlay(this.Handle);
 			IC.CollectionMode = CollectionMode.InkOnly;
+			IC.AutoRedraw = false;
+			IC.DynamicRendering = false;
 			IC.EraserMode = InkOverlayEraserMode.StrokeErase;
 			IC.CursorInRange += IC_CursorInRange;
 			IC.MouseDown += IC_MouseDown;
 			IC.MouseMove += IC_MouseMove;
 			IC.MouseUp += IC_MouseUp;
+			IC.CursorDown += IC_CursorDown;
 			IC.DefaultDrawingAttributes.Width = 80;
 			IC.DefaultDrawingAttributes.Transparency = 30;
 			IC.DefaultDrawingAttributes.AntiAliased = true;
@@ -168,6 +171,13 @@ namespace gInk
 			ToTopMost();
 		}
 
+		private void IC_CursorDown(object sender, InkCollectorCursorDownEventArgs e)
+		{
+			Root.FormDisplay.ClearCanvus(Root.FormDisplay.gOneStrokeCanvus);
+			Root.FormDisplay.DrawStrokes(Root.FormDisplay.gOneStrokeCanvus);
+			Root.FormDisplay.DrawButtons(Root.FormDisplay.gOneStrokeCanvus, false);
+		}
+
 		private void IC_MouseDown(object sender, CancelMouseEventArgs e)
 		{
 			if (Root.Snapping == 1)
@@ -214,7 +224,7 @@ namespace gInk
 
 		private void IC_CursorInRange(object sender, InkCollectorCursorInRangeEventArgs e)
 		{
-			if (e.Cursor.Inverted && Root.EraserMode == false)
+			if (e.Cursor.Inverted && Root.CurrentPen != 0)
 			{
 				EnterEraserMode(true);
 				/*
@@ -227,7 +237,7 @@ namespace gInk
 				}
 				*/
 			}
-			else if (!e.Cursor.Inverted && Root.EraserMode == false)
+			else if (!e.Cursor.Inverted && Root.CurrentPen != 0)
 			{
 				EnterEraserMode(false);
 				/*
@@ -254,10 +264,12 @@ namespace gInk
 			if (enter)
 			{
 				IC.EditingMode = InkOverlayEditingMode.Delete;
+				Root.EraserMode = true;
 			}
 			else
 			{
 				IC.EditingMode = InkOverlayEditingMode.Ink;
+				Root.EraserMode = false;
 			}
 		}
 
@@ -277,7 +289,6 @@ namespace gInk
 				btPen2.Image = image_pen2;
 				btPen3.Image = image_pen3;
 				btEraser.Image = image_eraser_act;
-				Root.EraserMode = true;
 				EnterEraserMode(true);
 			}
 			else if (pen == 1)
@@ -288,7 +299,6 @@ namespace gInk
 				btPen2.Image = image_pen2;
 				btPen3.Image = image_pen3;
 				btEraser.Image = image_eraser;
-				Root.EraserMode = false;
 				EnterEraserMode(false);
 			}
 			else if (pen == 2)
@@ -299,7 +309,6 @@ namespace gInk
 				btPen2.Image = image_pen2_act;
 				btPen3.Image = image_pen3;
 				btEraser.Image = image_eraser;
-				Root.EraserMode = false;
 				EnterEraserMode(false);
 			}
 			else if (pen == 3)
@@ -310,10 +319,10 @@ namespace gInk
 				btPen2.Image = image_pen2;
 				btPen3.Image = image_pen3_act;
 				btEraser.Image = image_eraser;
-				Root.EraserMode = false;
 				EnterEraserMode(false);
 			}
 			Root.CurrentPen = pen;
+			Root.UponButtonsUpdate |= 0x2;
 		}
 
 		public void RetreatAndExit()
@@ -334,6 +343,7 @@ namespace gInk
 				btDock.Image = image_dockback;
 			else
 				btDock.Image = image_dock;
+			Root.UponButtonsUpdate |= 0x2;
 		}
 
 		private void btPointer_Click(object sender, EventArgs e)
@@ -399,7 +409,7 @@ namespace gInk
 				{
 					gpButtons.Left = aimedleft;
 				}
-				Root.UponButtonsUpdate = true;
+				Root.UponButtonsUpdate |= 0x1;
 			}
 			else if (gpButtons.Left < aimedleft)
 			{
@@ -421,7 +431,7 @@ namespace gInk
 				{
 					gpButtons.Left = aimedleft;
 				}
-				Root.UponButtonsUpdate = true;
+				Root.UponButtonsUpdate |= 0x1;
 			}
 
 			if (ButtonsEntering == -1 && gpButtons.Left == aimedleft)
@@ -465,13 +475,11 @@ namespace gInk
 			{
 				SelectPen(3);
 			}
-			Root.UponButtonsUpdate = true;
 		}
 
 		private void btEraser_Click(object sender, EventArgs e)
 		{
 			SelectPen(0);
-			Root.UponButtonsUpdate = true;
 		}
 
 		[DllImport("user32.dll")]

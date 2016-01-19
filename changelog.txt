@@ -1,4 +1,8 @@
 
+v0.2.2 (Jan. 18, 2016)
+=================
+- Fix slowness and delay when there are too many inks 
+
 v0.2.1 (Jan. 17, 2016)
 =================
 - Fix snapshot not capturing inks in windows 7
