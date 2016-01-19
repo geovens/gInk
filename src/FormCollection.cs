@@ -68,7 +68,7 @@ namespace gInk
 			//cursoryellow = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursoryellow.Handle);
 			//cursorblue = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorblue.Handle);
 			IC.Cursor = cursorred;
-
+			this.Cursor = cursorred;
 			IC.Enabled = true;
 
 			image_exit = new Bitmap(btStop.Width, btStop.Height);
