@@ -16,16 +16,16 @@ namespace gInk
 		public Root Root;
 		public InkOverlay IC;
 
-		Bitmap image_exit, image_clear, image_snap, image_pointer;
-		Bitmap image_dock, image_dockback;
-		Bitmap image_pencil, image_highlighter, image_pencil_act, image_highlighter_act;
-		Bitmap image_pen1, image_pen2, image_pen3;
-		Bitmap image_pen1_act, image_pen2_act, image_pen3_act;
-		Bitmap image_eraser_act, image_eraser;
-		System.Windows.Forms.Cursor cursorred, cursorblue, cursoryellow;
+		public Bitmap image_exit, image_clear, image_snap, image_pointer;
+		public Bitmap image_dock, image_dockback;
+		public Bitmap image_pencil, image_highlighter, image_pencil_act, image_highlighter_act;
+		public Bitmap image_pen1, image_pen2, image_pen3;
+		public Bitmap image_pen1_act, image_pen2_act, image_pen3_act;
+		public Bitmap image_eraser_act, image_eraser;
+		public System.Windows.Forms.Cursor cursorred, cursorblue, cursoryellow;
 
 		public int ButtonsEntering = 0;  // -1 = exiting
-		int gpButtonsLeft, gpButtonsTop;
+		public int gpButtonsLeft, gpButtonsTop;
 
 		public FormCollection(Root root)
 		{
@@ -259,6 +259,28 @@ namespace gInk
 			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0020);
 		}
 
+		public void ToThrough()
+		{
+			UInt32 dwExStyle = GetWindowLong(this.Handle, -20);
+			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
+			SetWindowPos(this.Handle, (IntPtr)0, 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0004 | 0x0010 | 0x0020);
+			SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 1, 0x2);
+			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000 | 0x00000020);
+			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0020);
+		}
+
+		public void ToUnThrough()
+		{
+			UInt32 dwExStyle = GetWindowLong(this.Handle, -20);
+			SetWindowLong(this.Handle, -20, (uint)(dwExStyle & ~0x00080000 & ~0x0020));
+			SetWindowPos(this.Handle, (IntPtr)(-2), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0020);
+
+			dwExStyle = GetWindowLong(this.Handle, -20);
+			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
+			SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 1, 0x2);
+			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0020);
+		}
+
 		public void EnterEraserMode(bool enter)
 		{
 			if (enter)
@@ -335,15 +357,17 @@ namespace gInk
 		{
 		}
 
-		private void btDock_Click(object sender, EventArgs e)
+		public void btDock_Click(object sender, EventArgs e)
 		{
 			LastTickTime = DateTime.Now;
-			Root.Docked = !Root.Docked;
-			if (Root.Docked)
-				btDock.Image = image_dockback;
+			if (!Root.Docked)
+			{
+				Root.Dock();
+			}
 			else
-				btDock.Image = image_dock;
-			Root.UponButtonsUpdate |= 0x2;
+			{
+				Root.UnDock();
+			}
 		}
 
 		private void btPointer_Click(object sender, EventArgs e)

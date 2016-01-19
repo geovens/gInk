@@ -51,6 +51,7 @@
 			this.btPen3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
 			this.btPen3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
 			this.btPen3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btPen3.ForeColor = System.Drawing.Color.Transparent;
 			this.btPen3.Location = new System.Drawing.Point(270, 5);
 			this.btPen3.Name = "btPen3";
 			this.btPen3.Size = new System.Drawing.Size(80, 80);
@@ -66,6 +67,7 @@
 			this.btPen2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(0)))));
 			this.btPen2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(0)))));
 			this.btPen2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btPen2.ForeColor = System.Drawing.Color.Transparent;
 			this.btPen2.Location = new System.Drawing.Point(170, 5);
 			this.btPen2.Name = "btPen2";
 			this.btPen2.Size = new System.Drawing.Size(80, 80);
@@ -81,6 +83,7 @@
 			this.btPen1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(250)))));
 			this.btPen1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(250)))));
 			this.btPen1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btPen1.ForeColor = System.Drawing.Color.Transparent;
 			this.btPen1.Location = new System.Drawing.Point(70, 5);
 			this.btPen1.Name = "btPen1";
 			this.btPen1.Size = new System.Drawing.Size(80, 80);
@@ -113,6 +116,7 @@
 			this.btDock.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btDock.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btDock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btDock.ForeColor = System.Drawing.Color.WhiteSmoke;
 			this.btDock.Location = new System.Drawing.Point(0, 5);
 			this.btDock.Name = "btDock";
 			this.btDock.Size = new System.Drawing.Size(60, 80);

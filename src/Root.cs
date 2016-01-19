@@ -30,10 +30,8 @@ namespace gInk
 
 				if (Root.FormCollection == null && Root.FormDisplay == null)
 					Root.StartInk();
-				else
-				{
-					Root.FormCollection.RetreatAndExit();
-				}
+				else if (Root.Docked)
+					Root.UnDock();
 			}
 			return false;
 		}
@@ -60,6 +58,7 @@ namespace gInk
 		private ContextMenu trayMenu;
 		public FormCollection FormCollection;
 		public FormDisplay FormDisplay;
+		public FormButtonHitter FormButtonHitter;
 
 		public int CurrentPen = 1;  // defaut pen
 
@@ -102,7 +101,12 @@ namespace gInk
 		private void TrayIcon_Click(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
-				StartInk();
+			{
+				if (FormDisplay == null && FormCollection == null)
+					StartInk();
+				else if (Docked)
+					UnDock();
+			}
 		}
 
 		public void StartInk()
@@ -110,8 +114,10 @@ namespace gInk
 			if (FormDisplay != null || FormCollection != null)
 				return;
 
+			Docked = false;
 			FormDisplay = new FormDisplay(this);
 			FormCollection = new FormCollection(this);
+			FormButtonHitter = new FormButtonHitter(this);
 			SelectPen(CurrentPen);
 			FormDisplay.Show();
 			FormCollection.Show();
@@ -121,6 +127,7 @@ namespace gInk
 		{
 			FormCollection.Close();
 			FormDisplay.Close();
+			FormButtonHitter.Close();
 			//FormCollection.Dispose();
 			//FormDisplay.Dispose();
 			GC.Collect();
@@ -134,6 +141,32 @@ namespace gInk
 			FormDisplay.ClearCanvus();
 			FormDisplay.DrawButtons(true);
 			FormDisplay.UpdateFormDisplay(true);
+		}
+
+		public void Dock()
+		{
+			if (FormDisplay == null || FormCollection == null)
+				return;
+
+			Docked = true;
+			FormCollection.ToThrough();
+			FormCollection.btDock.Image = FormCollection.image_dockback;
+			FormButtonHitter.Show();
+			UponButtonsUpdate |= 0x2;
+		}
+
+		public void UnDock()
+		{
+			if (FormDisplay == null || FormCollection == null)
+				return;
+
+			Docked = false;
+			FormCollection.ToUnThrough();
+			FormCollection.btDock.Image = FormCollection.image_dock;
+			FormCollection.Cursor = FormCollection.cursorred;
+			FormCollection.IC.Cursor = FormCollection.cursorred;
+			FormButtonHitter.Hide();
+			UponButtonsUpdate |= 0x2;
 		}
 
 		public void SelectPen(int pen)

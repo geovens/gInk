@@ -72,6 +72,12 @@
     <Compile Include="FormAbout.Designer.cs">
       <DependentUpon>FormAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormButtonHitter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormButtonHitter.Designer.cs">
+      <DependentUpon>FormButtonHitter.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormDisplay.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +95,9 @@
     <Compile Include="Root.cs" />
     <EmbeddedResource Include="FormAbout.resx">
       <DependentUpon>FormAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormButtonHitter.resx">
+      <DependentUpon>FormButtonHitter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormDisplay.resx">
       <DependentUpon>FormDisplay.cs</DependentUpon>
