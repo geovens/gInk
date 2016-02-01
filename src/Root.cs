@@ -72,6 +72,8 @@ namespace gInk
 
 			trayMenu = new ContextMenu();
 			trayMenu.MenuItems.Add("About", OnAbout);
+			trayMenu.MenuItems.Add("Pen Settings", OnPenSetting);
+			trayMenu.MenuItems.Add("-");
 			trayMenu.MenuItems.Add("Exit", OnExit);
 
 			trayIcon = new NotifyIcon();
@@ -197,12 +199,12 @@ namespace gInk
 		public void SetDefaultPens()
 		{
 			Pen1 = new DrawingAttributes();
-			Pen1.Color = Color.FromArgb(230, 60, 60);
+			Pen1.Color = Color.FromArgb(240, 60, 60);
 			Pen1.Width = 80;
 			Pen1.Transparency = 30;
 
 			Pen2 = new DrawingAttributes();
-			Pen2.Color = Color.FromArgb(60, 60, 230);
+			Pen2.Color = Color.FromArgb(60, 60, 240);
 			Pen2.Width = 80;
 			Pen2.Transparency = 30;
 
@@ -420,6 +422,11 @@ namespace gInk
 		{
 			FormAbout FormAbout = new FormAbout();
 			FormAbout.Show();
+		}
+
+		private void OnPenSetting(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("notepad.exe", "pens.ini");
 		}
 
 		private void OnExit(object sender, EventArgs e)
