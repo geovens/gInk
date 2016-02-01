@@ -526,9 +526,9 @@ namespace gInk
 			{
 				float dleft = gpButtons.Left - aimedleft;
 				dleft /= 70;
-				if (dleft > 4) dleft = 4;
+				if (dleft > 8) dleft = 8;
 				dleft *= (float)(DateTime.Now - LastTickTime).TotalMilliseconds;
-				if (dleft > 60) dleft = 60;
+				if (dleft > 120) dleft = 230;
 				if (dleft < 1) dleft = 1;
 				gpButtons.Left -= (int)dleft;
 				LastTickTime = DateTime.Now;
@@ -542,12 +542,12 @@ namespace gInk
 			{
 				float dleft = aimedleft - gpButtons.Left;
 				dleft /= 70;
-				if (dleft > 4) dleft = 4;
+				if (dleft > 8) dleft = 8;
 				// fast exiting when not docked
 				if (ButtonsEntering == -1 && !Root.Docked)
-					dleft = 4;
+					dleft = 8;
 				dleft *= (float)(DateTime.Now - LastTickTime).TotalMilliseconds;
-				if (dleft > 60) dleft = 60;
+				if (dleft > 120) dleft = 120;
 				if (dleft < 1) dleft = 1;
 				// fast exiting when docked
 				if (ButtonsEntering == -1 && dleft == 1)

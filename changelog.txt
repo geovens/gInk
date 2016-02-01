@@ -1,9 +1,9 @@
 
-v0.3.2 (not released yet)
+v0.3.2 (Feb. 1, 2016)
 =================
 - Click throung mode has a dedicated button now.
-- Add two new pens, to a tatal of five.
-- Add pen settings.
+- Add two new pens, to a total of five.
+- Add an entry to pen settings.
 
 v0.3.1 (Feb. 1, 2016)
 =================
