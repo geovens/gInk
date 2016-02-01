@@ -40,7 +40,7 @@ namespace gInk
 	public class Root
 	{
 		// options
-		public DrawingAttributes Pen1, Pen2, Pen3;
+		public DrawingAttributes Pen1, Pen2, Pen3, Pen4, Pen5;
 		public bool Hotkey_Control, Hotkey_Alt, Hotkey_Shift, Hotkey_Win;
 		public int Hotkey;
 		public bool AutoScroll;
@@ -197,19 +197,29 @@ namespace gInk
 		public void SetDefaultPens()
 		{
 			Pen1 = new DrawingAttributes();
-			Pen1.Color = Color.FromArgb(250, 50, 50);
+			Pen1.Color = Color.FromArgb(230, 60, 60);
 			Pen1.Width = 80;
 			Pen1.Transparency = 30;
 
 			Pen2 = new DrawingAttributes();
-			Pen2.Color = Color.FromArgb(50, 50, 250);
+			Pen2.Color = Color.FromArgb(60, 60, 230);
 			Pen2.Width = 80;
 			Pen2.Transparency = 30;
 
 			Pen3 = new DrawingAttributes();
-			Pen3.Color = Color.FromArgb(240, 240, 0);
-			Pen3.Width = 800;
-			Pen3.Transparency = 160;
+			Pen3.Color = Color.FromArgb(250, 210, 0);
+			Pen3.Width = 80;
+			Pen3.Transparency = 30;
+
+			Pen4 = new DrawingAttributes();
+			Pen4.Color = Color.FromArgb(150, 200, 100);
+			Pen4.Width = 800;
+			Pen4.Transparency = 160;
+
+			Pen5 = new DrawingAttributes();
+			Pen5.Color = Color.FromArgb(200, 150, 250);
+			Pen5.Width = 800;
+			Pen5.Transparency = 160;
 		}
 
 		public void SetDefaultConfig()
@@ -298,6 +308,30 @@ namespace gInk
 							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
 								Pen3.Color = Color.FromArgb(Pen3.Color.R, Pen3.Color.G, int.Parse(sPara));
 							break;
+						case "PEN4_RED":
+							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
+								Pen4.Color = Color.FromArgb(int.Parse(sPara), Pen4.Color.G, Pen4.Color.B);
+							break;
+						case "PEN4_GREEN":
+							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
+								Pen4.Color = Color.FromArgb(Pen4.Color.R, int.Parse(sPara), Pen4.Color.B);
+							break;
+						case "PEN4_BLUE":
+							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
+								Pen4.Color = Color.FromArgb(Pen4.Color.R, Pen4.Color.G, int.Parse(sPara));
+							break;
+						case "PEN5_RED":
+							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
+								Pen5.Color = Color.FromArgb(int.Parse(sPara), Pen5.Color.G, Pen5.Color.B);
+							break;
+						case "PEN5_GREEN":
+							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
+								Pen5.Color = Color.FromArgb(Pen5.Color.R, int.Parse(sPara), Pen5.Color.B);
+							break;
+						case "PEN5_BLUE":
+							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
+								Pen5.Color = Color.FromArgb(Pen5.Color.R, Pen5.Color.G, int.Parse(sPara));
+							break;
 
 						case "PEN1_ALPHA":
 							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
@@ -311,6 +345,14 @@ namespace gInk
 							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
 								Pen3.Transparency = (byte)(255 - o);
 							break;
+						case "PEN4_ALPHA":
+							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
+								Pen4.Transparency = (byte)(255 - o);
+							break;
+						case "PEN5_ALPHA":
+							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
+								Pen5.Transparency = (byte)(255 - o);
+							break;
 
 						case "PEN1_WIDTH":
 							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
@@ -323,6 +365,14 @@ namespace gInk
 						case "PEN3_WIDTH":
 							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
 								Pen3.Width = o;
+							break;
+						case "PEN4_WIDTH":
+							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
+								Pen4.Width = o;
+							break;
+						case "PEN5_WIDTH":
+							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
+								Pen5.Width = o;
 							break;
 
 						case "HOTKEY":

@@ -20,8 +20,8 @@ namespace gInk
 		public Bitmap image_dock, image_dockback;
 		public Bitmap image_pencil, image_highlighter, image_pencil_act, image_highlighter_act;
 		public Bitmap image_pointer, image_pointer_act;
-		public Bitmap image_pen1, image_pen2, image_pen3;
-		public Bitmap image_pen1_act, image_pen2_act, image_pen3_act;
+		public Bitmap image_pen1, image_pen2, image_pen3, image_pen4, image_pen5;
+		public Bitmap image_pen1_act, image_pen2_act, image_pen3_act, image_pen4_act, image_pen5_act;
 		public Bitmap image_eraser_act, image_eraser;
 		public System.Windows.Forms.Cursor cursorred, cursorblue, cursoryellow;
 
@@ -138,12 +138,18 @@ namespace gInk
 			btPen1.BackColor = Root.Pen1.Color;
 			btPen2.BackColor = Root.Pen2.Color;
 			btPen3.BackColor = Root.Pen3.Color;
+			btPen4.BackColor = Root.Pen4.Color;
+			btPen5.BackColor = Root.Pen5.Color;
 			btPen1.FlatAppearance.MouseDownBackColor = Root.Pen1.Color;
 			btPen2.FlatAppearance.MouseDownBackColor = Root.Pen2.Color;
 			btPen3.FlatAppearance.MouseDownBackColor = Root.Pen3.Color;
+			btPen4.FlatAppearance.MouseDownBackColor = Root.Pen4.Color;
+			btPen5.FlatAppearance.MouseDownBackColor = Root.Pen5.Color;
 			btPen1.FlatAppearance.MouseOverBackColor = Root.Pen1.Color;
 			btPen2.FlatAppearance.MouseOverBackColor = Root.Pen2.Color;
 			btPen3.FlatAppearance.MouseOverBackColor = Root.Pen3.Color;
+			btPen4.FlatAppearance.MouseOverBackColor = Root.Pen4.Color;
+			btPen5.FlatAppearance.MouseOverBackColor = Root.Pen5.Color;
 			if (Root.Pen1.Transparency >= 100)
 			{
 				image_pen1 = image_highlighter;
@@ -173,6 +179,26 @@ namespace gInk
 			{
 				image_pen3 = image_pencil;
 				image_pen3_act = image_pencil_act;
+			}
+			if (Root.Pen4.Transparency >= 100)
+			{
+				image_pen4 = image_highlighter;
+				image_pen4_act = image_highlighter_act;
+			}
+			else
+			{
+				image_pen4 = image_pencil;
+				image_pen4_act = image_pencil_act;
+			}
+			if (Root.Pen5.Transparency >= 100)
+			{
+				image_pen5 = image_highlighter;
+				image_pen5_act = image_highlighter_act;
+			}
+			else
+			{
+				image_pen5 = image_pencil;
+				image_pen5_act = image_pencil_act;
 			}
 
 			LastTickTime = DateTime.Parse("1987-01-01");
@@ -327,6 +353,8 @@ namespace gInk
 				btPen1.Image = image_pen1;
 				btPen2.Image = image_pen2;
 				btPen3.Image = image_pen3;
+				btPen4.Image = image_pen4;
+				btPen5.Image = image_pen5;
 				btEraser.Image = image_eraser;
 				btPointer.Image = image_pointer_act;
 				EnterEraserMode(false);
@@ -337,6 +365,8 @@ namespace gInk
 				btPen1.Image = image_pen1;
 				btPen2.Image = image_pen2;
 				btPen3.Image = image_pen3;
+				btPen4.Image = image_pen4;
+				btPen5.Image = image_pen5;
 				btEraser.Image = image_eraser_act;
 				btPointer.Image = image_pointer;
 				EnterEraserMode(true);
@@ -349,6 +379,8 @@ namespace gInk
 				btPen1.Image = image_pen1_act;
 				btPen2.Image = image_pen2;
 				btPen3.Image = image_pen3;
+				btPen4.Image = image_pen4;
+				btPen5.Image = image_pen5;
 				btEraser.Image = image_eraser;
 				btPointer.Image = image_pointer;
 				EnterEraserMode(false);
@@ -361,6 +393,8 @@ namespace gInk
 				btPen1.Image = image_pen1;
 				btPen2.Image = image_pen2_act;
 				btPen3.Image = image_pen3;
+				btPen4.Image = image_pen4;
+				btPen5.Image = image_pen5;
 				btEraser.Image = image_eraser;
 				btPointer.Image = image_pointer;
 				EnterEraserMode(false);
@@ -373,6 +407,36 @@ namespace gInk
 				btPen1.Image = image_pen1;
 				btPen2.Image = image_pen2;
 				btPen3.Image = image_pen3_act;
+				btPen4.Image = image_pen4;
+				btPen5.Image = image_pen5;
+				btEraser.Image = image_eraser;
+				btPointer.Image = image_pointer;
+				EnterEraserMode(false);
+				Root.UnPointer();
+			}
+			else if (pen == 4)
+			{
+				IC.DefaultDrawingAttributes = Root.Pen4;
+
+				btPen1.Image = image_pen1;
+				btPen2.Image = image_pen2;
+				btPen3.Image = image_pen3;
+				btPen4.Image = image_pen4_act;
+				btPen5.Image = image_pen5;
+				btEraser.Image = image_eraser;
+				btPointer.Image = image_pointer;
+				EnterEraserMode(false);
+				Root.UnPointer();
+			}
+			else if (pen == 5)
+			{
+				IC.DefaultDrawingAttributes = Root.Pen5;
+
+				btPen1.Image = image_pen1;
+				btPen2.Image = image_pen2;
+				btPen3.Image = image_pen3;
+				btPen4.Image = image_pen4;
+				btPen5.Image = image_pen5_act;
 				btEraser.Image = image_eraser;
 				btPointer.Image = image_pointer;
 				EnterEraserMode(false);
@@ -540,6 +604,14 @@ namespace gInk
 			else if ((Button)sender == btPen3)
 			{
 				SelectPen(3);
+			}
+			else if ((Button)sender == btPen4)
+			{
+				SelectPen(4);
+			}
+			else if ((Button)sender == btPen5)
+			{
+				SelectPen(5);
 			}
 		}
 

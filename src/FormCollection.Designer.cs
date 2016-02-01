@@ -40,6 +40,8 @@
 			this.btStop = new System.Windows.Forms.Button();
 			this.btClear = new System.Windows.Forms.Button();
 			this.tiSlide = new System.Windows.Forms.Timer(this.components);
+			this.btPen4 = new System.Windows.Forms.Button();
+			this.btPen5 = new System.Windows.Forms.Button();
 			this.gpButtons.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -100,12 +102,14 @@
 			this.gpButtons.Controls.Add(this.btPointer);
 			this.gpButtons.Controls.Add(this.btStop);
 			this.gpButtons.Controls.Add(this.btPen1);
+			this.gpButtons.Controls.Add(this.btPen5);
+			this.gpButtons.Controls.Add(this.btPen4);
 			this.gpButtons.Controls.Add(this.btPen3);
 			this.gpButtons.Controls.Add(this.btClear);
 			this.gpButtons.Controls.Add(this.btPen2);
 			this.gpButtons.Location = new System.Drawing.Point(42, 84);
 			this.gpButtons.Name = "gpButtons";
-			this.gpButtons.Size = new System.Drawing.Size(918, 92);
+			this.gpButtons.Size = new System.Drawing.Size(1182, 92);
 			this.gpButtons.TabIndex = 3;
 			// 
 			// btDock
@@ -133,7 +137,7 @@
 			this.btEraser.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btEraser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btEraser.Image = global::gInk.Properties.Resources.eraser;
-			this.btEraser.Location = new System.Drawing.Point(370, 5);
+			this.btEraser.Location = new System.Drawing.Point(570, 5);
 			this.btEraser.Name = "btEraser";
 			this.btEraser.Size = new System.Drawing.Size(80, 80);
 			this.btEraser.TabIndex = 0;
@@ -148,7 +152,7 @@
 			this.btSnap.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btSnap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btSnap.Image = global::gInk.Properties.Resources.snap;
-			this.btSnap.Location = new System.Drawing.Point(570, 5);
+			this.btSnap.Location = new System.Drawing.Point(820, 5);
 			this.btSnap.Name = "btSnap";
 			this.btSnap.Size = new System.Drawing.Size(80, 80);
 			this.btSnap.TabIndex = 0;
@@ -164,7 +168,7 @@
 			this.btPointer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btPointer.ForeColor = System.Drawing.Color.WhiteSmoke;
 			this.btPointer.Image = global::gInk.Properties.Resources.pointer;
-			this.btPointer.Location = new System.Drawing.Point(470, 5);
+			this.btPointer.Location = new System.Drawing.Point(670, 5);
 			this.btPointer.Name = "btPointer";
 			this.btPointer.Size = new System.Drawing.Size(80, 80);
 			this.btPointer.TabIndex = 0;
@@ -179,7 +183,7 @@
 			this.btStop.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btStop.Image = global::gInk.Properties.Resources.exit;
-			this.btStop.Location = new System.Drawing.Point(770, 5);
+			this.btStop.Location = new System.Drawing.Point(1070, 5);
 			this.btStop.Name = "btStop";
 			this.btStop.Size = new System.Drawing.Size(80, 80);
 			this.btStop.TabIndex = 0;
@@ -194,7 +198,7 @@
 			this.btClear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btClear.Image = global::gInk.Properties.Resources.garbage;
-			this.btClear.Location = new System.Drawing.Point(670, 5);
+			this.btClear.Location = new System.Drawing.Point(920, 5);
 			this.btClear.Name = "btClear";
 			this.btClear.Size = new System.Drawing.Size(80, 80);
 			this.btClear.TabIndex = 1;
@@ -205,6 +209,38 @@
 			// 
 			this.tiSlide.Interval = 15;
 			this.tiSlide.Tick += new System.EventHandler(this.tiSlide_Tick);
+			// 
+			// btPen4
+			// 
+			this.btPen4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+			this.btPen4.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+			this.btPen4.FlatAppearance.BorderSize = 3;
+			this.btPen4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+			this.btPen4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+			this.btPen4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btPen4.ForeColor = System.Drawing.Color.Transparent;
+			this.btPen4.Location = new System.Drawing.Point(370, 5);
+			this.btPen4.Name = "btPen4";
+			this.btPen4.Size = new System.Drawing.Size(80, 80);
+			this.btPen4.TabIndex = 1;
+			this.btPen4.UseVisualStyleBackColor = false;
+			this.btPen4.Click += new System.EventHandler(this.btColor_Click);
+			// 
+			// btPen5
+			// 
+			this.btPen5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+			this.btPen5.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+			this.btPen5.FlatAppearance.BorderSize = 3;
+			this.btPen5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+			this.btPen5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+			this.btPen5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btPen5.ForeColor = System.Drawing.Color.Transparent;
+			this.btPen5.Location = new System.Drawing.Point(470, 5);
+			this.btPen5.Name = "btPen5";
+			this.btPen5.Size = new System.Drawing.Size(80, 80);
+			this.btPen5.TabIndex = 1;
+			this.btPen5.UseVisualStyleBackColor = false;
+			this.btPen5.Click += new System.EventHandler(this.btColor_Click);
 			// 
 			// FormCollection
 			// 
@@ -240,6 +276,8 @@
 		public System.Windows.Forms.Button btDock;
 		public System.Windows.Forms.Button btSnap;
 		public System.Windows.Forms.Button btPointer;
+		public System.Windows.Forms.Button btPen5;
+		public System.Windows.Forms.Button btPen4;
 	}
 }
 
