@@ -48,6 +48,7 @@ namespace gInk
 
 		public bool EraserMode = false;
 		public bool Docked = false;
+		public bool PointerMode = false;
 		public int Snapping = 0;  // <=0: not snapping, 1: waiting finger, 2:dragging
 		public int SnappingX = -1, SnappingY = -1;
 		public Rectangle SnappingRect;
@@ -114,10 +115,12 @@ namespace gInk
 			if (FormDisplay != null || FormCollection != null)
 				return;
 
-			Docked = false;
+			//Docked = false;
 			FormDisplay = new FormDisplay(this);
 			FormCollection = new FormCollection(this);
 			FormButtonHitter = new FormButtonHitter(this);
+			if (CurrentPen <= 0)
+				CurrentPen = 1;
 			SelectPen(CurrentPen);
 			FormDisplay.Show();
 			FormCollection.Show();
@@ -149,9 +152,7 @@ namespace gInk
 				return;
 
 			Docked = true;
-			FormCollection.ToThrough();
 			FormCollection.btDock.Image = FormCollection.image_dockback;
-			FormButtonHitter.Show();
 			UponButtonsUpdate |= 0x2;
 		}
 
@@ -161,13 +162,31 @@ namespace gInk
 				return;
 
 			Docked = false;
+			FormCollection.btDock.Image = FormCollection.image_dock;
+			UponButtonsUpdate |= 0x2;
+		}
+
+		public void Pointer()
+		{
+			if (PointerMode == true)
+				return;
+
+			PointerMode = true;
+			FormCollection.ToThrough();
+			FormButtonHitter.Show();
+		}
+
+		public void UnPointer()
+		{
+			if (PointerMode == false)
+				return;
+
+			PointerMode = false;
 			FormCollection.ToUnThrough();
 			FormCollection.ToTopMost();
-			FormCollection.btDock.Image = FormCollection.image_dock;
 			FormCollection.Cursor = FormCollection.cursorred;
 			FormCollection.IC.Cursor = FormCollection.cursorred;
 			FormButtonHitter.Hide();
-			UponButtonsUpdate |= 0x2;
 		}
 
 		public void SelectPen(int pen)

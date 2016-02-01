@@ -117,6 +117,7 @@
 			this.btDock.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btDock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btDock.ForeColor = System.Drawing.Color.WhiteSmoke;
+			this.btDock.Image = global::gInk.Properties.Resources.dock;
 			this.btDock.Location = new System.Drawing.Point(0, 5);
 			this.btDock.Name = "btDock";
 			this.btDock.Size = new System.Drawing.Size(60, 80);
@@ -131,6 +132,7 @@
 			this.btEraser.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btEraser.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btEraser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btEraser.Image = global::gInk.Properties.Resources.eraser;
 			this.btEraser.Location = new System.Drawing.Point(370, 5);
 			this.btEraser.Name = "btEraser";
 			this.btEraser.Size = new System.Drawing.Size(80, 80);
@@ -145,6 +147,7 @@
 			this.btSnap.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btSnap.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btSnap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btSnap.Image = global::gInk.Properties.Resources.snap;
 			this.btSnap.Location = new System.Drawing.Point(570, 5);
 			this.btSnap.Name = "btSnap";
 			this.btSnap.Size = new System.Drawing.Size(80, 80);
@@ -159,7 +162,9 @@
 			this.btPointer.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btPointer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btPointer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btPointer.Location = new System.Drawing.Point(670, 5);
+			this.btPointer.ForeColor = System.Drawing.Color.WhiteSmoke;
+			this.btPointer.Image = global::gInk.Properties.Resources.pointer;
+			this.btPointer.Location = new System.Drawing.Point(470, 5);
 			this.btPointer.Name = "btPointer";
 			this.btPointer.Size = new System.Drawing.Size(80, 80);
 			this.btPointer.TabIndex = 0;
@@ -173,6 +178,7 @@
 			this.btStop.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btStop.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btStop.Image = global::gInk.Properties.Resources.exit;
 			this.btStop.Location = new System.Drawing.Point(770, 5);
 			this.btStop.Name = "btStop";
 			this.btStop.Size = new System.Drawing.Size(80, 80);
@@ -187,7 +193,8 @@
 			this.btClear.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btClear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btClear.Location = new System.Drawing.Point(470, 5);
+			this.btClear.Image = global::gInk.Properties.Resources.garbage;
+			this.btClear.Location = new System.Drawing.Point(670, 5);
 			this.btClear.Name = "btClear";
 			this.btClear.Size = new System.Drawing.Size(80, 80);
 			this.btClear.TabIndex = 1;

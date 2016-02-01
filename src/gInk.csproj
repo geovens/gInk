@@ -184,6 +184,8 @@
     <None Include="buttonback.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="pointer_act.png" />
+    <None Include="pointer.png" />
     <None Include="snap.png" />
     <None Include="dock.png" />
     <None Include="dockback.png" />
