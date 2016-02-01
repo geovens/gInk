@@ -168,6 +168,7 @@ namespace gInk
 			LastTickTime = DateTime.Parse("1987-01-01");
 			tiSlide.Enabled = true;
 
+			ToTransparent();
 			ToTopMost();
 		}
 
@@ -251,22 +252,26 @@ namespace gInk
 			}
 		}
 
-		public void ToTopMost()
+		public void ToTransparent()
 		{
 			UInt32 dwExStyle = GetWindowLong(this.Handle, -20);
 			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
-			SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 1, 0x2);
+			SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 1, 0x2);	
+		}
+
+		public void ToTopMost()
+		{
 			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0020);
 		}
 
 		public void ToThrough()
 		{
 			UInt32 dwExStyle = GetWindowLong(this.Handle, -20);
-			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
-			SetWindowPos(this.Handle, (IntPtr)0, 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0004 | 0x0010 | 0x0020);
-			SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 1, 0x2);
+			//SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
+			//SetWindowPos(this.Handle, (IntPtr)0, 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0004 | 0x0010 | 0x0020);
+			//SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 1, 0x2);
 			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000 | 0x00000020);
-			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0020);
+			//SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0020);
 		}
 
 		public void ToUnThrough()
@@ -279,7 +284,7 @@ namespace gInk
 			//dwExStyle = GetWindowLong(this.Handle, -20);
 			//SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
 			//SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 1, 0x2);
-			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0020);
+			//SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0020);
 		}
 
 		public void EnterEraserMode(bool enter)
@@ -468,6 +473,9 @@ namespace gInk
 				Root.StopInk();
 				return;
 			}
+
+			if (!Root.Docked && !this.TopMost)
+				ToTopMost();
 
 			short retVal = GetKeyState(27);
 			if ((retVal & 0x8000) == 0x8000)

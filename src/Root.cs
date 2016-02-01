@@ -162,6 +162,7 @@ namespace gInk
 
 			Docked = false;
 			FormCollection.ToUnThrough();
+			FormCollection.ToTopMost();
 			FormCollection.btDock.Image = FormCollection.image_dock;
 			FormCollection.Cursor = FormCollection.cursorred;
 			FormCollection.IC.Cursor = FormCollection.cursorred;
