@@ -1,5 +1,5 @@
 
-v0.3.0 (not yet released)
+v0.3.0 (Feb. 1, 2016)
 =================
 - Click through mode (new feature), triggered when docked.
 
