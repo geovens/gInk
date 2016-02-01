@@ -272,12 +272,13 @@ namespace gInk
 		public void ToUnThrough()
 		{
 			UInt32 dwExStyle = GetWindowLong(this.Handle, -20);
-			SetWindowLong(this.Handle, -20, (uint)(dwExStyle & ~0x00080000 & ~0x0020));
-			SetWindowPos(this.Handle, (IntPtr)(-2), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0020);
+			//SetWindowLong(this.Handle, -20, (uint)(dwExStyle & ~0x00080000 & ~0x0020));
+			SetWindowLong(this.Handle, -20, (uint)(dwExStyle & ~0x0020));
+			//SetWindowPos(this.Handle, (IntPtr)(-2), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0020);
 
-			dwExStyle = GetWindowLong(this.Handle, -20);
-			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
-			SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 1, 0x2);
+			//dwExStyle = GetWindowLong(this.Handle, -20);
+			//SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
+			//SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 1, 0x2);
 			SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0020);
 		}
 
@@ -349,6 +350,8 @@ namespace gInk
 
 		public void RetreatAndExit()
 		{
+			ToThrough();
+			Root.ClearInk();
 			LastTickTime = DateTime.Now;
 			ButtonsEntering = -1;
 		}
@@ -389,7 +392,6 @@ namespace gInk
 
 		private void btStop_Click(object sender, EventArgs e)
 		{
-			Root.ClearInk();
 			RetreatAndExit();
 		}
 
