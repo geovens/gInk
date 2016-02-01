@@ -348,9 +348,11 @@ namespace gInk
 
 			if (Root.UponTakingSnap)
 			{
+				if (Root.SnappingRect.Width == this.Width && Root.SnappingRect.Height == this.Height)
+					System.Threading.Thread.Sleep(200);
 				ClearCanvus();
 				DrawStrokes();
-				DrawButtons(false);
+				//DrawButtons(false);
 				UpdateFormDisplay(true);
 				SnapShot(Root.SnappingRect);
 				Root.UponTakingSnap = false;
@@ -403,7 +405,7 @@ namespace gInk
 				UpdateFormDisplay(true);
 			}
 
-			if (Root.UponButtonsUpdate > 0)
+			else if (Root.UponButtonsUpdate > 0)
 			{
 				if ((Root.UponButtonsUpdate & 0x2) > 0)
 					DrawButtons(true, true);

@@ -411,7 +411,9 @@ namespace gInk
 			int aimedleft = gpButtonsLeft;
 			if (ButtonsEntering == 0)
 			{
-				if (Root.Docked || Root.Snapping > 0)
+				if (Root.Snapping > 0)
+					aimedleft = gpButtonsLeft + gpButtons.Width + 5;
+				else if (Root.Docked)
 					aimedleft = gpButtonsLeft + gpButtons.Width - btDock.Right;
 				else
 					aimedleft = gpButtonsLeft;
