@@ -343,6 +343,7 @@ namespace gInk
 			Root.SnappingX = -1;
 			Root.SnappingY = -1;
 			Root.Snapping = -60;
+			Root.SelectPen(Root.CurrentPen);
 		}
 
 		public void SelectPen(int pen)

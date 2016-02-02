@@ -415,7 +415,7 @@ namespace gInk
 				Root.UponButtonsUpdate = 0;
 			}
 
-			if (Root.AutoScroll)
+			if (Root.AutoScroll && Root.PointerMode)
 			{
 				int moved = Test();
 				stackmove += moved;
