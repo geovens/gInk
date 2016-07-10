@@ -1,4 +1,9 @@
 
+v0.3.3 (Jul. 10, 2016)
+=================
+- Change system tray icon size.
+- Do not quit drawing after snapshot if there are inks.
+
 v0.3.2 (Feb. 1, 2016)
 =================
 - Click throung mode has a dedicated button now.
