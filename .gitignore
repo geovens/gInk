@@ -1,5 +1,6 @@
 build
 release
+bin/crash.txt
 
 *.pdb
 *.exp

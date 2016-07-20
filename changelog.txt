@@ -1,4 +1,9 @@
 
+v0.3.4 (ongoing)
+=================
+- Log unhandled exceptions to a file to help tracking rare crashes.
+- Fix incorrect snapshot area when the DPI setting is not 100%. (not fully tested)
+
 v0.3.3 (Jul. 10, 2016)
 =================
 - Change system tray icon size.
@@ -6,7 +11,7 @@ v0.3.3 (Jul. 10, 2016)
 
 v0.3.2 (Feb. 1, 2016)
 =================
-- Click throung mode has a dedicated button now.
+- Click through mode has a dedicated button now.
 - Add two new pens, to a total of five.
 - Add an entry to pen settings.
 

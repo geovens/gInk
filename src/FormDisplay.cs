@@ -223,6 +223,18 @@ namespace gInk
 			//tempbmp.Dispose();
 
 			IntPtr screenDc = GetDC(IntPtr.Zero);
+
+			const int VERTRES = 10;
+			const int DESKTOPVERTRES = 117;
+			int LogicalScreenHeight = GetDeviceCaps(screenDc, VERTRES);
+			int PhysicalScreenHeight = GetDeviceCaps(screenDc, DESKTOPVERTRES);
+			float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
+
+			rect.X = (int)(rect.X * ScreenScalingFactor);
+			rect.Y = (int)(rect.Y * ScreenScalingFactor);
+			rect.Width = (int)(rect.Width * ScreenScalingFactor);
+			rect.Height = (int)(rect.Height * ScreenScalingFactor);
+
 			IntPtr hDest = CreateCompatibleDC(screenDc);
 			Bitmap tempbmp = new Bitmap(rect.Width, rect.Height);
 			IntPtr hBmp = tempbmp.GetHbitmap();
