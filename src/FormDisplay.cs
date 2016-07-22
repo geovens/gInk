@@ -387,19 +387,21 @@ namespace gInk
 				//DrawStrokes();
 				//DrawButtons(false);
 				//UpdateFormDisplay();	
-
-				Stroke stroke = Root.FormCollection.IC.Ink.Strokes[Root.FormCollection.IC.Ink.Strokes.Count - 1];
-				if (!stroke.Deleted)
+				if (Root.FormCollection.IC.Ink.Strokes.Count > 0)
 				{
-					Rectangle box = stroke.GetBoundingBox();
-					Point lt = new Point(box.Left, box.Top);
-					Point rb = new Point(box.Right, box.Bottom);
-					Root.FormCollection.IC.Renderer.InkSpaceToPixel(gCanvus, ref lt);
-					Root.FormCollection.IC.Renderer.InkSpaceToPixel(gCanvus, ref rb);
-					BitBlt(canvusDc, lt.X, lt.Y, rb.X - lt.X, rb.Y - lt.Y, onestrokeDc, lt.X, lt.Y, (uint)CopyPixelOperation.SourceCopy);
-					Root.FormCollection.IC.Renderer.Draw(gCanvus, stroke, Root.FormCollection.IC.DefaultDrawingAttributes);
-				}					
-				UpdateFormDisplay(true);
+					Stroke stroke = Root.FormCollection.IC.Ink.Strokes[Root.FormCollection.IC.Ink.Strokes.Count - 1];
+					if (!stroke.Deleted)
+					{
+						Rectangle box = stroke.GetBoundingBox();
+						Point lt = new Point(box.Left, box.Top);
+						Point rb = new Point(box.Right, box.Bottom);
+						Root.FormCollection.IC.Renderer.InkSpaceToPixel(gCanvus, ref lt);
+						Root.FormCollection.IC.Renderer.InkSpaceToPixel(gCanvus, ref rb);
+						BitBlt(canvusDc, lt.X, lt.Y, rb.X - lt.X, rb.Y - lt.Y, onestrokeDc, lt.X, lt.Y, (uint)CopyPixelOperation.SourceCopy);
+						Root.FormCollection.IC.Renderer.Draw(gCanvus, stroke, Root.FormCollection.IC.DefaultDrawingAttributes);
+					}
+					UpdateFormDisplay(true);
+				}
 			}
 
 			else if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == true)
