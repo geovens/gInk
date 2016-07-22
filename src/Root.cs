@@ -55,6 +55,9 @@ namespace gInk
 		public int UponButtonsUpdate = 0;
 		public bool UponTakingSnap = false;
 
+		public Ink UndoStrokes;
+		public Ink UponUndoStrokes;
+
 		private NotifyIcon trayIcon;
 		private ContextMenu trayMenu;
 		public FormCollection FormCollection;
@@ -128,6 +131,9 @@ namespace gInk
 			FormDisplay.Show();
 			FormCollection.Show();
 			FormDisplay.DrawButtons(true);
+
+			UndoStrokes = FormCollection.IC.Ink.Clone();
+			UponUndoStrokes = FormCollection.IC.Ink.Clone();
 		}
 		public void StopInk()
 		{
@@ -145,6 +151,18 @@ namespace gInk
 		{
 			FormCollection.IC.Ink.DeleteStrokes();
 			FormDisplay.ClearCanvus();
+			FormDisplay.DrawButtons(true);
+			FormDisplay.UpdateFormDisplay(true);
+		}
+
+		public void UndoInk()
+		{
+			FormCollection.IC.Ink.DeleteStrokes();
+			if (UndoStrokes.Strokes.Count > 0)
+				FormCollection.IC.Ink.AddStrokesAtRectangle(UndoStrokes.Strokes, UndoStrokes.Strokes.GetBoundingBox());
+			UponUndoStrokes = UndoStrokes.Clone();
+			FormDisplay.ClearCanvus();
+			FormDisplay.DrawStrokes();
 			FormDisplay.DrawButtons(true);
 			FormDisplay.UpdateFormDisplay(true);
 		}

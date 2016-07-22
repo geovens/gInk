@@ -16,7 +16,7 @@ namespace gInk
 		public Root Root;
 		public InkOverlay IC;
 
-		public Bitmap image_exit, image_clear, image_snap;
+		public Bitmap image_exit, image_clear, image_undo, image_snap;
 		public Bitmap image_dock, image_dockback;
 		public Bitmap image_pencil, image_highlighter, image_pencil_act, image_highlighter_act;
 		public Bitmap image_pointer, image_pointer_act;
@@ -61,6 +61,7 @@ namespace gInk
 			IC.MouseMove += IC_MouseMove;
 			IC.MouseUp += IC_MouseUp;
 			IC.CursorDown += IC_CursorDown;
+			IC.Stroke += IC_Stroke;
 			IC.DefaultDrawingAttributes.Width = 80;
 			IC.DefaultDrawingAttributes.Transparency = 30;
 			IC.DefaultDrawingAttributes.AntiAliased = true;
@@ -82,6 +83,11 @@ namespace gInk
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.garbage, 0, 0, btClear.Width, btClear.Height);
 			btClear.Image = image_clear;
+			image_undo = new Bitmap(btUndo.Width, btUndo.Height);
+			g = Graphics.FromImage(image_undo);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.undo, 0, 0, btUndo.Width, btUndo.Height);
+			btUndo.Image = image_undo;
 			image_eraser_act = new Bitmap(btEraser.Width, btEraser.Height);
 			g = Graphics.FromImage(image_eraser_act);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
@@ -206,6 +212,19 @@ namespace gInk
 
 			ToTransparent();
 			ToTopMost();
+		}
+
+		private void IC_Stroke(object sender, InkCollectorStrokeEventArgs e)
+		{
+			SaveUndoStrokes();
+		}
+
+		private void SaveUndoStrokes()
+		{
+			Root.UndoStrokes = Root.UponUndoStrokes.Clone();
+			Root.UponUndoStrokes.DeleteStrokes();
+			if (IC.Ink.Strokes.Count > 0)
+				Root.UponUndoStrokes.AddStrokesAtRectangle(IC.Ink.Strokes, IC.Ink.Strokes.GetBoundingBox());
 		}
 
 		private void IC_CursorDown(object sender, InkCollectorCursorDownEventArgs e)
@@ -496,6 +515,7 @@ namespace gInk
 		}
 
 		DateTime LastTickTime;
+		short LastZStatus = 0;
 		private void tiSlide_Tick(object sender, EventArgs e)
 		{
 			// ignore the first tick
@@ -583,6 +603,22 @@ namespace gInk
 					RetreatAndExit();
 			}
 
+			const int VK_LCONTROL = 0xA2;
+			const int VK_RCONTROL = 0xA3;
+			retVal = GetKeyState('Z');
+			if ((retVal & 0x8000) == 0x8000)
+			{
+				if ((LastZStatus & 0x8000) == 0x0000)
+				{
+					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
+					if ((control & 0x8000) == 0x8000)
+					{
+						Root.UndoInk();
+					}
+				}
+			}
+			LastZStatus = retVal;
+
 			if (Root.Snapping < 0)
 				Root.Snapping++;
 		}
@@ -590,6 +626,12 @@ namespace gInk
 		public void btClear_Click(object sender, EventArgs e)
 		{
 			Root.ClearInk();
+			SaveUndoStrokes();
+		}
+
+		private void btUndo_Click(object sender, EventArgs e)
+		{
+			Root.UndoInk();
 		}
 
 		public void btColor_Click(object sender, EventArgs e)

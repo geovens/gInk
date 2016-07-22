@@ -39,6 +39,7 @@
 			this.btPointer = new System.Windows.Forms.Button();
 			this.btStop = new System.Windows.Forms.Button();
 			this.btClear = new System.Windows.Forms.Button();
+			this.btUndo = new System.Windows.Forms.Button();
 			this.tiSlide = new System.Windows.Forms.Timer(this.components);
 			this.btPen4 = new System.Windows.Forms.Button();
 			this.btPen5 = new System.Windows.Forms.Button();
@@ -106,10 +107,11 @@
 			this.gpButtons.Controls.Add(this.btPen4);
 			this.gpButtons.Controls.Add(this.btPen3);
 			this.gpButtons.Controls.Add(this.btClear);
+			this.gpButtons.Controls.Add(this.btUndo);
 			this.gpButtons.Controls.Add(this.btPen2);
 			this.gpButtons.Location = new System.Drawing.Point(42, 84);
 			this.gpButtons.Name = "gpButtons";
-			this.gpButtons.Size = new System.Drawing.Size(1182, 92);
+			this.gpButtons.Size = new System.Drawing.Size(1282, 92);
 			this.gpButtons.TabIndex = 3;
 			// 
 			// btDock
@@ -183,7 +185,7 @@
 			this.btStop.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btStop.Image = global::gInk.Properties.Resources.exit;
-			this.btStop.Location = new System.Drawing.Point(1070, 5);
+			this.btStop.Location = new System.Drawing.Point(1170, 5);
 			this.btStop.Name = "btStop";
 			this.btStop.Size = new System.Drawing.Size(80, 80);
 			this.btStop.TabIndex = 0;
@@ -198,12 +200,27 @@
 			this.btClear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btClear.Image = global::gInk.Properties.Resources.garbage;
-			this.btClear.Location = new System.Drawing.Point(920, 5);
+			this.btClear.Location = new System.Drawing.Point(1020, 5);
 			this.btClear.Name = "btClear";
 			this.btClear.Size = new System.Drawing.Size(80, 80);
 			this.btClear.TabIndex = 1;
 			this.btClear.UseVisualStyleBackColor = true;
 			this.btClear.Click += new System.EventHandler(this.btClear_Click);
+			// 
+			// btUndo
+			// 
+			this.btUndo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.btUndo.FlatAppearance.BorderSize = 0;
+			this.btUndo.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btUndo.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btUndo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btUndo.Image = global::gInk.Properties.Resources.undo;
+			this.btUndo.Location = new System.Drawing.Point(920, 5);
+			this.btUndo.Name = "btUndo";
+			this.btUndo.Size = new System.Drawing.Size(80, 80);
+			this.btUndo.TabIndex = 1;
+			this.btUndo.UseVisualStyleBackColor = true;
+			this.btUndo.Click += new System.EventHandler(this.btUndo_Click);
 			// 
 			// tiSlide
 			// 
@@ -267,6 +284,7 @@
 
 		public System.Windows.Forms.Button btStop;
 		public System.Windows.Forms.Button btClear;
+		public System.Windows.Forms.Button btUndo;
 		public System.Windows.Forms.Button btPen3;
 		public System.Windows.Forms.Button btPen2;
 		public System.Windows.Forms.Button btPen1;

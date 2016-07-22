@@ -1,9 +1,10 @@
 
 v0.3.4 (ongoing)
 =================
+- Undo (new feature).
 - Log unhandled exceptions to a file to help tracking rare crashes.
-- Fix incorrect snapshot area when the DPI setting is not 100%. (not fully tested)
-- Fix a crash occured rarely at a first stroke. (hopefully)
+- Fix incorrect snapshot area when the DPI setting is not 100% (not fully tested).
+- Fix a crash occured rarely at a first stroke (hopefully).
 
 v0.3.3 (Jul. 10, 2016)
 =================
