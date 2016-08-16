@@ -77,7 +77,7 @@ namespace gInk
 
 			//this.DoubleBuffered = true;
 
-			gpButtonsImage = new Bitmap(1200, 100);
+			gpButtonsImage = new Bitmap(2400, 100);
 			TransparentBrush = new SolidBrush(Color.Transparent);
 			SemiTransparentBrush = new SolidBrush(Color.FromArgb(120, 255, 255, 255));
 
@@ -134,7 +134,7 @@ namespace gInk
 				Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
 			
 			if (exiting)
-				gCanvus.FillRectangle(TransparentBrush, left - 120, top, 120, height);
+				gCanvus.FillRectangle(TransparentBrush, left - 120, top, width + 80, height);
 			gCanvus.DrawImage(gpButtonsImage, left, top);
 		}
 		public void DrawButtons(Graphics g, bool redrawbuttons, bool exiting = false)

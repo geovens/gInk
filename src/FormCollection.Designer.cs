@@ -264,7 +264,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(168F, 168F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.BackColor = System.Drawing.Color.White;
-			this.ClientSize = new System.Drawing.Size(1410, 921);
+			this.ClientSize = new System.Drawing.Size(1510, 921);
 			this.Controls.Add(this.gpButtons);
 			this.ForeColor = System.Drawing.Color.LawnGreen;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
