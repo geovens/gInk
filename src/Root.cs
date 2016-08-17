@@ -45,6 +45,7 @@ namespace gInk
 		public int Hotkey;
 		public bool AutoScroll;
 		public bool WhiteTrayIcon;
+		public string SnapshotBasePath;
 
 		public bool EraserMode = false;
 		public bool Docked = false;
@@ -75,7 +76,8 @@ namespace gInk
 
 			trayMenu = new ContextMenu();
 			trayMenu.MenuItems.Add("About", OnAbout);
-			trayMenu.MenuItems.Add("Pen Settings", OnPenSetting);
+			trayMenu.MenuItems.Add("Pen Configurations", OnPenSetting);
+			trayMenu.MenuItems.Add("Options", OnOptions);
 			trayMenu.MenuItems.Add("-");
 			trayMenu.MenuItems.Add("Exit", OnExit);
 
@@ -253,6 +255,7 @@ namespace gInk
 
 			AutoScroll = false;
 			WhiteTrayIcon = false;
+			SnapshotBasePath = "%USERPROFILE%/Pictures/gInk/";
 		}
 
 		public void ReadOptions(string file)
@@ -431,6 +434,11 @@ namespace gInk
 							else
 								WhiteTrayIcon = false;
 							break;
+						case "SNAPSHOTPATH":
+							SnapshotBasePath = sPara;
+							if (!SnapshotBasePath.EndsWith("/") && !SnapshotBasePath.EndsWith("\\"))
+								SnapshotBasePath += "/";
+							break;
 					}
 				}
 			}
@@ -446,6 +454,11 @@ namespace gInk
 		private void OnPenSetting(object sender, EventArgs e)
 		{
 			System.Diagnostics.Process.Start("notepad.exe", "pens.ini");
+		}
+
+		private void OnOptions(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("notepad.exe", "config.ini");
 		}
 
 		private void OnExit(object sender, EventArgs e)

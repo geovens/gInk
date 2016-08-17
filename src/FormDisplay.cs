@@ -242,6 +242,15 @@ namespace gInk
 			bool b = BitBlt(hDest, 0, 0, rect.Width, rect.Height, screenDc, rect.Left, rect.Top, (uint)(CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt));
 			tempbmp = Bitmap.FromHbitmap(hBmp);
 			Clipboard.SetImage(tempbmp);
+			DateTime now = DateTime.Now;
+			string nowstr = now.Year.ToString() + "-" + now.Month.ToString("D2") + "-" + now.Day.ToString("D2") + " " + now.Hour.ToString("D2") + "-" + now.Minute.ToString("D2") + "-" + now.Second.ToString("D2");
+			string snapbasepath = Root.SnapshotBasePath;
+			snapbasepath = Environment.ExpandEnvironmentVariables(snapbasepath);
+			if (Root.SnapshotBasePath == "%USERPROFILE%/Pictures/gInk/")
+				if (!System.IO.Directory.Exists(snapbasepath))
+					System.IO.Directory.CreateDirectory(snapbasepath);
+			if (System.IO.Directory.Exists(snapbasepath))
+				tempbmp.Save(snapbasepath + nowstr + ".jpg");
 			tempbmp.Dispose();
 			DeleteObject(hBmp);
 			ReleaseDC(IntPtr.Zero, screenDc);
