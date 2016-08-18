@@ -56,8 +56,10 @@ namespace gInk
 		public int UponButtonsUpdate = 0;
 		public bool UponTakingSnap = false;
 
-		public Ink UndoStrokes;
-		public Ink UponUndoStrokes;
+		public Ink[] UndoStrokes;
+		//public Ink UponUndoStrokes;
+		public int UndoP;
+		public int UndoDepth, RedoDepth;
 
 		private NotifyIcon trayIcon;
 		private ContextMenu trayMenu;
@@ -134,8 +136,12 @@ namespace gInk
 			FormCollection.Show();
 			FormDisplay.DrawButtons(true);
 
-			UndoStrokes = FormCollection.IC.Ink.Clone();
-			UponUndoStrokes = FormCollection.IC.Ink.Clone();
+			UndoStrokes = new Ink[8];
+			UndoStrokes[0] = FormCollection.IC.Ink.Clone();
+			UndoDepth = 0;
+			UndoP = 0;
+
+			//UponUndoStrokes = FormCollection.IC.Ink.Clone();
 		}
 		public void StopInk()
 		{
@@ -159,10 +165,38 @@ namespace gInk
 
 		public void UndoInk()
 		{
+			if (UndoDepth <= 0)
+				return;
+
+			UndoP--;
+			if (UndoP < 0)
+				UndoP = UndoStrokes.GetLength(0) - 1;
+			UndoDepth--;
+			RedoDepth++;
 			FormCollection.IC.Ink.DeleteStrokes();
-			if (UndoStrokes.Strokes.Count > 0)
-				FormCollection.IC.Ink.AddStrokesAtRectangle(UndoStrokes.Strokes, UndoStrokes.Strokes.GetBoundingBox());
-			UponUndoStrokes = UndoStrokes.Clone();
+			if (UndoStrokes[UndoP].Strokes.Count > 0)
+				FormCollection.IC.Ink.AddStrokesAtRectangle(UndoStrokes[UndoP].Strokes, UndoStrokes[UndoP].Strokes.GetBoundingBox());
+			
+			FormDisplay.ClearCanvus();
+			FormDisplay.DrawStrokes();
+			FormDisplay.DrawButtons(true);
+			FormDisplay.UpdateFormDisplay(true);
+		}
+
+		public void RedoInk()
+		{
+			if (RedoDepth <= 0)
+				return;
+
+			UndoDepth++;
+			RedoDepth--;
+			UndoP++;
+			if (UndoP >= UndoStrokes.GetLength(0))
+				UndoP = 0;
+			FormCollection.IC.Ink.DeleteStrokes();
+			if (UndoStrokes[UndoP].Strokes.Count > 0)
+				FormCollection.IC.Ink.AddStrokesAtRectangle(UndoStrokes[UndoP].Strokes, UndoStrokes[UndoP].Strokes.GetBoundingBox());
+
 			FormDisplay.ClearCanvus();
 			FormDisplay.DrawStrokes();
 			FormDisplay.DrawButtons(true);

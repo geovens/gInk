@@ -221,10 +221,19 @@ namespace gInk
 
 		private void SaveUndoStrokes()
 		{
-			Root.UndoStrokes = Root.UponUndoStrokes.Clone();
-			Root.UponUndoStrokes.DeleteStrokes();
+			Root.RedoDepth = 0;
+			if (Root.UndoDepth < Root.UndoStrokes.GetLength(0) - 1)
+				Root.UndoDepth++;
+
+			Root.UndoP++;
+			if (Root.UndoP >= Root.UndoStrokes.GetLength(0))
+				Root.UndoP = 0;
+
+			if (Root.UndoStrokes[Root.UndoP] == null)
+				Root.UndoStrokes[Root.UndoP] = new Ink();
+			Root.UndoStrokes[Root.UndoP].DeleteStrokes();
 			if (IC.Ink.Strokes.Count > 0)
-				Root.UponUndoStrokes.AddStrokesAtRectangle(IC.Ink.Strokes, IC.Ink.Strokes.GetBoundingBox());
+				Root.UndoStrokes[Root.UndoP].AddStrokesAtRectangle(IC.Ink.Strokes, IC.Ink.Strokes.GetBoundingBox());
 		}
 
 		private void IC_CursorDown(object sender, InkCollectorCursorDownEventArgs e)
@@ -516,6 +525,7 @@ namespace gInk
 
 		DateTime LastTickTime;
 		short LastZStatus = 0;
+		short LastYStatus = 0;
 		private void tiSlide_Tick(object sender, EventArgs e)
 		{
 			// ignore the first tick
@@ -618,7 +628,20 @@ namespace gInk
 				}
 			}
 			LastZStatus = retVal;
-
+			retVal = GetKeyState('Y');
+			if ((retVal & 0x8000) == 0x8000)
+			{
+				if ((LastYStatus & 0x8000) == 0x0000)
+				{
+					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
+					if ((control & 0x8000) == 0x8000)
+					{
+						Root.RedoInk();
+					}
+				}
+			}
+			LastYStatus = retVal;
+			
 			if (Root.Snapping < 0)
 				Root.Snapping++;
 		}
