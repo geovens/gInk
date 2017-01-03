@@ -1,12 +1,12 @@
 
-v0.4.0 (ongoing)
+v0.4.0 (Jan. 3, 2017)
 =================
-- Undo (new feature).
+- Multiple level undo (new feature).
 - Save snapshots to %USERPROFILE%/Pictures/gInk (new feature).
+- Show a balloon for browsing the snapshot file location.
 - Change pen icons.
-- Log unhandled exceptions to help tracking rare crashes.
 - Fix incorrect snapshot area when the DPI setting is not at 100%.
-- Fix a crash that occurs rarely at a first stroke.
+- Fix a crash that occurs rarely at the first stroke.
 
 v0.3.3 (Jul. 10, 2016)
 =================

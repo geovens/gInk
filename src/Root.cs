@@ -55,6 +55,7 @@ namespace gInk
 		public Rectangle SnappingRect;
 		public int UponButtonsUpdate = 0;
 		public bool UponTakingSnap = false;
+        public bool UponBalloonSnap = false;
 
 		public Ink[] UndoStrokes;
 		//public Ink UponUndoStrokes;
@@ -93,8 +94,11 @@ namespace gInk
 			trayIcon.ContextMenu = trayMenu;
 			trayIcon.Visible = true;
 			trayIcon.MouseClick += TrayIcon_Click;
+            trayIcon.BalloonTipText = "Snapshot saved. Click here to browse snapshots.";
+            trayIcon.BalloonTipClicked += TrayIcon_BalloonTipClicked;
 
-			int modifier = 0;
+
+            int modifier = 0;
 			if (Hotkey_Control) modifier |= 0x2;
 			if (Hotkey_Alt) modifier |= 0x1;
 			if (Hotkey_Shift) modifier |= 0x4;
@@ -109,7 +113,14 @@ namespace gInk
 			FormDisplay = null;
 		}
 
-		private void TrayIcon_Click(object sender, MouseEventArgs e)
+        private void TrayIcon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            string snapbasepath = SnapshotBasePath;
+            snapbasepath = Environment.ExpandEnvironmentVariables(snapbasepath);
+            System.Diagnostics.Process.Start(snapbasepath);
+        }
+
+        private void TrayIcon_Click(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -153,6 +164,12 @@ namespace gInk
 			GC.Collect();
 			FormCollection = null;
 			FormDisplay = null;
+
+            if (UponBalloonSnap)
+            {
+                ShowBalloonSnapshot();
+                UponBalloonSnap = false;
+            }
 		}
 
 		public void ClearInk()
@@ -162,6 +179,12 @@ namespace gInk
 			FormDisplay.DrawButtons(true);
 			FormDisplay.UpdateFormDisplay(true);
 		}
+
+        public void ShowBalloonSnapshot()
+        {
+            Console.WriteLine(SnapshotBasePath);
+            trayIcon.ShowBalloonTip(3000);
+        }
 
 		public void UndoInk()
 		{

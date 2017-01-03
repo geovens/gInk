@@ -216,45 +216,45 @@ namespace gInk
 
 		public void SnapShot(Rectangle rect)
 		{
-			//Bitmap tempbmp = new Bitmap(rect.Width, rect.Height);
-			//Graphics g = Graphics.FromImage(tempbmp);
-			//g.CopyFromScreen(rect.X, rect.Y, 0, 0, new Size(rect.Width, rect.Height), CopyPixelOperation.CaptureBlt | CopyPixelOperation.SourceCopy);
-			//Clipboard.SetImage(tempbmp);
-			//tempbmp.Dispose();
+            string snapbasepath = Root.SnapshotBasePath;
+            snapbasepath = Environment.ExpandEnvironmentVariables(snapbasepath);
+            if (Root.SnapshotBasePath == "%USERPROFILE%/Pictures/gInk/")
+                if (!System.IO.Directory.Exists(snapbasepath))
+                    System.IO.Directory.CreateDirectory(snapbasepath);
 
-			IntPtr screenDc = GetDC(IntPtr.Zero);
+            if (System.IO.Directory.Exists(snapbasepath))
+            {
+                IntPtr screenDc = GetDC(IntPtr.Zero);
 
-			const int VERTRES = 10;
-			const int DESKTOPVERTRES = 117;
-			int LogicalScreenHeight = GetDeviceCaps(screenDc, VERTRES);
-			int PhysicalScreenHeight = GetDeviceCaps(screenDc, DESKTOPVERTRES);
-			float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
+                const int VERTRES = 10;
+                const int DESKTOPVERTRES = 117;
+                int LogicalScreenHeight = GetDeviceCaps(screenDc, VERTRES);
+                int PhysicalScreenHeight = GetDeviceCaps(screenDc, DESKTOPVERTRES);
+                float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
 
-			rect.X = (int)(rect.X * ScreenScalingFactor);
-			rect.Y = (int)(rect.Y * ScreenScalingFactor);
-			rect.Width = (int)(rect.Width * ScreenScalingFactor);
-			rect.Height = (int)(rect.Height * ScreenScalingFactor);
+                rect.X = (int)(rect.X * ScreenScalingFactor);
+                rect.Y = (int)(rect.Y * ScreenScalingFactor);
+                rect.Width = (int)(rect.Width * ScreenScalingFactor);
+                rect.Height = (int)(rect.Height * ScreenScalingFactor);
 
-			IntPtr hDest = CreateCompatibleDC(screenDc);
-			Bitmap tempbmp = new Bitmap(rect.Width, rect.Height);
-			IntPtr hBmp = tempbmp.GetHbitmap();
-			SelectObject(hDest, hBmp);
-			bool b = BitBlt(hDest, 0, 0, rect.Width, rect.Height, screenDc, rect.Left, rect.Top, (uint)(CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt));
-			tempbmp = Bitmap.FromHbitmap(hBmp);
-			Clipboard.SetImage(tempbmp);
-			DateTime now = DateTime.Now;
-			string nowstr = now.Year.ToString() + "-" + now.Month.ToString("D2") + "-" + now.Day.ToString("D2") + " " + now.Hour.ToString("D2") + "-" + now.Minute.ToString("D2") + "-" + now.Second.ToString("D2");
-			string snapbasepath = Root.SnapshotBasePath;
-			snapbasepath = Environment.ExpandEnvironmentVariables(snapbasepath);
-			if (Root.SnapshotBasePath == "%USERPROFILE%/Pictures/gInk/")
-				if (!System.IO.Directory.Exists(snapbasepath))
-					System.IO.Directory.CreateDirectory(snapbasepath);
-			if (System.IO.Directory.Exists(snapbasepath))
-				tempbmp.Save(snapbasepath + nowstr + ".jpg");
-			tempbmp.Dispose();
-			DeleteObject(hBmp);
-			ReleaseDC(IntPtr.Zero, screenDc);
-			DeleteDC(hDest);
+                IntPtr hDest = CreateCompatibleDC(screenDc);
+                Bitmap tempbmp = new Bitmap(rect.Width, rect.Height);
+                IntPtr hBmp = tempbmp.GetHbitmap();
+                SelectObject(hDest, hBmp);
+                bool b = BitBlt(hDest, 0, 0, rect.Width, rect.Height, screenDc, rect.Left, rect.Top, (uint)(CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt));
+                tempbmp = Bitmap.FromHbitmap(hBmp);
+                Clipboard.SetImage(tempbmp);
+                DateTime now = DateTime.Now;
+                string nowstr = now.Year.ToString() + "-" + now.Month.ToString("D2") + "-" + now.Day.ToString("D2") + " " + now.Hour.ToString("D2") + "-" + now.Minute.ToString("D2") + "-" + now.Second.ToString("D2");
+
+                tempbmp.Save(snapbasepath + nowstr + ".jpg");
+                tempbmp.Dispose();
+                DeleteObject(hBmp);
+                ReleaseDC(IntPtr.Zero, screenDc);
+                DeleteDC(hDest);
+
+                Root.UponBalloonSnap = true;
+            }
 		}
 
 		public int Test()
@@ -377,7 +377,7 @@ namespace gInk
 				UpdateFormDisplay(true);
 				SnapShot(Root.SnappingRect);
 				Root.UponTakingSnap = false;
-				if (Root.FormCollection.IC.Ink.Strokes.Count == 0)
+                if (Root.FormCollection.IC.Ink.Strokes.Count == 0)
 					Root.FormCollection.RetreatAndExit();
 			}
 
