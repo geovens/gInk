@@ -125,7 +125,11 @@ namespace gInk
 			if (e.Button == MouseButtons.Left)
 			{
 				if (FormDisplay == null && FormCollection == null)
+				{
+					ReadOptions("pens.ini");
+					ReadOptions("config.ini");
 					StartInk();
+				}
 				else if (Docked)
 					UnDock();
 			}
@@ -277,29 +281,29 @@ namespace gInk
 		public void SetDefaultPens()
 		{
 			Pen1 = new DrawingAttributes();
-			Pen1.Color = Color.FromArgb(240, 60, 60);
+			Pen1.Color = Color.FromArgb(220, 95, 60);
 			Pen1.Width = 80;
-			Pen1.Transparency = 30;
+			Pen1.Transparency = 5;
 
 			Pen2 = new DrawingAttributes();
-			Pen2.Color = Color.FromArgb(60, 60, 240);
+			Pen2.Color = Color.FromArgb(30, 110, 200);
 			Pen2.Width = 80;
-			Pen2.Transparency = 30;
+			Pen2.Transparency = 5;
 
 			Pen3 = new DrawingAttributes();
-			Pen3.Color = Color.FromArgb(250, 210, 0);
+			Pen3.Color = Color.FromArgb(235, 180, 55);
 			Pen3.Width = 80;
-			Pen3.Transparency = 30;
+			Pen3.Transparency = 5;
 
 			Pen4 = new DrawingAttributes();
-			Pen4.Color = Color.FromArgb(150, 200, 100);
-			Pen4.Width = 800;
-			Pen4.Transparency = 160;
+			Pen4.Color = Color.FromArgb(120, 175, 70);
+			Pen4.Width = 80;
+			Pen4.Transparency = 5;
 
 			Pen5 = new DrawingAttributes();
-			Pen5.Color = Color.FromArgb(200, 150, 250);
-			Pen5.Width = 800;
-			Pen5.Transparency = 160;
+			Pen5.Color = Color.FromArgb(145, 70, 160);
+			Pen5.Width = 500;
+			Pen5.Transparency = 200;
 		}
 
 		public void SetDefaultConfig()
