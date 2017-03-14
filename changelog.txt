@@ -2,6 +2,7 @@
 v0.4.1 (Mar. 13, 2017)
 =================
 - Change default pen colors.
+- Fix tray icon size.
 
 v0.4.0 (Jan. 3, 2017)
 =================
