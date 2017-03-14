@@ -88,9 +88,9 @@ namespace gInk
             trayIcon = new NotifyIcon();
 			trayIcon.Text = "gInk";
 			if (WhiteTrayIcon)
-				trayIcon.Icon = new Icon(gInk.Properties.Resources.icon_white, size);
+				trayIcon.Icon = new Icon("icon_white.ico");
 			else
-				trayIcon.Icon = new Icon(gInk.Properties.Resources.icon_red, size);
+				trayIcon.Icon = new Icon("icon_red.ico");
 			trayIcon.ContextMenu = trayMenu;
 			trayIcon.Visible = true;
 			trayIcon.MouseClick += TrayIcon_Click;
