@@ -132,7 +132,7 @@ namespace gInk
 			int width = Root.FormCollection.gpButtons.Width;
 			if (redrawbuttons)
 				Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
-			
+
 			if (exiting)
 				gCanvus.FillRectangle(TransparentBrush, left - 120, top, width + 80, height);
 			gCanvus.DrawImage(gpButtonsImage, left, top);
@@ -172,7 +172,7 @@ namespace gInk
 				if (!stroke.Deleted)
 					stroke.Move(0, shouldmove);
 		}
-		
+
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			UpdateFormDisplay(true);
@@ -216,62 +216,62 @@ namespace gInk
 
 		public void SnapShot(Rectangle rect)
 		{
-            string snapbasepath = Root.SnapshotBasePath;
-            snapbasepath = Environment.ExpandEnvironmentVariables(snapbasepath);
-            if (Root.SnapshotBasePath == "%USERPROFILE%/Pictures/gInk/")
-                if (!System.IO.Directory.Exists(snapbasepath))
-                    System.IO.Directory.CreateDirectory(snapbasepath);
+			string snapbasepath = Root.SnapshotBasePath;
+			snapbasepath = Environment.ExpandEnvironmentVariables(snapbasepath);
+			if (Root.SnapshotBasePath == "%USERPROFILE%/Pictures/gInk/")
+				if (!System.IO.Directory.Exists(snapbasepath))
+					System.IO.Directory.CreateDirectory(snapbasepath);
 
-            if (System.IO.Directory.Exists(snapbasepath))
-            {
-                IntPtr screenDc = GetDC(IntPtr.Zero);
+			if (System.IO.Directory.Exists(snapbasepath))
+			{
+				IntPtr screenDc = GetDC(IntPtr.Zero);
 
-                const int VERTRES = 10;
-                const int DESKTOPVERTRES = 117;
-                int LogicalScreenHeight = GetDeviceCaps(screenDc, VERTRES);
-                int PhysicalScreenHeight = GetDeviceCaps(screenDc, DESKTOPVERTRES);
-                float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
+				const int VERTRES = 10;
+				const int DESKTOPVERTRES = 117;
+				int LogicalScreenHeight = GetDeviceCaps(screenDc, VERTRES);
+				int PhysicalScreenHeight = GetDeviceCaps(screenDc, DESKTOPVERTRES);
+				float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
 
-                rect.X = (int)(rect.X * ScreenScalingFactor);
-                rect.Y = (int)(rect.Y * ScreenScalingFactor);
-                rect.Width = (int)(rect.Width * ScreenScalingFactor);
-                rect.Height = (int)(rect.Height * ScreenScalingFactor);
+				rect.X = (int)(rect.X * ScreenScalingFactor);
+				rect.Y = (int)(rect.Y * ScreenScalingFactor);
+				rect.Width = (int)(rect.Width * ScreenScalingFactor);
+				rect.Height = (int)(rect.Height * ScreenScalingFactor);
 
-                IntPtr hDest = CreateCompatibleDC(screenDc);
-                Bitmap tempbmp = new Bitmap(rect.Width, rect.Height);
-                IntPtr hBmp = tempbmp.GetHbitmap();
-                SelectObject(hDest, hBmp);
-                bool b = BitBlt(hDest, 0, 0, rect.Width, rect.Height, screenDc, rect.Left, rect.Top, (uint)(CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt));
-                tempbmp = Bitmap.FromHbitmap(hBmp);
-                Clipboard.SetImage(tempbmp);
-                DateTime now = DateTime.Now;
-                string nowstr = now.Year.ToString() + "-" + now.Month.ToString("D2") + "-" + now.Day.ToString("D2") + " " + now.Hour.ToString("D2") + "-" + now.Minute.ToString("D2") + "-" + now.Second.ToString("D2");
+				IntPtr hDest = CreateCompatibleDC(screenDc);
+				Bitmap tempbmp = new Bitmap(rect.Width, rect.Height);
+				IntPtr hBmp = tempbmp.GetHbitmap();
+				SelectObject(hDest, hBmp);
+				bool b = BitBlt(hDest, 0, 0, rect.Width, rect.Height, screenDc, rect.Left, rect.Top, (uint)(CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt));
+				tempbmp = Bitmap.FromHbitmap(hBmp);
+				Clipboard.SetImage(tempbmp);
+				DateTime now = DateTime.Now;
+				string nowstr = now.Year.ToString() + "-" + now.Month.ToString("D2") + "-" + now.Day.ToString("D2") + " " + now.Hour.ToString("D2") + "-" + now.Minute.ToString("D2") + "-" + now.Second.ToString("D2");
 
-                tempbmp.Save(snapbasepath + nowstr + ".jpg");
-                tempbmp.Dispose();
-                DeleteObject(hBmp);
-                ReleaseDC(IntPtr.Zero, screenDc);
-                DeleteDC(hDest);
+				tempbmp.Save(snapbasepath + nowstr + ".jpg");
+				tempbmp.Dispose();
+				DeleteObject(hBmp);
+				ReleaseDC(IntPtr.Zero, screenDc);
+				DeleteDC(hDest);
 
-                Root.UponBalloonSnap = true;
-            }
+				Root.UponBalloonSnap = true;
+			}
 		}
 
 		public int Test()
-		{		
+		{
 			IntPtr screenDc = GetDC(IntPtr.Zero);
 
 			// big time consuming, but not CPU consuming
 			BitBlt(memscreenDc, Width / 4, 0, Width / 2, this.Height, screenDc, Width / 4, 0, 0x00CC0020);
 			// <1% CPU
 			GetBitmapBits(hScreenBitmap, this.Width * this.Height * 4, screenbits);
-			
+
 			int dj;
 			int maxidpixels = 0;
 			float maxidchdrio = 0;
 			int maxdj = 0;
-			
-			
+
+
 			// 25% CPU with 1x10x10 sample rate?
 			int istart = Width / 2 - Width / 4;
 			int iend = Width / 2 + Width / 4;
@@ -294,7 +294,7 @@ namespace gInk
 						//	if (l == n2)
 						//		idpixels++;
 						//}
-						
+
 
 						if (Lnext() == Nnext2())
 							idpixels++;
@@ -314,7 +314,7 @@ namespace gInk
 			//if (maxidchdrio < 0.1 || maxidpixels < 30)
 			if (maxidpixels < 100)
 				maxdj = 0;
-			
+
 
 			// 2% CPU
 			IntPtr pscreenbits = Marshal.UnsafeAddrOfPinnedArrayElement(screenbits, (int)(this.Width * this.Height * 4 * 0.375));
@@ -347,16 +347,16 @@ namespace gInk
 				UpdateLayeredWindow(this.Handle, screenDc, ref topPos, ref size, blankcanvusDc, ref pointSource, 0, ref blend, ULW_ALPHA);
 
 			//Clean-up
-			ReleaseDC(IntPtr.Zero, screenDc);	
+			ReleaseDC(IntPtr.Zero, screenDc);
 		}
-		
+
 		int stackmove = 0;
 		int Tick = 0;
 		DateTime TickStartTime;
 		private void timer1_Tick(object sender, EventArgs e)
 		{
 			Tick++;
-			
+
 			/*
 			if (Tick == 1)
 				TickStartTime = DateTime.Now;
@@ -377,7 +377,7 @@ namespace gInk
 				UpdateFormDisplay(true);
 				SnapShot(Root.SnappingRect);
 				Root.UponTakingSnap = false;
-                if (Root.FormCollection.IC.Ink.Strokes.Count == 0)
+				if (Root.FormCollection.IC.Ink.Strokes.Count == 0)
 					Root.FormCollection.RetreatAndExit();
 			}
 

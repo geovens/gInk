@@ -40,7 +40,7 @@ namespace gInk
 			}
 		}
 
-		
+
 		public void ToTopMost()
 		{
 			UInt32 dwExStyle = GetWindowLong(this.Handle, -20);

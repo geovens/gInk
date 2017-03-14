@@ -320,7 +320,7 @@ namespace gInk
 		{
 			UInt32 dwExStyle = GetWindowLong(this.Handle, -20);
 			SetWindowLong(this.Handle, -20, dwExStyle | 0x00080000);
-			SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 1, 0x2);	
+			SetLayeredWindowAttributes(this.Handle, 0x00FFFFFF, 1, 0x2);
 		}
 
 		public void ToTopMost()
@@ -641,7 +641,7 @@ namespace gInk
 				}
 			}
 			LastYStatus = retVal;
-			
+
 			if (Root.Snapping < 0)
 				Root.Snapping++;
 		}
