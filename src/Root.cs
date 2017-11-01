@@ -32,7 +32,9 @@ namespace gInk
 					Root.StartInk();
 				else if (Root.Docked)
 					Root.UnDock();
-			}
+                else 
+                    Root.Dock();
+            }
 			return false;
 		}
 	}
