@@ -154,10 +154,13 @@ namespace gInk
 			FormCollection.Show();
 			FormDisplay.DrawButtons(true);
 
-			UndoStrokes = new Ink[8];
-			UndoStrokes[0] = FormCollection.IC.Ink.Clone();
-			UndoDepth = 0;
-			UndoP = 0;
+			if (UndoStrokes == null)
+			{
+				UndoStrokes = new Ink[8];
+				UndoStrokes[0] = FormCollection.IC.Ink.Clone();
+				UndoDepth = 0;
+				UndoP = 0;
+			}
 
 			//UponUndoStrokes = FormCollection.IC.Ink.Clone();
 		}

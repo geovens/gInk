@@ -481,6 +481,7 @@ namespace gInk
 		{
 			ToThrough();
 			Root.ClearInk();
+			SaveUndoStrokes();
 			LastTickTime = DateTime.Now;
 			ButtonsEntering = -1;
 		}
@@ -529,6 +530,7 @@ namespace gInk
 		short LastZStatus = 0;
 		short LastYStatus = 0;
 		short LastDStatus = 0;
+		short LastESCStatus = 0;
 		private void tiSlide_Tick(object sender, EventArgs e)
 		{
 			// ignore the first tick
@@ -617,13 +619,17 @@ namespace gInk
 				retVal = GetKeyState(27);
 				if ((retVal & 0x8000) == 0x8000)
 				{
-					if (Root.Snapping > 0)
+					if ((LastESCStatus & 0x8000) == 0x0000)
 					{
-						ExitSnapping();
+						if (Root.Snapping > 0)
+						{
+							ExitSnapping();
+						}
+						else if (Root.Snapping == 0)
+							RetreatAndExit();
 					}
-					else if (Root.Snapping == 0)
-						RetreatAndExit();
 				}
+				LastESCStatus = retVal;
 			}
 
 			if (!Root.FingerInAction)

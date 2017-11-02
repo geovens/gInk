@@ -2,6 +2,7 @@
 v0.4.2 (ongoing)
 =================
 - Add hotkeys for tools (thanks to MrBricodage).
+- Save undo history when exit drawing, for restoring inks after accidental exit.
 
 v0.4.1 (Mar. 13, 2017)
 =================
