@@ -245,7 +245,7 @@ namespace gInk
 
 		private void IC_MouseDown(object sender, CancelMouseEventArgs e)
 		{
-            Root.FingerInAction = true;
+			Root.FingerInAction = true;
 			if (Root.Snapping == 1)
 			{
 				Root.SnappingX = e.X;
@@ -269,7 +269,7 @@ namespace gInk
 
 		private void IC_MouseUp(object sender, CancelMouseEventArgs e)
 		{
-            Root.FingerInAction = false;
+			Root.FingerInAction = false;
 			if (Root.Snapping == 2)
 			{
 				int left = Math.Min(Root.SnappingX, e.X);
@@ -528,8 +528,8 @@ namespace gInk
 		DateTime LastTickTime;
 		short LastZStatus = 0;
 		short LastYStatus = 0;
-        short LastDStatus = 0;
-        private void tiSlide_Tick(object sender, EventArgs e)
+		short LastDStatus = 0;
+		private void tiSlide_Tick(object sender, EventArgs e)
 		{
 			// ignore the first tick
 			if (LastTickTime.Year == 1987)
@@ -605,160 +605,169 @@ namespace gInk
 			if (!Root.PointerMode && !this.TopMost)
 				ToTopMost();
 
-            // hotkeys
-            if (!Root.FingerInAction)
-            {
-                // ESC key : Exit
-                short retVal = GetKeyState(27);
-                if ((retVal & 0x8000) == 0x8000)
-                {
-                    if (Root.Snapping > 0)
-                    {
-                        ExitSnapping();
-                    }
-                    else if (Root.Snapping == 0)
-                        RetreatAndExit();
-                }
+			// hotkeys
 
-                // Ctrl + Z : Undo
-                const int VK_LCONTROL = 0xA2;
-                const int VK_RCONTROL = 0xA3;
-                retVal = GetKeyState('Z');
-                if ((retVal & 0x8000) == 0x8000)
-                {
-                    if ((LastZStatus & 0x8000) == 0x0000)
-                    {
-                        short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-                        if ((control & 0x8000) == 0x8000)
-                        {
-                            Root.UndoInk();
-                        }
-                    }
-                }
-                LastZStatus = retVal;
+			const int VK_LCONTROL = 0xA2;
+			const int VK_RCONTROL = 0xA3;
+			short retVal;
 
-                // Ctrl + Y : Redo
-                retVal = GetKeyState('Y');
-                if ((retVal & 0x8000) == 0x8000)
-                {
-                    if ((LastYStatus & 0x8000) == 0x0000)
-                    {
-                        short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-                        if ((control & 0x8000) == 0x8000)
-                        {
-                            Root.RedoInk();
-                        }
-                    }
-                }
-                LastYStatus = retVal;
+			if (!Root.PointerMode)
+			{
+				// ESC key : Exit
+				retVal = GetKeyState(27);
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					if (Root.Snapping > 0)
+					{
+						ExitSnapping();
+					}
+					else if (Root.Snapping == 0)
+						RetreatAndExit();
+				}
+			}
 
-                // Ctrl + 1 : Pen 1
-                retVal = GetKeyState('1');
-                if ((retVal & 0x8000) == 0x8000)
-                {
-                    short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-                    if ((control & 0x8000) == 0x8000)
-                    {
-                        SelectPen(1);
-                    }
-                }
+			if (!Root.FingerInAction)
+			{
+				// Ctrl + 1 : Pen 1
+				retVal = GetKeyState('1');
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
+					if ((control & 0x8000) == 0x8000)
+					{
+						SelectPen(1);
+					}
+				}
 
-                // Ctrl + 2 : Pen 2
-                retVal = GetKeyState('2');
-                if ((retVal & 0x8000) == 0x8000)
-                {
-                    short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-                    if ((control & 0x8000) == 0x8000)
-                    {
-                        SelectPen(2);
-                    }
-                }
+				// Ctrl + 2 : Pen 2
+				retVal = GetKeyState('2');
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
+					if ((control & 0x8000) == 0x8000)
+					{
+						SelectPen(2);
+					}
+				}
 
-                // Ctrl + 3 : Pen 3
-                retVal = GetKeyState('3');
-                if ((retVal & 0x8000) == 0x8000)
-                {
-                    short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-                    if ((control & 0x8000) == 0x8000)
-                    {
-                        SelectPen(3);
-                    }
-                }
+				// Ctrl + 3 : Pen 3
+				retVal = GetKeyState('3');
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
+					if ((control & 0x8000) == 0x8000)
+					{
+						SelectPen(3);
+					}
+				}
 
-                // Ctrl + 4 : Pen 4
-                retVal = GetKeyState('4');
-                if ((retVal & 0x8000) == 0x8000)
-                {
-                    short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-                    if ((control & 0x8000) == 0x8000)
-                    {
-                        SelectPen(4);
-                    }
-                }
+				// Ctrl + 4 : Pen 4
+				retVal = GetKeyState('4');
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
+					if ((control & 0x8000) == 0x8000)
+					{
+						SelectPen(4);
+					}
+				}
 
-                // Ctrl + 5 : Pen 5
-                retVal = GetKeyState('5');
-                if ((retVal & 0x8000) == 0x8000)
-                {
-                    short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-                    if ((control & 0x8000) == 0x8000)
-                    {
-                        SelectPen(5);
-                    }
-                }
+				// Ctrl + 5 : Pen 5
+				retVal = GetKeyState('5');
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
+					if ((control & 0x8000) == 0x8000)
+					{
+						SelectPen(5);
+					}
+				}
 
-                // Ctrl + 0 : Eraser
-                retVal = GetKeyState('0');
-                if ((retVal & 0x8000) == 0x8000)
-                {
-                    short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-                    if ((control & 0x8000) == 0x8000)
-                    {
-                        SelectPen(0);
-                    }
-                }
+				// Ctrl + 0 : Eraser
+				retVal = GetKeyState('0');
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
+					if ((control & 0x8000) == 0x8000)
+					{
+						SelectPen(0);
+					}
+				}
+			}
 
-                // Ctrl + P : Pointer
-                retVal = GetKeyState('P');
-                if ((retVal & 0x8000) == 0x8000)
-                {
-                    short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-                    if ((control & 0x8000) == 0x8000)
-                    {
-                        SelectPen(-1);
-                    }
-                }
+			if (!Root.FingerInAction && !Root.PointerMode && Root.Snapping <= 0)
+			{
+				// Ctrl + Z : Undo
+				retVal = GetKeyState('Z');
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					if ((LastZStatus & 0x8000) == 0x0000)
+					{
+						short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
+						if ((control & 0x8000) == 0x8000)
+						{
+							Root.UndoInk();
+						}
+					}
+				}
+				LastZStatus = retVal;
 
-                // Ctrl + S : Snap
-                retVal = GetKeyState('S');
-                if ((retVal & 0x8000) == 0x8000)
-                {
-                    short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-                    if ((control & 0x8000) == 0x8000)
-                    {
-                        btSnap_Click(null, null);
-                    }
-                }
+				// Ctrl + Y : Redo
+				retVal = GetKeyState('Y');
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					if ((LastYStatus & 0x8000) == 0x0000)
+					{
+						short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
+						if ((control & 0x8000) == 0x8000)
+						{
+							Root.RedoInk();
+						}
+					}
+				}
+				LastYStatus = retVal;
 
-                // Ctrl + D : Clear
-                retVal = GetKeyState('D');
-                if ((retVal & 0x8000) == 0x8000)
-                {
-                    if ((LastDStatus & 0x8000) == 0x0000)
-                    {
-                        short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-                        if ((control & 0x8000) == 0x8000)
-                        {
-                            btClear_Click(null, null);
-                        }
-                    }
-                }
-                LastDStatus = retVal;
-            }
+				// Ctrl + P : Pointer
+				retVal = GetKeyState('P');
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
+					if ((control & 0x8000) == 0x8000)
+					{
+						SelectPen(-1);
+					}
+				}
 
-            if (Root.Snapping < 0)
-                Root.Snapping++;
-        }
+				// Ctrl + S : Snap
+				retVal = GetKeyState('S');
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
+					if ((control & 0x8000) == 0x8000)
+					{
+						btSnap_Click(null, null);
+					}
+				}
+
+				// Ctrl + D : Clear
+				retVal = GetKeyState('D');
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					if ((LastDStatus & 0x8000) == 0x0000)
+					{
+						short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
+						if ((control & 0x8000) == 0x8000)
+						{
+							btClear_Click(null, null);
+						}
+					}
+				}
+				LastDStatus = retVal;
+			}
+
+			if (Root.Snapping < 0)
+				Root.Snapping++;
+		}
 
 		public void btClear_Click(object sender, EventArgs e)
 		{

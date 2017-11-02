@@ -32,9 +32,9 @@ namespace gInk
 					Root.StartInk();
 				else if (Root.Docked)
 					Root.UnDock();
-                else 
-                    Root.Dock();
-            }
+				else
+					Root.Dock();
+			}
 			return false;
 		}
 	}
@@ -52,7 +52,7 @@ namespace gInk
 		public bool EraserMode = false;
 		public bool Docked = false;
 		public bool PointerMode = false;
-        public bool FingerInAction = false;  // true when mouse down, either drawing or snapping or whatever
+		public bool FingerInAction = false;  // true when mouse down, either drawing or snapping or whatever
 		public int Snapping = 0;  // <=0: not snapping, 1: waiting finger, 2:dragging
 		public int SnappingX = -1, SnappingY = -1;
 		public Rectangle SnappingRect;
