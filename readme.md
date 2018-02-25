@@ -28,22 +28,6 @@ Pen pressure support.
 Snapshot support.  
 Hotkey support.    
 
-#### Hotkeys
-
-* Hide / Show Dock Panel : HotKey Configurable in config.ini (Ctrl + Alt + G by default)
-* Esc : Cancel Snapshot / Exit
-* Undo : Ctrl + Z
-* Redo : Ctrl + Y
-* Use Pen 1 : Ctrl + 1
-* Use Pen 2 : Ctrl + 2
-* Use Pen 3 : Ctrl + 3
-* Use Pen 4 : Ctrl + 4
-* Use Pen 5 : Ctrl + 5
-* Use Eraser : Ctrl + 0
-* Use Pointer : Ctrl + P
-* Snapshot mode : Ctrl + S
-* Clear Ink On Screen : Ctrl + D
-
 ----
 gInk  
 https://github.com/geovens/gInk  
