@@ -41,8 +41,18 @@ namespace gInk
 
 	public class Root
 	{
+		public const int MaxPenCount = 10;
+
 		// options
-		public DrawingAttributes[] PenAttr = new DrawingAttributes[10];
+		public bool[] PenEnabled = new bool[MaxPenCount];
+		public bool EraserEnabled = true;
+		public bool PointerEnabled = true;
+		public bool PenWidthEnabled = false;
+		public bool SnapEnabled = true;
+		public bool UndoEnabled = true;
+		public bool ClearEnabled = true;
+		public bool WidthEnabled = false;
+		public DrawingAttributes[] PenAttr = new DrawingAttributes[MaxPenCount];
 		public bool Hotkey_Control, Hotkey_Alt, Hotkey_Shift, Hotkey_Win;
 		public int Hotkey;
 		public bool AutoScroll;
@@ -71,7 +81,6 @@ namespace gInk
 		public FormDisplay FormDisplay;
 		public FormButtonHitter FormButtonHitter;
 
-		public int PenCount = 10;
 		public int CurrentPen = 1;  // defaut pen
 
 		public Root()
@@ -80,6 +89,10 @@ namespace gInk
 			SetDefaultConfig();
 			ReadOptions("pens.ini");
 			ReadOptions("config.ini");
+
+			// temp
+			SaveOptions("pens.ini");
+			SaveOptions("config.ini");
 
 			trayMenu = new ContextMenu();
 			trayMenu.MenuItems.Add("About", OnAbout);
@@ -287,26 +300,31 @@ namespace gInk
 
 		public void SetDefaultPens()
 		{
+			PenEnabled[0] = true;
 			PenAttr[0] = new DrawingAttributes();
 			PenAttr[0].Color = Color.FromArgb(220, 95, 60);
 			PenAttr[0].Width = 80;
 			PenAttr[0].Transparency = 5;
 
+			PenEnabled[1] = true;
 			PenAttr[1] = new DrawingAttributes();
 			PenAttr[1].Color = Color.FromArgb(30, 110, 200);
 			PenAttr[1].Width = 80;
 			PenAttr[1].Transparency = 5;
 
+			PenEnabled[2] = true;
 			PenAttr[2] = new DrawingAttributes();
 			PenAttr[2].Color = Color.FromArgb(235, 180, 55);
 			PenAttr[2].Width = 80;
 			PenAttr[2].Transparency = 5;
 
+			PenEnabled[3] = true;
 			PenAttr[3] = new DrawingAttributes();
 			PenAttr[3].Color = Color.FromArgb(120, 175, 70);
 			PenAttr[3].Width = 80;
 			PenAttr[3].Transparency = 5;
 
+			PenEnabled[4] = true;
 			PenAttr[4] = new DrawingAttributes();
 			PenAttr[4].Color = Color.FromArgb(145, 70, 160);
 			PenAttr[4].Width = 500;
@@ -386,112 +404,49 @@ namespace gInk
 					sPara = sLine.Substring(sLine.IndexOf("=") + 1);
 					sPara = sPara.Trim();
 
-					int o;
+					if (sName.StartsWith("PEN") )
+					{
+						int penid = 0;
+						if (int.TryParse(sName.Substring(3, 1), out penid))
+						{
+							if (sName.EndsWith("_ENABLED"))
+							{
+								if (sPara.ToUpper() == "TRUE" || sPara == "1" || sPara.ToUpper() == "ON")
+									PenEnabled[penid] = true;
+								else if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
+									PenEnabled[penid] = false;
+							}
+
+							int penc = 0;
+							if (int.TryParse(sPara, out penc))
+							{
+								if (sName.EndsWith("_RED") && penc >= 0 && penc <= 255)
+								{
+									PenAttr[penid].Color = Color.FromArgb(penc, PenAttr[penid].Color.G, PenAttr[penid].Color.B);
+								}
+								else if (sName.EndsWith("_GREEN") && penc >= 0 && penc <= 255)
+								{
+									PenAttr[penid].Color = Color.FromArgb(PenAttr[penid].Color.R, penc, PenAttr[penid].Color.B);
+								}
+								else if (sName.EndsWith("_BLUE") && penc >= 0 && penc <= 255)
+								{
+									PenAttr[penid].Color = Color.FromArgb(PenAttr[penid].Color.R, PenAttr[penid].Color.G, penc);
+								}
+								else if (sName.EndsWith("_ALPHA") && penc >= 0 && penc <= 255)
+								{
+									PenAttr[penid].Transparency = (byte)(255 - penc);
+								}
+								else if (sName.EndsWith("_WIDTH") && penc >= 30 && penc <= 3000)
+								{
+									PenAttr[penid].Width = penc;
+								}
+							}
+						}
+
+					}
+
 					switch (sName)
 					{
-						case "PEN1_RED":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[0].Color = Color.FromArgb(int.Parse(sPara), PenAttr[0].Color.G, PenAttr[0].Color.B);
-							break;
-						case "PEN1_GREEN":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[0].Color = Color.FromArgb(PenAttr[0].Color.R, int.Parse(sPara), PenAttr[0].Color.B);
-							break;
-						case "PEN1_BLUE":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[0].Color = Color.FromArgb(PenAttr[0].Color.R, PenAttr[0].Color.G, int.Parse(sPara));
-							break;
-						case "PEN2_RED":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[1].Color = Color.FromArgb(int.Parse(sPara), PenAttr[1].Color.G, PenAttr[1].Color.B);
-							break;
-						case "PEN2_GREEN":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[1].Color = Color.FromArgb(PenAttr[1].Color.R, int.Parse(sPara), PenAttr[1].Color.B);
-							break;
-						case "PEN2_BLUE":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[1].Color = Color.FromArgb(PenAttr[1].Color.R, PenAttr[1].Color.G, int.Parse(sPara));
-							break;
-						case "PEN3_RED":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[2].Color = Color.FromArgb(int.Parse(sPara), PenAttr[2].Color.G, PenAttr[2].Color.B);
-							break;
-						case "PEN3_GREEN":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[2].Color = Color.FromArgb(PenAttr[2].Color.R, int.Parse(sPara), PenAttr[2].Color.B);
-							break;
-						case "PEN3_BLUE":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[2].Color = Color.FromArgb(PenAttr[2].Color.R, PenAttr[2].Color.G, int.Parse(sPara));
-							break;
-						case "PEN4_RED":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[3].Color = Color.FromArgb(int.Parse(sPara), PenAttr[3].Color.G, PenAttr[3].Color.B);
-							break;
-						case "PEN4_GREEN":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[3].Color = Color.FromArgb(PenAttr[3].Color.R, int.Parse(sPara), PenAttr[3].Color.B);
-							break;
-						case "PEN4_BLUE":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[3].Color = Color.FromArgb(PenAttr[3].Color.R, PenAttr[3].Color.G, int.Parse(sPara));
-							break;
-						case "PEN5_RED":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[4].Color = Color.FromArgb(int.Parse(sPara), PenAttr[4].Color.G, PenAttr[4].Color.B);
-							break;
-						case "PEN5_GREEN":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[4].Color = Color.FromArgb(PenAttr[4].Color.R, int.Parse(sPara), PenAttr[4].Color.B);
-							break;
-						case "PEN5_BLUE":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[4].Color = Color.FromArgb(PenAttr[4].Color.R, PenAttr[4].Color.G, int.Parse(sPara));
-							break;
-
-						case "PEN1_ALPHA":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[0].Transparency = (byte)(255 - o);
-							break;
-						case "PEN2_ALPHA":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[1].Transparency = (byte)(255 - o);
-							break;
-						case "PEN3_ALPHA":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[2].Transparency = (byte)(255 - o);
-							break;
-						case "PEN4_ALPHA":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[3].Transparency = (byte)(255 - o);
-							break;
-						case "PEN5_ALPHA":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								PenAttr[4].Transparency = (byte)(255 - o);
-							break;
-
-						case "PEN1_WIDTH":
-							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
-								PenAttr[0].Width = o;
-							break;
-						case "PEN2_WIDTH":
-							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
-								PenAttr[1].Width = o;
-							break;
-						case "PEN3_WIDTH":
-							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
-								PenAttr[2].Width = o;
-							break;
-						case "PEN4_WIDTH":
-							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
-								PenAttr[3].Width = o;
-							break;
-						case "PEN5_WIDTH":
-							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
-								PenAttr[4].Width = o;
-							break;
-
 						case "HOTKEY":
 							sPara = sPara.ToUpper();
 							if (sPara.Contains("CONTROL"))
@@ -513,29 +468,219 @@ namespace gInk
 							if (sPara.Length > 0)
 								Hotkey = sPara.Substring(sPara.Length - 1).ToCharArray()[0];
 							break;
-						case "ENABLEAUTOSCROLL":
-							sPara = sPara.ToUpper();
-							if (sPara.Contains("TRUE"))
-								AutoScroll = true;
-							else
-								AutoScroll = false;
-							break;
-						case "WHITETRAYICON":
-							sPara = sPara.ToUpper();
-							if (sPara.Contains("TRUE"))
+						case "WHITE_TRAY_ICON":
+							if (sPara.ToUpper() == "TRUE" || sPara == "1" || sPara.ToUpper() == "ON")
 								WhiteTrayIcon = true;
 							else
 								WhiteTrayIcon = false;
 							break;
-						case "SNAPSHOTPATH":
+						case "SNAPSHOT_PATH":
 							SnapshotBasePath = sPara;
 							if (!SnapshotBasePath.EndsWith("/") && !SnapshotBasePath.EndsWith("\\"))
 								SnapshotBasePath += "/";
+							break;
+						case "ERASER_ICON":
+							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
+								EraserEnabled = false;
+							break;
+						case "POINTER_ICON":
+							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
+								PointerEnabled = false;
+							break;
+						case "PEN_WIDTH_ICON":
+							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
+								PenWidthEnabled = false;
+							break;
+						case "SNAPSHOT_ICON":
+							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
+								SnapEnabled = false;
+							break;
+						case "UNDO_ICON":
+							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
+								UndoEnabled = false;
+							break;
+						case "CLEAR_ICON":
+							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
+								ClearEnabled = false;
 							break;
 					}
 				}
 			}
 			fini.Close();
+		}
+
+		public void SaveOptions(string file)
+		{
+			if (!File.Exists(file))
+			{
+				return;
+			}
+
+			FileStream fini = new FileStream(file, FileMode.Open);
+			StreamReader srini = new StreamReader(fini);
+			string sLine = "";
+			string sNameO = "";
+			string sName = "", sPara = "";
+
+			List<string> writelines = new List<string>();
+
+			while (sLine != null)
+			{
+				sPara = "";
+				sLine = srini.ReadLine();
+				if
+				(
+					sLine != null &&
+					sLine != "" &&
+					sLine.Substring(0, 1) != "-" &&
+					sLine.Substring(0, 1) != "%" &&
+					sLine.Substring(0, 1) != "'" &&
+					sLine.Substring(0, 1) != "/" &&
+					sLine.Substring(0, 1) != "!" &&
+					sLine.Substring(0, 1) != "[" &&
+					sLine.Substring(0, 1) != "#" &&
+					sLine.Contains("=") &&
+					!sLine.Substring(sLine.IndexOf("=") + 1).Contains("=")
+				)
+				{
+					sNameO = sLine.Substring(0, sLine.IndexOf("="));
+					sName = sNameO.Trim().ToUpper();
+
+					if (sName.StartsWith("PEN"))
+					{
+						int penid = 0;
+						if (int.TryParse(sName.Substring(3, 1), out penid))
+						{
+							if (sName.EndsWith("_ENABLED"))
+							{
+								if (PenEnabled[penid])
+									sPara = "True";
+								else
+									sPara = "False";
+							}
+							int penc = 0;
+							if (int.TryParse(sPara, out penc))
+							{
+								if (sName.EndsWith("_RED"))
+								{
+									sPara = PenAttr[penid].Color.R.ToString();
+								}
+								else if (sName.EndsWith("_GREEN") && penc >= 0 && penc <= 255)
+								{
+									sPara = PenAttr[penid].Color.G.ToString();
+								}
+								else if (sName.EndsWith("_BLUE") && penc >= 0 && penc <= 255)
+								{
+									sPara = PenAttr[penid].Color.B.ToString();
+								}
+								else if (sName.EndsWith("_ALPHA") && penc >= 0 && penc <= 255)
+								{
+									sPara = PenAttr[penid].Transparency.ToString();
+								}
+								else if (sName.EndsWith("_WIDTH") && penc >= 30 && penc <= 3000)
+								{
+									sPara = PenAttr[penid].Width.ToString();
+								}
+							}
+						}
+
+					}
+
+					switch (sName)
+					{
+						case "HOTKEY":
+							/*
+							sPara = sPara.ToUpper();
+							if (sPara.Contains("CONTROL"))
+								Hotkey_Control = true;
+							else
+								Hotkey_Control = false;
+							if (sPara.Contains("ALT"))
+								Hotkey_Alt = true;
+							else
+								Hotkey_Alt = false;
+							if (sPara.Contains("SHIFT"))
+								Hotkey_Shift = true;
+							else
+								Hotkey_Shift = false;
+							if (sPara.Contains("WIN"))
+								Hotkey_Win = true;
+							else
+								Hotkey_Win = false;
+							if (sPara.Length > 0)
+								Hotkey = sPara.Substring(sPara.Length - 1).ToCharArray()[0];
+							*/
+							if (Hotkey_Control)
+								sPara += "Control + ";
+							if (Hotkey_Alt)
+								sPara += "Alt + ";
+							if (Hotkey_Shift)
+								sPara += "Shift + ";
+							if (Hotkey_Win)
+								sPara += "Win + ";
+							sPara += (char)Hotkey;
+
+							break;
+						case "WHITE_TRAY_ICON":
+							if (WhiteTrayIcon)
+								sPara = "True";
+							else
+								sPara = "False";
+							break;
+						case "SNAPSHOT_PATH":
+							sPara = SnapshotBasePath;
+							break;
+						case "ERASER_ICON":
+							if (EraserEnabled)
+								sPara = "True";
+							else
+								sPara = "False";
+							break;
+						case "POINTER_ICON":
+							if (PointerEnabled)
+								sPara = "True";
+							else
+								sPara = "False";
+							break;
+						case "PEN_WIDTH_ICON":
+							if (PenWidthEnabled)
+								sPara = "True";
+							else
+								sPara = "False";
+							break;
+						case "SNAPSHOT_ICON":
+							if (SnapEnabled)
+								sPara = "True";
+							else
+								sPara = "False";
+							break;
+						case "UNDO_ICON":
+							if (UndoEnabled)
+								sPara = "True";
+							else
+								sPara = "False";
+							break;
+						case "CLEAR_ICON":
+							if (ClearEnabled)
+								sPara = "True";
+							else
+								sPara = "False";
+							break;
+					}
+				}
+				if (sPara != "")
+					writelines.Add(sNameO + "= " + sPara);
+				else if (sLine != null)
+					writelines.Add(sLine);
+			}
+			fini.Close();
+
+			FileStream frini = new FileStream(file, FileMode.Create);
+			StreamWriter swini = new StreamWriter(frini);
+			swini.AutoFlush = true;
+			foreach (string line in writelines)
+				swini.WriteLine(line);
+			frini.Close();
 		}
 
 		private void OnAbout(object sender, EventArgs e)

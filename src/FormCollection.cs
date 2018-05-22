@@ -16,13 +16,13 @@ namespace gInk
 		public Root Root;
 		public InkOverlay IC;
 
-		public Button[] btPen = new Button[10];
+		public Button[] btPen;
 		public Bitmap image_exit, image_clear, image_undo, image_snap;
 		public Bitmap image_dock, image_dockback;
 		public Bitmap image_pencil, image_highlighter, image_pencil_act, image_highlighter_act;
 		public Bitmap image_pointer, image_pointer_act;
-		public Bitmap[] image_pen = new Bitmap[10];
-		public Bitmap[] image_pen_act = new Bitmap[10];
+		public Bitmap[] image_pen;
+		public Bitmap[] image_pen_act;
 		public Bitmap image_eraser_act, image_eraser;
 		public System.Windows.Forms.Cursor cursorred, cursorblue, cursoryellow;
 
@@ -34,14 +34,14 @@ namespace gInk
 			Root = root;
 			InitializeComponent();
 
+			btPen = new Button[Root.MaxPenCount];
+
 			int cumulatedleft = 40;
-			for (int b = 0; b < Root.PenCount; b++)
+			for (int b = 0; b < Root.MaxPenCount; b++)
 			{
 				btPen[b] = new Button();
 				btPen[b].Width = 46;
 				btPen[b].Height = 46;
-				btPen[b].Left = cumulatedleft;
-				cumulatedleft += 50;
 				btPen[b].Top = 5;
 				btPen[b].FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
 				btPen[b].FlatAppearance.BorderSize = 3;
@@ -56,36 +56,67 @@ namespace gInk
 				btPen[b].FlatAppearance.MouseOverBackColor = Root.PenAttr[b].Color;
 
 				gpButtons.Controls.Add(btPen[b]);
+
+				if (Root.PenEnabled[b])
+				{
+					btPen[b].Visible = true;
+					btPen[b].Left = cumulatedleft;
+					cumulatedleft += 50;
+				}
+				else
+				{
+					btPen[b].Visible = false;
+				}
 			}
-			if (true)
+			if (Root.EraserEnabled)
 			{
 				btEraser.Visible = true;
 				btEraser.Left = cumulatedleft + 40;
 				cumulatedleft += 50 + 40;
 			}
-			if (true)
+			else
+			{
+				btEraser.Visible = false;
+			}
+			if (Root.PointerEnabled)
 			{
 				btPointer.Visible = true;
 				btPointer.Left = cumulatedleft;
 				cumulatedleft += 50;
 			}
-			if (true)
+			else
+			{
+				btPointer.Visible = false;
+			}
+			if (Root.SnapEnabled)
 			{
 				btSnap.Visible = true;
 				btSnap.Left = cumulatedleft + 40;
 				cumulatedleft += 50 + 40;
 			}
-			if (true)
+			else
+			{
+				btSnap.Visible = false;
+			}
+			if (Root.UndoEnabled)
 			{
 				btUndo.Visible = true;
 				btUndo.Left = cumulatedleft;
 				cumulatedleft += 50;
 			}
-			if (true)
+			else
+			{
+				btUndo.Visible = false;
+			}
+			if (Root.ClearEnabled)
 			{
 				btClear.Visible = true;
 				btClear.Left = cumulatedleft;
 				cumulatedleft += 50;
+			}
+			else
+			{
+				btClear.Visible = false;
 			}
 			btStop.Left = cumulatedleft + 40;
 			gpButtons.Width = btStop.Right + 20;
@@ -198,8 +229,9 @@ namespace gInk
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.pointer_act, 0, 0, btPointer.Width, btPointer.Height);
 
-
-			for (int b = 0; b < Root.PenCount; b++)
+			image_pen = new Bitmap[Root.MaxPenCount];
+			image_pen_act = new Bitmap[Root.MaxPenCount];
+			for (int b = 0; b < Root.MaxPenCount; b++)
 			{
 				if (Root.PenAttr[b].Transparency >= 100)
 				{
@@ -391,7 +423,7 @@ namespace gInk
 			// -2 = pointer, -1 = erasor, 0+ = pens
 			if (pen == -2)
 			{
-				for (int b = 0; b < Root.PenCount; b++)
+				for (int b = 0; b < Root.MaxPenCount; b++)
 					btPen[b].Image = image_pen[b];
 				btEraser.Image = image_eraser;
 				btPointer.Image = image_pointer_act;
@@ -400,7 +432,7 @@ namespace gInk
 			}
 			else if (pen == -1)
 			{
-				for (int b = 0; b < Root.PenCount; b++)
+				for (int b = 0; b < Root.MaxPenCount; b++)
 					btPen[b].Image = image_pen[b];
 				btEraser.Image = image_eraser_act;
 				btPointer.Image = image_pointer;
@@ -410,7 +442,7 @@ namespace gInk
 			else if (pen >= 0)
 			{
 				IC.DefaultDrawingAttributes = Root.PenAttr[pen];
-				for (int b = 0; b < Root.PenCount; b++)
+				for (int b = 0; b < Root.MaxPenCount; b++)
 					btPen[b].Image = image_pen[b];
 				btPen[pen].Image = image_pen_act[pen];
 				btEraser.Image = image_eraser;
@@ -733,7 +765,7 @@ namespace gInk
 
 		public void btColor_Click(object sender, EventArgs e)
 		{
-			for (int b = 0; b < Root.PenCount; b++)
+			for (int b = 0; b < Root.MaxPenCount; b++)
 				if ((Button)sender == btPen[b])
 				{
 					SelectPen(b);
