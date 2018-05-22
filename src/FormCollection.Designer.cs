@@ -29,9 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			this.btPen3 = new System.Windows.Forms.Button();
-			this.btPen2 = new System.Windows.Forms.Button();
-			this.btPen1 = new System.Windows.Forms.Button();
+		
 			this.gpButtons = new System.Windows.Forms.Panel();
 			this.btDock = new System.Windows.Forms.Button();
 			this.btEraser = new System.Windows.Forms.Button();
@@ -41,58 +39,8 @@
 			this.btClear = new System.Windows.Forms.Button();
 			this.btUndo = new System.Windows.Forms.Button();
 			this.tiSlide = new System.Windows.Forms.Timer(this.components);
-			this.btPen4 = new System.Windows.Forms.Button();
-			this.btPen5 = new System.Windows.Forms.Button();
 			this.gpButtons.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// btPen3
-			// 
-			this.btPen3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-			this.btPen3.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
-			this.btPen3.FlatAppearance.BorderSize = 3;
-			this.btPen3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-			this.btPen3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-			this.btPen3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btPen3.ForeColor = System.Drawing.Color.Transparent;
-			this.btPen3.Location = new System.Drawing.Point(270, 5);
-			this.btPen3.Name = "btPen3";
-			this.btPen3.Size = new System.Drawing.Size(80, 80);
-			this.btPen3.TabIndex = 1;
-			this.btPen3.UseVisualStyleBackColor = false;
-			this.btPen3.Click += new System.EventHandler(this.btColor_Click);
-			// 
-			// btPen2
-			// 
-			this.btPen2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(0)))));
-			this.btPen2.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
-			this.btPen2.FlatAppearance.BorderSize = 3;
-			this.btPen2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(0)))));
-			this.btPen2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(0)))));
-			this.btPen2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btPen2.ForeColor = System.Drawing.Color.Transparent;
-			this.btPen2.Location = new System.Drawing.Point(170, 5);
-			this.btPen2.Name = "btPen2";
-			this.btPen2.Size = new System.Drawing.Size(80, 80);
-			this.btPen2.TabIndex = 1;
-			this.btPen2.UseVisualStyleBackColor = false;
-			this.btPen2.Click += new System.EventHandler(this.btColor_Click);
-			// 
-			// btPen1
-			// 
-			this.btPen1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(250)))));
-			this.btPen1.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
-			this.btPen1.FlatAppearance.BorderSize = 3;
-			this.btPen1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(250)))));
-			this.btPen1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(250)))));
-			this.btPen1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btPen1.ForeColor = System.Drawing.Color.Transparent;
-			this.btPen1.Location = new System.Drawing.Point(70, 5);
-			this.btPen1.Name = "btPen1";
-			this.btPen1.Size = new System.Drawing.Size(80, 80);
-			this.btPen1.TabIndex = 1;
-			this.btPen1.UseVisualStyleBackColor = false;
-			this.btPen1.Click += new System.EventHandler(this.btColor_Click);
 			// 
 			// gpButtons
 			// 
@@ -102,13 +50,8 @@
 			this.gpButtons.Controls.Add(this.btSnap);
 			this.gpButtons.Controls.Add(this.btPointer);
 			this.gpButtons.Controls.Add(this.btStop);
-			this.gpButtons.Controls.Add(this.btPen1);
-			this.gpButtons.Controls.Add(this.btPen5);
-			this.gpButtons.Controls.Add(this.btPen4);
-			this.gpButtons.Controls.Add(this.btPen3);
 			this.gpButtons.Controls.Add(this.btClear);
 			this.gpButtons.Controls.Add(this.btUndo);
-			this.gpButtons.Controls.Add(this.btPen2);
 			this.gpButtons.Location = new System.Drawing.Point(42, 84);
 			this.gpButtons.Name = "gpButtons";
 			this.gpButtons.Size = new System.Drawing.Size(1282, 92);
@@ -227,38 +170,6 @@
 			this.tiSlide.Interval = 15;
 			this.tiSlide.Tick += new System.EventHandler(this.tiSlide_Tick);
 			// 
-			// btPen4
-			// 
-			this.btPen4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-			this.btPen4.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
-			this.btPen4.FlatAppearance.BorderSize = 3;
-			this.btPen4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-			this.btPen4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-			this.btPen4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btPen4.ForeColor = System.Drawing.Color.Transparent;
-			this.btPen4.Location = new System.Drawing.Point(370, 5);
-			this.btPen4.Name = "btPen4";
-			this.btPen4.Size = new System.Drawing.Size(80, 80);
-			this.btPen4.TabIndex = 1;
-			this.btPen4.UseVisualStyleBackColor = false;
-			this.btPen4.Click += new System.EventHandler(this.btColor_Click);
-			// 
-			// btPen5
-			// 
-			this.btPen5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-			this.btPen5.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
-			this.btPen5.FlatAppearance.BorderSize = 3;
-			this.btPen5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-			this.btPen5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-			this.btPen5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btPen5.ForeColor = System.Drawing.Color.Transparent;
-			this.btPen5.Location = new System.Drawing.Point(470, 5);
-			this.btPen5.Name = "btPen5";
-			this.btPen5.Size = new System.Drawing.Size(80, 80);
-			this.btPen5.TabIndex = 1;
-			this.btPen5.UseVisualStyleBackColor = false;
-			this.btPen5.Click += new System.EventHandler(this.btColor_Click);
-			// 
 			// FormCollection
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(168F, 168F);
@@ -285,17 +196,12 @@
 		public System.Windows.Forms.Button btStop;
 		public System.Windows.Forms.Button btClear;
 		public System.Windows.Forms.Button btUndo;
-		public System.Windows.Forms.Button btPen3;
-		public System.Windows.Forms.Button btPen2;
-		public System.Windows.Forms.Button btPen1;
 		public System.Windows.Forms.Panel gpButtons;
 		public System.Windows.Forms.Button btEraser;
 		private System.Windows.Forms.Timer tiSlide;
 		public System.Windows.Forms.Button btDock;
 		public System.Windows.Forms.Button btSnap;
 		public System.Windows.Forms.Button btPointer;
-		public System.Windows.Forms.Button btPen5;
-		public System.Windows.Forms.Button btPen4;
 	}
 }
 

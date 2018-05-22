@@ -16,12 +16,13 @@ namespace gInk
 		public Root Root;
 		public InkOverlay IC;
 
+		public Button[] btPen = new Button[10];
 		public Bitmap image_exit, image_clear, image_undo, image_snap;
 		public Bitmap image_dock, image_dockback;
 		public Bitmap image_pencil, image_highlighter, image_pencil_act, image_highlighter_act;
 		public Bitmap image_pointer, image_pointer_act;
-		public Bitmap image_pen1, image_pen2, image_pen3, image_pen4, image_pen5;
-		public Bitmap image_pen1_act, image_pen2_act, image_pen3_act, image_pen4_act, image_pen5_act;
+		public Bitmap[] image_pen = new Bitmap[10];
+		public Bitmap[] image_pen_act = new Bitmap[10];
 		public Bitmap image_eraser_act, image_eraser;
 		public System.Windows.Forms.Cursor cursorred, cursorblue, cursoryellow;
 
@@ -32,6 +33,62 @@ namespace gInk
 		{
 			Root = root;
 			InitializeComponent();
+
+			int cumulatedleft = 40;
+			for (int b = 0; b < Root.PenCount; b++)
+			{
+				btPen[b] = new Button();
+				btPen[b].Width = 46;
+				btPen[b].Height = 46;
+				btPen[b].Left = cumulatedleft;
+				cumulatedleft += 50;
+				btPen[b].Top = 5;
+				btPen[b].FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+				btPen[b].FlatAppearance.BorderSize = 3;
+				btPen[b].FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(250, 50, 50);
+				btPen[b].FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+				btPen[b].ForeColor = System.Drawing.Color.Transparent;
+				//btPen[b].Name = "btPen" + b.ToString();
+				btPen[b].UseVisualStyleBackColor = false;
+				btPen[b].Click += new System.EventHandler(this.btColor_Click);
+				btPen[b].BackColor = Root.PenAttr[b].Color;
+				btPen[b].FlatAppearance.MouseDownBackColor = Root.PenAttr[b].Color;
+				btPen[b].FlatAppearance.MouseOverBackColor = Root.PenAttr[b].Color;
+
+				gpButtons.Controls.Add(btPen[b]);
+			}
+			if (true)
+			{
+				btEraser.Visible = true;
+				btEraser.Left = cumulatedleft + 40;
+				cumulatedleft += 50 + 40;
+			}
+			if (true)
+			{
+				btPointer.Visible = true;
+				btPointer.Left = cumulatedleft;
+				cumulatedleft += 50;
+			}
+			if (true)
+			{
+				btSnap.Visible = true;
+				btSnap.Left = cumulatedleft + 40;
+				cumulatedleft += 50 + 40;
+			}
+			if (true)
+			{
+				btUndo.Visible = true;
+				btUndo.Left = cumulatedleft;
+				cumulatedleft += 50;
+			}
+			if (true)
+			{
+				btClear.Visible = true;
+				btClear.Left = cumulatedleft;
+				cumulatedleft += 50;
+			}
+			btStop.Left = cumulatedleft + 40;
+			gpButtons.Width = btStop.Right + 20;
 
 			this.Left = SystemInformation.VirtualScreen.Left;
 			this.Top = SystemInformation.VirtualScreen.Top;
@@ -115,22 +172,22 @@ namespace gInk
 			else
 				btDock.Image = image_dock;
 
-			image_pencil = new Bitmap(btPen3.Width, btPen3.Height);
+			image_pencil = new Bitmap(btPen[2].Width, btPen[2].Height);
 			g = Graphics.FromImage(image_pencil);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pencil, 0, 0, btPen3.Width, btPen3.Height);
-			image_highlighter = new Bitmap(btPen3.Width, btPen3.Height);
+			g.DrawImage(global::gInk.Properties.Resources.pencil, 0, 0, btPen[2].Width, btPen[2].Height);
+			image_highlighter = new Bitmap(btPen[2].Width, btPen[2].Height);
 			g = Graphics.FromImage(image_highlighter);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.highlighter, 0, 0, btPen3.Width, btPen3.Height);
-			image_pencil_act = new Bitmap(btPen3.Width, btPen3.Height);
+			g.DrawImage(global::gInk.Properties.Resources.highlighter, 0, 0, btPen[2].Width, btPen[2].Height);
+			image_pencil_act = new Bitmap(btPen[2].Width, btPen[2].Height);
 			g = Graphics.FromImage(image_pencil_act);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pencil_act, 0, 0, btPen3.Width, btPen3.Height);
-			image_highlighter_act = new Bitmap(btPen3.Width, btPen3.Height);
+			g.DrawImage(global::gInk.Properties.Resources.pencil_act, 0, 0, btPen[2].Width, btPen[2].Height);
+			image_highlighter_act = new Bitmap(btPen[2].Width, btPen[2].Height);
 			g = Graphics.FromImage(image_highlighter_act);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.highlighter_act, 0, 0, btPen3.Width, btPen3.Height);
+			g.DrawImage(global::gInk.Properties.Resources.highlighter_act, 0, 0, btPen[2].Width, btPen[2].Height);
 
 			image_pointer = new Bitmap(btPointer.Width, btPointer.Height);
 			g = Graphics.FromImage(image_pointer);
@@ -141,70 +198,23 @@ namespace gInk
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.pointer_act, 0, 0, btPointer.Width, btPointer.Height);
 
-			btPen1.BackColor = Root.Pen1.Color;
-			btPen2.BackColor = Root.Pen2.Color;
-			btPen3.BackColor = Root.Pen3.Color;
-			btPen4.BackColor = Root.Pen4.Color;
-			btPen5.BackColor = Root.Pen5.Color;
-			btPen1.FlatAppearance.MouseDownBackColor = Root.Pen1.Color;
-			btPen2.FlatAppearance.MouseDownBackColor = Root.Pen2.Color;
-			btPen3.FlatAppearance.MouseDownBackColor = Root.Pen3.Color;
-			btPen4.FlatAppearance.MouseDownBackColor = Root.Pen4.Color;
-			btPen5.FlatAppearance.MouseDownBackColor = Root.Pen5.Color;
-			btPen1.FlatAppearance.MouseOverBackColor = Root.Pen1.Color;
-			btPen2.FlatAppearance.MouseOverBackColor = Root.Pen2.Color;
-			btPen3.FlatAppearance.MouseOverBackColor = Root.Pen3.Color;
-			btPen4.FlatAppearance.MouseOverBackColor = Root.Pen4.Color;
-			btPen5.FlatAppearance.MouseOverBackColor = Root.Pen5.Color;
-			if (Root.Pen1.Transparency >= 100)
+
+			for (int b = 0; b < Root.PenCount; b++)
 			{
-				image_pen1 = image_highlighter;
-				image_pen1_act = image_highlighter_act;
-			}
-			else
-			{
-				image_pen1 = image_pencil;
-				image_pen1_act = image_pencil_act;
-			}
-			if (Root.Pen2.Transparency >= 100)
-			{
-				image_pen2 = image_highlighter;
-				image_pen2_act = image_highlighter_act;
-			}
-			else
-			{
-				image_pen2 = image_pencil;
-				image_pen2_act = image_pencil_act;
-			}
-			if (Root.Pen3.Transparency >= 100)
-			{
-				image_pen3 = image_highlighter;
-				image_pen3_act = image_highlighter_act;
-			}
-			else
-			{
-				image_pen3 = image_pencil;
-				image_pen3_act = image_pencil_act;
-			}
-			if (Root.Pen4.Transparency >= 100)
-			{
-				image_pen4 = image_highlighter;
-				image_pen4_act = image_highlighter_act;
-			}
-			else
-			{
-				image_pen4 = image_pencil;
-				image_pen4_act = image_pencil_act;
-			}
-			if (Root.Pen5.Transparency >= 100)
-			{
-				image_pen5 = image_highlighter;
-				image_pen5_act = image_highlighter_act;
-			}
-			else
-			{
-				image_pen5 = image_pencil;
-				image_pen5_act = image_pencil_act;
+				if (Root.PenAttr[b].Transparency >= 100)
+				{
+					image_pen[b] = new Bitmap(btPen[2].Width, btPen[2].Height);
+					image_pen[b] = image_highlighter;
+					image_pen_act[b] = new Bitmap(btPen[2].Width, btPen[2].Height);
+					image_pen_act[b] = image_highlighter_act;
+				}
+				else
+				{
+					image_pen[b] = new Bitmap(btPen[2].Width, btPen[2].Height);
+					image_pen[b] = image_pencil;
+					image_pen_act[b] = new Bitmap(btPen[2].Width, btPen[2].Height);
+					image_pen_act[b] = image_pencil_act;
+				}
 			}
 
 			LastTickTime = DateTime.Parse("1987-01-01");
@@ -378,96 +388,31 @@ namespace gInk
 
 		public void SelectPen(int pen)
 		{
-			// -1 = pointer, 0 = erasor, >0 = pens
-			if (pen == -1)
+			// -2 = pointer, -1 = erasor, 0+ = pens
+			if (pen == -2)
 			{
-				btPen1.Image = image_pen1;
-				btPen2.Image = image_pen2;
-				btPen3.Image = image_pen3;
-				btPen4.Image = image_pen4;
-				btPen5.Image = image_pen5;
+				for (int b = 0; b < Root.PenCount; b++)
+					btPen[b].Image = image_pen[b];
 				btEraser.Image = image_eraser;
 				btPointer.Image = image_pointer_act;
 				EnterEraserMode(false);
 				Root.Pointer();
 			}
-			else if (pen == 0)
+			else if (pen == -1)
 			{
-				btPen1.Image = image_pen1;
-				btPen2.Image = image_pen2;
-				btPen3.Image = image_pen3;
-				btPen4.Image = image_pen4;
-				btPen5.Image = image_pen5;
+				for (int b = 0; b < Root.PenCount; b++)
+					btPen[b].Image = image_pen[b];
 				btEraser.Image = image_eraser_act;
 				btPointer.Image = image_pointer;
 				EnterEraserMode(true);
 				Root.UnPointer();
 			}
-			else if (pen == 1)
+			else if (pen >= 0)
 			{
-				IC.DefaultDrawingAttributes = Root.Pen1;
-
-				btPen1.Image = image_pen1_act;
-				btPen2.Image = image_pen2;
-				btPen3.Image = image_pen3;
-				btPen4.Image = image_pen4;
-				btPen5.Image = image_pen5;
-				btEraser.Image = image_eraser;
-				btPointer.Image = image_pointer;
-				EnterEraserMode(false);
-				Root.UnPointer();
-			}
-			else if (pen == 2)
-			{
-				IC.DefaultDrawingAttributes = Root.Pen2;
-
-				btPen1.Image = image_pen1;
-				btPen2.Image = image_pen2_act;
-				btPen3.Image = image_pen3;
-				btPen4.Image = image_pen4;
-				btPen5.Image = image_pen5;
-				btEraser.Image = image_eraser;
-				btPointer.Image = image_pointer;
-				EnterEraserMode(false);
-				Root.UnPointer();
-			}
-			else if (pen == 3)
-			{
-				IC.DefaultDrawingAttributes = Root.Pen3;
-
-				btPen1.Image = image_pen1;
-				btPen2.Image = image_pen2;
-				btPen3.Image = image_pen3_act;
-				btPen4.Image = image_pen4;
-				btPen5.Image = image_pen5;
-				btEraser.Image = image_eraser;
-				btPointer.Image = image_pointer;
-				EnterEraserMode(false);
-				Root.UnPointer();
-			}
-			else if (pen == 4)
-			{
-				IC.DefaultDrawingAttributes = Root.Pen4;
-
-				btPen1.Image = image_pen1;
-				btPen2.Image = image_pen2;
-				btPen3.Image = image_pen3;
-				btPen4.Image = image_pen4_act;
-				btPen5.Image = image_pen5;
-				btEraser.Image = image_eraser;
-				btPointer.Image = image_pointer;
-				EnterEraserMode(false);
-				Root.UnPointer();
-			}
-			else if (pen == 5)
-			{
-				IC.DefaultDrawingAttributes = Root.Pen5;
-
-				btPen1.Image = image_pen1;
-				btPen2.Image = image_pen2;
-				btPen3.Image = image_pen3;
-				btPen4.Image = image_pen4;
-				btPen5.Image = image_pen5_act;
+				IC.DefaultDrawingAttributes = Root.PenAttr[pen];
+				for (int b = 0; b < Root.PenCount; b++)
+					btPen[b].Image = image_pen[b];
+				btPen[pen].Image = image_pen_act[pen];
 				btEraser.Image = image_eraser;
 				btPointer.Image = image_pointer;
 				EnterEraserMode(false);
@@ -505,7 +450,7 @@ namespace gInk
 
 		public void btPointer_Click(object sender, EventArgs e)
 		{
-			SelectPen(-1);
+			SelectPen(-2);
 		}
 
 		public void btSnap_Click(object sender, EventArgs e)
@@ -641,7 +586,7 @@ namespace gInk
 					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
 					if ((control & 0x8000) == 0x8000)
 					{
-						SelectPen(1);
+						SelectPen(0);
 					}
 				}
 
@@ -652,7 +597,7 @@ namespace gInk
 					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
 					if ((control & 0x8000) == 0x8000)
 					{
-						SelectPen(2);
+						SelectPen(1);
 					}
 				}
 
@@ -663,7 +608,7 @@ namespace gInk
 					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
 					if ((control & 0x8000) == 0x8000)
 					{
-						SelectPen(3);
+						SelectPen(2);
 					}
 				}
 
@@ -674,7 +619,7 @@ namespace gInk
 					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
 					if ((control & 0x8000) == 0x8000)
 					{
-						SelectPen(4);
+						SelectPen(3);
 					}
 				}
 
@@ -685,7 +630,7 @@ namespace gInk
 					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
 					if ((control & 0x8000) == 0x8000)
 					{
-						SelectPen(5);
+						SelectPen(4);
 					}
 				}
 
@@ -696,7 +641,7 @@ namespace gInk
 					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
 					if ((control & 0x8000) == 0x8000)
 					{
-						SelectPen(0);
+						SelectPen(-1);
 					}
 				}
 			}
@@ -740,7 +685,7 @@ namespace gInk
 					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
 					if ((control & 0x8000) == 0x8000)
 					{
-						SelectPen(-1);
+						SelectPen(-2);
 					}
 				}
 
@@ -788,31 +733,16 @@ namespace gInk
 
 		public void btColor_Click(object sender, EventArgs e)
 		{
-			if ((Button)sender == btPen1)
-			{
-				SelectPen(1);
-			}
-			else if ((Button)sender == btPen2)
-			{
-				SelectPen(2);
-			}
-			else if ((Button)sender == btPen3)
-			{
-				SelectPen(3);
-			}
-			else if ((Button)sender == btPen4)
-			{
-				SelectPen(4);
-			}
-			else if ((Button)sender == btPen5)
-			{
-				SelectPen(5);
-			}
+			for (int b = 0; b < Root.PenCount; b++)
+				if ((Button)sender == btPen[b])
+				{
+					SelectPen(b);
+				}
 		}
 
 		public void btEraser_Click(object sender, EventArgs e)
 		{
-			SelectPen(0);
+			SelectPen(-1);
 		}
 
 		[DllImport("user32.dll")]
