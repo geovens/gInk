@@ -151,6 +151,13 @@ namespace gInk
 			gpButtons.Left = gpButtonsLeft + gpButtons.Width;
 			gpButtons.Top = gpButtonsTop;
 
+			gpPenWidth.Left = gpButtonsLeft + btPenWidth.Left - gpPenWidth.Width / 2 + btPenWidth.Width / 2;
+			gpPenWidth.Top = gpButtonsTop + (gpButtons.Height - gpPenWidth.Height) / 2;
+
+			gpPenWidth.Controls.Add(pboxPenWidthIndicator);
+			pboxPenWidthIndicator.Left = 30;
+			pboxPenWidthIndicator.Top = 0;
+
 			IC = new InkOverlay(this.Handle);
 			IC.CollectionMode = CollectionMode.InkOnly;
 			IC.AutoRedraw = false;
@@ -457,6 +464,8 @@ namespace gInk
 					this.Cursor = System.Windows.Forms.Cursors.Default;
 
 				IC.DefaultDrawingAttributes = Root.PenAttr[pen];
+				if (Root.PenWidthEnabled)
+					IC.DefaultDrawingAttributes.Width = Root.GlobalPenWidth;
 				for (int b = 0; b < Root.MaxPenCount; b++)
 					btPen[b].Image = image_pen[b];
 				btPen[pen].Image = image_pen_act[pen];
@@ -466,6 +475,7 @@ namespace gInk
 				Root.UnPointer();
 			}
 			Root.CurrentPen = pen;
+			Root.gpPenWidthVisible = false;
 			Root.UponButtonsUpdate |= 0x2;
 		}
 
@@ -474,6 +484,8 @@ namespace gInk
 			ToThrough();
 			Root.ClearInk();
 			SaveUndoStrokes();
+			Root.gpPenWidthVisible = false;
+
 			LastTickTime = DateTime.Now;
 			ButtonsEntering = -1;
 		}
@@ -503,7 +515,11 @@ namespace gInk
 
 		private void btPenWidth_Click(object sender, EventArgs e)
 		{
+			if (Root.PointerMode)
+				return;
 
+			Root.gpPenWidthVisible = !Root.gpPenWidthVisible;
+			Root.UponButtonsUpdate |= 0x2;
 		}
 
 		public void btSnap_Click(object sender, EventArgs e)
@@ -513,6 +529,8 @@ namespace gInk
 
 			cursorsnap = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorsnap.Handle);
 			this.Cursor = cursorsnap;
+
+			Root.gpPenWidthVisible = false;
 
 			IC.SetWindowInputRectangle(new Rectangle(0, 0, 1, 1));
 			Root.SnappingX = -1;
@@ -540,6 +558,16 @@ namespace gInk
 		short LastZStatus = 0;
 		short LastYStatus = 0;
 		short LastDStatus = 0;
+
+		private void gpPenWidth_MouseClick(object sender, MouseEventArgs e)
+		{
+			Root.GlobalPenWidth = e.X * e.X / 30;
+			pboxPenWidthIndicator.Left = e.X - pboxPenWidthIndicator.Width / 2;
+			IC.DefaultDrawingAttributes.Width = Root.GlobalPenWidth;
+			Root.gpPenWidthVisible = false;
+			Root.UponButtonsUpdate |= 0x2;
+		}
+
 		short LastESCStatus = 0;
 		private void tiSlide_Tick(object sender, EventArgs e)
 		{
@@ -617,6 +645,11 @@ namespace gInk
 			if (!Root.PointerMode && !this.TopMost)
 				ToTopMost();
 
+			// gpPenWidth status
+
+			if (Root.gpPenWidthVisible != gpPenWidth.Visible)
+				gpPenWidth.Visible = Root.gpPenWidthVisible;
+
 			// hotkeys
 
 			const int VK_LCONTROL = 0xA2;
@@ -635,6 +668,11 @@ namespace gInk
 						{
 							ExitSnapping();
 						}
+						else if (Root.gpPenWidthVisible)
+						{
+							Root.gpPenWidthVisible = false;
+							Root.UponButtonsUpdate |= 0x2;
+						}
 						else if (Root.Snapping == 0)
 							RetreatAndExit();
 					}
@@ -642,6 +680,7 @@ namespace gInk
 				LastESCStatus = retVal;
 			}
 
+			/*
 			if (!Root.FingerInAction)
 			{
 				// Ctrl + 1 : Pen 1
@@ -710,6 +749,7 @@ namespace gInk
 					}
 				}
 			}
+			*/
 
 			if (!Root.FingerInAction && !Root.PointerMode && Root.Snapping <= 0)
 			{

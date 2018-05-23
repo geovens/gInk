@@ -163,6 +163,9 @@
   <data name="penwidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\penwidth.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="penwidthpanel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\penwidthpanel.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="pointer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\pointer.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

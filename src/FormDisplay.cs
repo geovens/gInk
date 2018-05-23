@@ -25,6 +25,7 @@ namespace gInk
 		IntPtr memscreenDc;
 
 		Bitmap gpButtonsImage;
+		Bitmap gpPenWidthImage;
 		SolidBrush TransparentBrush;
 		SolidBrush SemiTransparentBrush;
 
@@ -77,7 +78,8 @@ namespace gInk
 
 			//this.DoubleBuffered = true;
 
-			gpButtonsImage = new Bitmap(2400, 100);
+			gpButtonsImage = new Bitmap(2400, 53);
+			gpPenWidthImage = new Bitmap(200, 43);
 			TransparentBrush = new SolidBrush(Color.Transparent);
 			SemiTransparentBrush = new SolidBrush(Color.FromArgb(120, 255, 255, 255));
 
@@ -126,29 +128,57 @@ namespace gInk
 
 		public void DrawButtons(bool redrawbuttons, bool exiting = false)
 		{
-			int top = Root.FormCollection.gpButtons.Top;
-			int height = Root.FormCollection.gpButtons.Height;
-			int left = Root.FormCollection.gpButtons.Left;
-			int width = Root.FormCollection.gpButtons.Width;
+			int top, height, left, width;
+
+			top = Root.FormCollection.gpButtons.Top;
+			height = Root.FormCollection.gpButtons.Height;
+			left = Root.FormCollection.gpButtons.Left;
+			width = Root.FormCollection.gpButtons.Width;
 			if (redrawbuttons)
 				Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
 
 			if (exiting)
 				gCanvus.FillRectangle(TransparentBrush, left - 120, top, width + 80, height);
 			gCanvus.DrawImage(gpButtonsImage, left, top);
+
+			if (Root.gpPenWidthVisible)
+			{
+				top = Root.FormCollection.gpPenWidth.Top;
+				height = Root.FormCollection.gpPenWidth.Height;
+				left = Root.FormCollection.gpPenWidth.Left;
+				width = Root.FormCollection.gpPenWidth.Width;
+				if (redrawbuttons)
+					Root.FormCollection.gpPenWidth.DrawToBitmap(gpPenWidthImage, new Rectangle(0, 0, width, height));
+
+				gCanvus.DrawImage(gpPenWidthImage, left, top);
+			}
 		}
 		public void DrawButtons(Graphics g, bool redrawbuttons, bool exiting = false)
 		{
-			int top = Root.FormCollection.gpButtons.Top;
-			int height = Root.FormCollection.gpButtons.Height;
-			int left = Root.FormCollection.gpButtons.Left;
-			int width = Root.FormCollection.gpButtons.Width;
+			int top, height, left, width;
+
+			top = Root.FormCollection.gpButtons.Top;
+			height = Root.FormCollection.gpButtons.Height;
+			left = Root.FormCollection.gpButtons.Left;
+			width = Root.FormCollection.gpButtons.Width;
 			if (redrawbuttons)
 				Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
 
 			if (exiting)
 				g.FillRectangle(TransparentBrush, left - 120, top, width + 80, height);
 			g.DrawImage(gpButtonsImage, left, top);
+
+			if (Root.gpPenWidthVisible)
+			{
+				top = Root.FormCollection.gpPenWidth.Top;
+				height = Root.FormCollection.gpPenWidth.Height;
+				left = Root.FormCollection.gpPenWidth.Left;
+				width = Root.FormCollection.gpPenWidth.Width;
+				if (redrawbuttons)
+					Root.FormCollection.gpPenWidth.DrawToBitmap(gpPenWidthImage, new Rectangle(0, 0, width, height));
+
+				g.DrawImage(gpPenWidthImage, left, top);
+			}
 		}
 
 		public void DrawStrokes()

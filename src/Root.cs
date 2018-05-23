@@ -82,6 +82,8 @@ namespace gInk
 		public FormOptions FormOptions;
 
 		public int CurrentPen = 1;  // defaut pen
+		public int GlobalPenWidth = 80;
+		public bool gpPenWidthVisible = false;
 
 		public Root()
 		{
@@ -242,6 +244,7 @@ namespace gInk
 				return;
 
 			Docked = true;
+			gpPenWidthVisible = false;
 			FormCollection.btDock.Image = FormCollection.image_dockback;
 			UponButtonsUpdate |= 0x2;
 		}

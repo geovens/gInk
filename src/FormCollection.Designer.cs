@@ -40,7 +40,11 @@
 			this.btUndo = new System.Windows.Forms.Button();
 			this.tiSlide = new System.Windows.Forms.Timer(this.components);
 			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.gpPenWidth = new System.Windows.Forms.Panel();
+			this.pboxPenWidthIndicator = new System.Windows.Forms.PictureBox();
 			this.gpButtons.SuspendLayout();
+			this.gpPenWidth.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pboxPenWidthIndicator)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// gpButtons
@@ -204,12 +208,33 @@
 			this.tiSlide.Interval = 15;
 			this.tiSlide.Tick += new System.EventHandler(this.tiSlide_Tick);
 			// 
+			// gpPenWidth
+			// 
+			this.gpPenWidth.BackColor = System.Drawing.Color.Gainsboro;
+			this.gpPenWidth.BackgroundImage = global::gInk.Properties.Resources.penwidthpanel;
+			this.gpPenWidth.Controls.Add(this.pboxPenWidthIndicator);
+			this.gpPenWidth.Location = new System.Drawing.Point(116, 217);
+			this.gpPenWidth.Name = "gpPenWidth";
+			this.gpPenWidth.Size = new System.Drawing.Size(200, 43);
+			this.gpPenWidth.TabIndex = 4;
+			this.gpPenWidth.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gpPenWidth_MouseClick);
+			// 
+			// pboxPenWidthIndicator
+			// 
+			this.pboxPenWidthIndicator.BackColor = System.Drawing.Color.White;
+			this.pboxPenWidthIndicator.Location = new System.Drawing.Point(78, 0);
+			this.pboxPenWidthIndicator.Name = "pboxPenWidthIndicator";
+			this.pboxPenWidthIndicator.Size = new System.Drawing.Size(5, 43);
+			this.pboxPenWidthIndicator.TabIndex = 5;
+			this.pboxPenWidthIndicator.TabStop = false;
+			// 
 			// FormCollection
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.BackColor = System.Drawing.Color.White;
 			this.ClientSize = new System.Drawing.Size(863, 526);
+			this.Controls.Add(this.gpPenWidth);
 			this.Controls.Add(this.gpButtons);
 			this.ForeColor = System.Drawing.Color.LawnGreen;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -222,6 +247,8 @@
 			this.Text = "Form1";
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.gpButtons.ResumeLayout(false);
+			this.gpPenWidth.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pboxPenWidthIndicator)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -238,7 +265,9 @@
 		public System.Windows.Forms.Button btSnap;
 		public System.Windows.Forms.Button btPointer;
 		public System.Windows.Forms.Button btPenWidth;
-		private System.Windows.Forms.ToolTip toolTip;
+		public System.Windows.Forms.ToolTip toolTip;
+		public System.Windows.Forms.Panel gpPenWidth;
+		private System.Windows.Forms.PictureBox pboxPenWidthIndicator;
 	}
 }
 
