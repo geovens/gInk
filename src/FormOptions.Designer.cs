@@ -39,6 +39,8 @@
 			this.tbSnapPath = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.btSnapPath = new System.Windows.Forms.Button();
+			this.tbHotkey = new System.Windows.Forms.TextBox();
+			this.label2 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// cbEraserEnabled
@@ -144,12 +146,33 @@
 			this.btSnapPath.UseVisualStyleBackColor = true;
 			this.btSnapPath.Click += new System.EventHandler(this.btSnapPath_Click);
 			// 
+			// tbHotkey
+			// 
+			this.tbHotkey.Location = new System.Drawing.Point(350, 252);
+			this.tbHotkey.Name = "tbHotkey";
+			this.tbHotkey.ReadOnly = true;
+			this.tbHotkey.Size = new System.Drawing.Size(148, 20);
+			this.tbHotkey.TabIndex = 1;
+			this.tbHotkey.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbHotkey_KeyDown);
+			this.tbHotkey.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbHotkey_KeyUp);
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(347, 235);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(41, 13);
+			this.label2.TabIndex = 2;
+			this.label2.Text = "Hotkey";
+			// 
 			// FormOptions
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(538, 336);
 			this.Controls.Add(this.btSnapPath);
+			this.Controls.Add(this.label2);
+			this.Controls.Add(this.tbHotkey);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.tbSnapPath);
 			this.Controls.Add(this.cbWhiteIcon);
@@ -160,7 +183,7 @@
 			this.Controls.Add(this.cbWidthEnabled);
 			this.Controls.Add(this.cbEraserEnabled);
 			this.Name = "FormOptions";
-			this.Text = "gInk - Options";
+			this.Text = "Options - gInk";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormOptions_FormClosing);
 			this.Load += new System.EventHandler(this.FormOptions_Load);
 			this.ResumeLayout(false);
@@ -181,5 +204,7 @@
 		private System.Windows.Forms.TextBox tbSnapPath;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Button btSnapPath;
+		private System.Windows.Forms.TextBox tbHotkey;
+		private System.Windows.Forms.Label label2;
 	}
 }

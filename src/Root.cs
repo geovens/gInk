@@ -53,7 +53,7 @@ namespace gInk
 		public bool ClearEnabled = true;
 		public DrawingAttributes[] PenAttr = new DrawingAttributes[MaxPenCount];
 		public bool Hotkey_Control, Hotkey_Alt, Hotkey_Shift, Hotkey_Win;
-		public int Hotkey;
+		public int Hotkey = 0;
 		public bool AutoScroll;
 		public bool WhiteTrayIcon;
 		public string SnapshotBasePath;
@@ -107,13 +107,7 @@ namespace gInk
 			trayIcon.BalloonTipClicked += TrayIcon_BalloonTipClicked;
 			SetTrayIconColor();
 
-			int modifier = 0;
-			if (Hotkey_Control) modifier |= 0x2;
-			if (Hotkey_Alt) modifier |= 0x1;
-			if (Hotkey_Shift) modifier |= 0x4;
-			if (Hotkey_Win) modifier |= 0x8;
-			if (modifier != 0)
-				RegisterHotKey(IntPtr.Zero, 0, modifier, Hotkey);
+			SetHotkey();
 
 			TestMessageFilter mf = new TestMessageFilter(this);
 			Application.AddMessageFilter(mf);
@@ -476,8 +470,10 @@ namespace gInk
 								Hotkey_Win = true;
 							else
 								Hotkey_Win = false;
-							if (sPara.Length > 0)
+							if (Hotkey_Control || Hotkey_Alt || Hotkey_Shift || Hotkey_Win)
 								Hotkey = sPara.Substring(sPara.Length - 1).ToCharArray()[0];
+							else
+								Hotkey = 0;
 							break;
 						case "WHITE_TRAY_ICON":
 							if (sPara.ToUpper() == "TRUE" || sPara == "1" || sPara.ToUpper() == "ON")
@@ -631,7 +627,10 @@ namespace gInk
 								sPara += "Shift + ";
 							if (Hotkey_Win)
 								sPara += "Win + ";
-							sPara += (char)Hotkey;
+							if (sPara == "" || Hotkey == 0)
+								sPara = "None";
+							else
+								sPara += (char)Hotkey;
 
 							break;
 						case "WHITE_TRAY_ICON":
@@ -714,7 +713,18 @@ namespace gInk
 			FormOptions.Show();
 		}
 
-		private void OnExit(object sender, EventArgs e)
+		public void SetHotkey()
+		{
+			int modifier = 0;
+			if (Hotkey_Control) modifier |= 0x2;
+			if (Hotkey_Alt) modifier |= 0x1;
+			if (Hotkey_Shift) modifier |= 0x4;
+			if (Hotkey_Win) modifier |= 0x8;
+			if (modifier != 0)
+				RegisterHotKey(IntPtr.Zero, 0, modifier, Hotkey);
+		}
+
+		public void UnsetHotkey()
 		{
 			int modifier = 0;
 			if (Hotkey_Control) modifier |= 0x2;
@@ -723,6 +733,11 @@ namespace gInk
 			if (Hotkey_Win) modifier |= 0x8;
 			if (modifier != 0)
 				UnregisterHotKey(IntPtr.Zero, 0);
+		}
+
+		private void OnExit(object sender, EventArgs e)
+		{
+			UnsetHotkey();
 
 			trayIcon.Dispose();
 			Application.Exit();
