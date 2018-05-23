@@ -50,6 +50,7 @@
 			// gpButtons
 			// 
 			this.gpButtons.BackColor = System.Drawing.Color.WhiteSmoke;
+			this.gpButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.gpButtons.Controls.Add(this.btDock);
 			this.gpButtons.Controls.Add(this.btPenWidth);
 			this.gpButtons.Controls.Add(this.btEraser);
@@ -210,21 +211,23 @@
 			// 
 			// gpPenWidth
 			// 
-			this.gpPenWidth.BackColor = System.Drawing.Color.Gainsboro;
+			this.gpPenWidth.BackColor = System.Drawing.Color.WhiteSmoke;
 			this.gpPenWidth.BackgroundImage = global::gInk.Properties.Resources.penwidthpanel;
+			this.gpPenWidth.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+			this.gpPenWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.gpPenWidth.Controls.Add(this.pboxPenWidthIndicator);
 			this.gpPenWidth.Location = new System.Drawing.Point(116, 217);
 			this.gpPenWidth.Name = "gpPenWidth";
-			this.gpPenWidth.Size = new System.Drawing.Size(200, 43);
+			this.gpPenWidth.Size = new System.Drawing.Size(200, 53);
 			this.gpPenWidth.TabIndex = 4;
 			this.gpPenWidth.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gpPenWidth_MouseClick);
 			// 
 			// pboxPenWidthIndicator
 			// 
-			this.pboxPenWidthIndicator.BackColor = System.Drawing.Color.White;
+			this.pboxPenWidthIndicator.BackColor = System.Drawing.Color.Orange;
 			this.pboxPenWidthIndicator.Location = new System.Drawing.Point(78, 0);
 			this.pboxPenWidthIndicator.Name = "pboxPenWidthIndicator";
-			this.pboxPenWidthIndicator.Size = new System.Drawing.Size(5, 43);
+			this.pboxPenWidthIndicator.Size = new System.Drawing.Size(5, 53);
 			this.pboxPenWidthIndicator.TabIndex = 5;
 			this.pboxPenWidthIndicator.TabStop = false;
 			// 

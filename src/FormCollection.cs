@@ -69,16 +69,6 @@ namespace gInk
 				}
 			}
 			cumulatedleft += 40;
-			if (Root.PenWidthEnabled)
-			{
-				btPenWidth.Visible = true;
-				btPenWidth.Left = cumulatedleft;
-				cumulatedleft += 50;
-			}
-			else
-			{
-				btPenWidth.Visible = false;
-			}
 			if (Root.EraserEnabled)
 			{
 				btEraser.Visible = true;
@@ -99,6 +89,17 @@ namespace gInk
 			{
 				btPointer.Visible = false;
 			}
+			cumulatedleft += 40;
+			if (Root.PenWidthEnabled)
+			{
+				btPenWidth.Visible = true;
+				btPenWidth.Left = cumulatedleft;
+				cumulatedleft += 50;
+			}
+			else
+			{
+				btPenWidth.Visible = false;
+			}
 			if (Root.SnapEnabled)
 			{
 				btSnap.Visible = true;
@@ -109,7 +110,6 @@ namespace gInk
 			{
 				btSnap.Visible = false;
 			}
-			cumulatedleft += 40;
 			if (Root.UndoEnabled)
 			{
 				btUndo.Visible = true;
@@ -152,7 +152,7 @@ namespace gInk
 			gpButtons.Top = gpButtonsTop;
 
 			gpPenWidth.Left = gpButtonsLeft + btPenWidth.Left - gpPenWidth.Width / 2 + btPenWidth.Width / 2;
-			gpPenWidth.Top = gpButtonsTop + (gpButtons.Height - gpPenWidth.Height) / 2;
+			gpPenWidth.Top = gpButtonsTop - gpPenWidth.Height - 10;
 
 			gpPenWidth.Controls.Add(pboxPenWidthIndicator);
 			pboxPenWidthIndicator.Left = 30;
@@ -475,8 +475,13 @@ namespace gInk
 				Root.UnPointer();
 			}
 			Root.CurrentPen = pen;
-			Root.gpPenWidthVisible = false;
-			Root.UponButtonsUpdate |= 0x2;
+			if (Root.gpPenWidthVisible)
+			{
+				Root.gpPenWidthVisible = false;
+				Root.UponSubPanelUpdate = true;
+			}
+			else
+				Root.UponButtonsUpdate |= 0x2;
 		}
 
 		public void RetreatAndExit()
@@ -519,7 +524,10 @@ namespace gInk
 				return;
 
 			Root.gpPenWidthVisible = !Root.gpPenWidthVisible;
-			Root.UponButtonsUpdate |= 0x2;
+			if (Root.gpPenWidthVisible)
+				Root.UponButtonsUpdate |= 0x2;
+			else
+				Root.UponSubPanelUpdate = true;
 		}
 
 		public void btSnap_Click(object sender, EventArgs e)
@@ -561,11 +569,14 @@ namespace gInk
 
 		private void gpPenWidth_MouseClick(object sender, MouseEventArgs e)
 		{
+			if (e.X < 10 || gpPenWidth.Width - e.X < 10)
+				return;
+
 			Root.GlobalPenWidth = e.X * e.X / 30;
 			pboxPenWidthIndicator.Left = e.X - pboxPenWidthIndicator.Width / 2;
 			IC.DefaultDrawingAttributes.Width = Root.GlobalPenWidth;
 			Root.gpPenWidthVisible = false;
-			Root.UponButtonsUpdate |= 0x2;
+			Root.UponSubPanelUpdate = true;
 		}
 
 		short LastESCStatus = 0;

@@ -68,6 +68,7 @@ namespace gInk
 		public int UponButtonsUpdate = 0;
 		public bool UponTakingSnap = false;
 		public bool UponBalloonSnap = false;
+		public bool UponSubPanelUpdate = false;
 
 		public Ink[] UndoStrokes;
 		//public Ink UponUndoStrokes;

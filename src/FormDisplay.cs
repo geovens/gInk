@@ -79,7 +79,7 @@ namespace gInk
 			//this.DoubleBuffered = true;
 
 			gpButtonsImage = new Bitmap(2400, 53);
-			gpPenWidthImage = new Bitmap(200, 43);
+			gpPenWidthImage = new Bitmap(200, 53);
 			TransparentBrush = new SolidBrush(Color.Transparent);
 			SemiTransparentBrush = new SolidBrush(Color.FromArgb(120, 255, 255, 255));
 
@@ -467,6 +467,15 @@ namespace gInk
 					DrawButtons(false, true);
 				UpdateFormDisplay(true);
 				Root.UponButtonsUpdate = 0;
+			}
+
+			else if (Root.UponSubPanelUpdate)
+			{
+				ClearCanvus();
+				DrawStrokes();
+				DrawButtons(false);
+				UpdateFormDisplay(true);
+				Root.UponSubPanelUpdate = false;
 			}
 
 			if (Root.AutoScroll && Root.PointerMode)
