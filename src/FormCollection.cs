@@ -17,14 +17,14 @@ namespace gInk
 		public InkOverlay IC;
 
 		public Button[] btPen;
-		public Bitmap image_exit, image_clear, image_undo, image_snap;
+		public Bitmap image_exit, image_clear, image_undo, image_snap, image_penwidth;
 		public Bitmap image_dock, image_dockback;
 		public Bitmap image_pencil, image_highlighter, image_pencil_act, image_highlighter_act;
 		public Bitmap image_pointer, image_pointer_act;
 		public Bitmap[] image_pen;
 		public Bitmap[] image_pen_act;
 		public Bitmap image_eraser_act, image_eraser;
-		public System.Windows.Forms.Cursor cursorred, cursorblue, cursoryellow;
+		public System.Windows.Forms.Cursor cursorred, cursorsnap;
 
 		public int ButtonsEntering = 0;  // -1 = exiting
 		public int gpButtonsLeft, gpButtonsTop;
@@ -68,11 +68,22 @@ namespace gInk
 					btPen[b].Visible = false;
 				}
 			}
+			cumulatedleft += 40;
+			if (Root.PenWidthEnabled)
+			{
+				btPenWidth.Visible = true;
+				btPenWidth.Left = cumulatedleft;
+				cumulatedleft += 50;
+			}
+			else
+			{
+				btPenWidth.Visible = false;
+			}
 			if (Root.EraserEnabled)
 			{
 				btEraser.Visible = true;
-				btEraser.Left = cumulatedleft + 40;
-				cumulatedleft += 50 + 40;
+				btEraser.Left = cumulatedleft;
+				cumulatedleft += 50;
 			}
 			else
 			{
@@ -91,13 +102,14 @@ namespace gInk
 			if (Root.SnapEnabled)
 			{
 				btSnap.Visible = true;
-				btSnap.Left = cumulatedleft + 40;
-				cumulatedleft += 50 + 40;
+				btSnap.Left = cumulatedleft;
+				cumulatedleft += 50;
 			}
 			else
 			{
 				btSnap.Visible = false;
 			}
+			cumulatedleft += 40;
 			if (Root.UndoEnabled)
 			{
 				btUndo.Visible = true;
@@ -155,10 +167,7 @@ namespace gInk
 			IC.DefaultDrawingAttributes.AntiAliased = true;
 
 			cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
-			//cursoryellow = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursoryellow.Handle);
-			//cursorblue = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorblue.Handle);
 			IC.Cursor = cursorred;
-			this.Cursor = cursorred;
 			IC.Enabled = true;
 
 			image_exit = new Bitmap(btStop.Width, btStop.Height);
@@ -190,6 +199,11 @@ namespace gInk
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.snap, 0, 0, btSnap.Width, btSnap.Height);
 			btSnap.Image = image_snap;
+			image_penwidth = new Bitmap(btPenWidth.Width, btPenWidth.Height);
+			g = Graphics.FromImage(image_penwidth);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.penwidth, 0, 0, btPenWidth.Width, btPenWidth.Height);
+			btPenWidth.Image = image_penwidth;
 			image_dock = new Bitmap(btDock.Width, btDock.Height);
 			g = Graphics.FromImage(image_dock);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
@@ -409,15 +423,6 @@ namespace gInk
 			}
 		}
 
-		public void ExitSnapping()
-		{
-			IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
-			Root.SnappingX = -1;
-			Root.SnappingY = -1;
-			Root.Snapping = -60;
-			Root.SelectPen(Root.CurrentPen);
-		}
-
 		public void SelectPen(int pen)
 		{
 			// -2 = pointer, -1 = erasor, 0+ = pens
@@ -432,6 +437,11 @@ namespace gInk
 			}
 			else if (pen == -1)
 			{
+				cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
+				IC.Cursor = cursorred;
+				if (this.Cursor != System.Windows.Forms.Cursors.Default)
+					this.Cursor = System.Windows.Forms.Cursors.Default;
+
 				for (int b = 0; b < Root.MaxPenCount; b++)
 					btPen[b].Image = image_pen[b];
 				btEraser.Image = image_eraser_act;
@@ -441,6 +451,11 @@ namespace gInk
 			}
 			else if (pen >= 0)
 			{
+				cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
+				IC.Cursor = cursorred;
+				if (this.Cursor != System.Windows.Forms.Cursors.Default)
+					this.Cursor = System.Windows.Forms.Cursors.Default;
+
 				IC.DefaultDrawingAttributes = Root.PenAttr[pen];
 				for (int b = 0; b < Root.MaxPenCount; b++)
 					btPen[b].Image = image_pen[b];
@@ -485,10 +500,19 @@ namespace gInk
 			SelectPen(-2);
 		}
 
+
+		private void btPenWidth_Click(object sender, EventArgs e)
+		{
+
+		}
+
 		public void btSnap_Click(object sender, EventArgs e)
 		{
 			if (Root.Snapping > 0)
 				return;
+
+			cursorsnap = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorsnap.Handle);
+			this.Cursor = cursorsnap;
 
 			IC.SetWindowInputRectangle(new Rectangle(0, 0, 1, 1));
 			Root.SnappingX = -1;
@@ -496,6 +520,15 @@ namespace gInk
 			Root.SnappingRect = new Rectangle(0, 0, 0, 0);
 			Root.Snapping = 1;
 			Root.UnPointer();
+		}
+
+		public void ExitSnapping()
+		{
+			IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+			Root.SnappingX = -1;
+			Root.SnappingY = -1;
+			Root.Snapping = -60;
+			Root.SelectPen(Root.CurrentPen);
 		}
 
 		public void btStop_Click(object sender, EventArgs e)

@@ -71,6 +71,16 @@ namespace gInk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        public static System.Drawing.Icon cursorsnap {
+            get {
+                object obj = ResourceManager.GetObject("cursorsnap", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         public static System.Drawing.Bitmap dock {
@@ -186,6 +196,16 @@ namespace gInk.Properties {
         public static System.Drawing.Bitmap pencil_act {
             get {
                 object obj = ResourceManager.GetObject("pencil_act", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap penwidth {
+            get {
+                object obj = ResourceManager.GetObject("penwidth", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

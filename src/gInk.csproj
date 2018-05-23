@@ -90,6 +90,12 @@
     <Compile Include="FormCollection.Designer.cs">
       <DependentUpon>FormCollection.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormOptions.Designer.cs">
+      <DependentUpon>FormOptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Root.cs" />
@@ -106,6 +112,9 @@
     <EmbeddedResource Include="FormCollection.resx">
       <DependentUpon>FormCollection.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormOptions.resx">
+      <DependentUpon>FormOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -184,11 +193,13 @@
     <None Include="buttonback.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="penwidth.png" />
     <None Include="pointer_act.png" />
     <None Include="pointer.png" />
     <None Include="snap.png" />
     <None Include="dock.png" />
     <None Include="dockback.png" />
+    <None Include="cursorsnap.ico" />
     <Content Include="icon_red.ico" />
     <None Include="icon_white.ico" />
   </ItemGroup>

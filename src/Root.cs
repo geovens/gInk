@@ -51,7 +51,6 @@ namespace gInk
 		public bool SnapEnabled = true;
 		public bool UndoEnabled = true;
 		public bool ClearEnabled = true;
-		public bool WidthEnabled = false;
 		public DrawingAttributes[] PenAttr = new DrawingAttributes[MaxPenCount];
 		public bool Hotkey_Control, Hotkey_Alt, Hotkey_Shift, Hotkey_Win;
 		public int Hotkey;
@@ -75,11 +74,12 @@ namespace gInk
 		public int UndoP;
 		public int UndoDepth, RedoDepth;
 
-		private NotifyIcon trayIcon;
-		private ContextMenu trayMenu;
+		public NotifyIcon trayIcon;
+		public ContextMenu trayMenu;
 		public FormCollection FormCollection;
 		public FormDisplay FormDisplay;
 		public FormButtonHitter FormButtonHitter;
+		public FormOptions FormOptions;
 
 		public int CurrentPen = 1;  // defaut pen
 
@@ -89,10 +89,6 @@ namespace gInk
 			SetDefaultConfig();
 			ReadOptions("pens.ini");
 			ReadOptions("config.ini");
-
-			// temp
-			SaveOptions("pens.ini");
-			SaveOptions("config.ini");
 
 			trayMenu = new ContextMenu();
 			trayMenu.MenuItems.Add("About", OnAbout);
@@ -104,16 +100,12 @@ namespace gInk
 			Size size = SystemInformation.SmallIconSize;
 			trayIcon = new NotifyIcon();
 			trayIcon.Text = "gInk";
-			if (WhiteTrayIcon)
-				trayIcon.Icon = new Icon("icon_white.ico");
-			else
-				trayIcon.Icon = new Icon("icon_red.ico");
 			trayIcon.ContextMenu = trayMenu;
 			trayIcon.Visible = true;
 			trayIcon.MouseClick += TrayIcon_Click;
 			trayIcon.BalloonTipText = "Snapshot saved. Click here to browse snapshots.";
 			trayIcon.BalloonTipClicked += TrayIcon_BalloonTipClicked;
-
+			SetTrayIconColor();
 
 			int modifier = 0;
 			if (Hotkey_Control) modifier |= 0x2;
@@ -288,8 +280,7 @@ namespace gInk
 			PointerMode = false;
 			FormCollection.ToUnThrough();
 			FormCollection.ToTopMost();
-			FormCollection.Cursor = FormCollection.cursorred;
-			FormCollection.IC.Cursor = FormCollection.cursorred;
+
 			FormButtonHitter.Hide();
 		}
 
@@ -367,6 +358,26 @@ namespace gInk
 			AutoScroll = false;
 			WhiteTrayIcon = false;
 			SnapshotBasePath = "%USERPROFILE%/Pictures/gInk/";
+		}
+
+		public void SetTrayIconColor()
+		{
+			if (WhiteTrayIcon)
+			{
+				if (File.Exists("icon_white.ico"))
+					trayIcon.Icon = new Icon("icon_white.ico");
+				else
+					trayIcon.Icon = global::gInk.Properties.Resources.icon_white;
+			}
+			else
+			{
+				if (File.Exists("icon_red.ico"))
+					trayIcon.Icon = new Icon("icon_red.ico");
+				else
+					trayIcon.Icon = global::gInk.Properties.Resources.icon_red;
+			}
+
+
 		}
 
 		public void ReadOptions(string file)
@@ -490,6 +501,8 @@ namespace gInk
 						case "PEN_WIDTH_ICON":
 							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
 								PenWidthEnabled = false;
+							else if (sPara.ToUpper() == "TRUE" || sPara == "1" || sPara.ToUpper() == "ON")
+								PenWidthEnabled = true;
 							break;
 						case "SNAPSHOT_ICON":
 							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
@@ -696,7 +709,9 @@ namespace gInk
 
 		private void OnOptions(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start("notepad.exe", "config.ini");
+			//System.Diagnostics.Process.Start("notepad.exe", "config.ini");
+			FormOptions = new FormOptions(this);
+			FormOptions.Show();
 		}
 
 		private void OnExit(object sender, EventArgs e)

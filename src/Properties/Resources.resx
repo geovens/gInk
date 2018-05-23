@@ -121,6 +121,9 @@
   <data name="cursorred" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\cursorred.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="cursorsnap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\cursorsnap.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="dock" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\dock.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -156,6 +159,9 @@
   </data>
   <data name="pencil_act" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\pencil_act.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="penwidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\penwidth.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="pointer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\pointer.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

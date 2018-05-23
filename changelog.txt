@@ -1,7 +1,9 @@
 
-v0.4.2 (ongoing)
+v0.5.0 (ongoing)
 =================
-- Add hotkeys for tools (thanks to MrBricodage).
+- Add options window.
+- Add hotkeys for tools (contributed by MrBricodage).
+- Add a new mouse cursor for snapshot.
 - Save undo history when exit drawing, for restoring inks after accidental exit.
 
 v0.4.1 (Mar. 13, 2017)
