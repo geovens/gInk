@@ -50,7 +50,6 @@
 			// gpButtons
 			// 
 			this.gpButtons.BackColor = System.Drawing.Color.WhiteSmoke;
-			this.gpButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.gpButtons.Controls.Add(this.btDock);
 			this.gpButtons.Controls.Add(this.btPenWidth);
 			this.gpButtons.Controls.Add(this.btEraser);
@@ -214,7 +213,6 @@
 			this.gpPenWidth.BackColor = System.Drawing.Color.WhiteSmoke;
 			this.gpPenWidth.BackgroundImage = global::gInk.Properties.Resources.penwidthpanel;
 			this.gpPenWidth.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			this.gpPenWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.gpPenWidth.Controls.Add(this.pboxPenWidthIndicator);
 			this.gpPenWidth.Location = new System.Drawing.Point(116, 217);
 			this.gpPenWidth.Name = "gpPenWidth";

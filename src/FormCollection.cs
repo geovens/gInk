@@ -132,6 +132,7 @@ namespace gInk
 			}
 			btStop.Left = cumulatedleft + 40;
 			gpButtons.Width = btStop.Right + 20;
+			
 
 			this.Left = SystemInformation.VirtualScreen.Left;
 			this.Top = SystemInformation.VirtualScreen.Top;
@@ -155,7 +156,7 @@ namespace gInk
 			gpPenWidth.Top = gpButtonsTop - gpPenWidth.Height - 10;
 
 			gpPenWidth.Controls.Add(pboxPenWidthIndicator);
-			pboxPenWidthIndicator.Left = 30;
+			pboxPenWidthIndicator.Left = 45;
 			pboxPenWidthIndicator.Top = 0;
 
 			IC = new InkOverlay(this.Handle);
@@ -308,6 +309,12 @@ namespace gInk
 
 		private void IC_MouseDown(object sender, CancelMouseEventArgs e)
 		{
+			if (Root.gpPenWidthVisible)
+			{
+				Root.gpPenWidthVisible = false;
+				Root.UponSubPanelUpdate = true;
+			}
+
 			Root.FingerInAction = true;
 			if (Root.Snapping == 1)
 			{

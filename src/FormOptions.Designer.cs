@@ -125,7 +125,7 @@
 			// 
 			this.tbSnapPath.Location = new System.Drawing.Point(350, 206);
 			this.tbSnapPath.Name = "tbSnapPath";
-			this.tbSnapPath.Size = new System.Drawing.Size(148, 21);
+			this.tbSnapPath.Size = new System.Drawing.Size(168, 21);
 			this.tbSnapPath.TabIndex = 1;
 			// 
 			// label1
@@ -139,9 +139,9 @@
 			// 
 			// btSnapPath
 			// 
-			this.btSnapPath.Location = new System.Drawing.Point(499, 205);
+			this.btSnapPath.Location = new System.Drawing.Point(528, 205);
 			this.btSnapPath.Name = "btSnapPath";
-			this.btSnapPath.Size = new System.Drawing.Size(27, 20);
+			this.btSnapPath.Size = new System.Drawing.Size(31, 21);
 			this.btSnapPath.TabIndex = 3;
 			this.btSnapPath.Text = "...";
 			this.btSnapPath.UseVisualStyleBackColor = true;
@@ -152,7 +152,7 @@
 			this.tbHotkey.Location = new System.Drawing.Point(350, 248);
 			this.tbHotkey.Name = "tbHotkey";
 			this.tbHotkey.ReadOnly = true;
-			this.tbHotkey.Size = new System.Drawing.Size(148, 21);
+			this.tbHotkey.Size = new System.Drawing.Size(168, 21);
 			this.tbHotkey.TabIndex = 1;
 			this.tbHotkey.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbHotkey_KeyDown);
 			this.tbHotkey.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbHotkey_KeyUp);
@@ -162,9 +162,9 @@
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(347, 232);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(41, 12);
+			this.label2.Size = new System.Drawing.Size(221, 12);
 			this.label2.TabIndex = 2;
-			this.label2.Text = "Hotkey";
+			this.label2.Text = "Hotkey (press ESC to disable hotkey)";
 			// 
 			// label3
 			// 
