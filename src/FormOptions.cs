@@ -57,6 +57,37 @@ namespace gInk
 			{
 				tbHotkey.Text = "None";
 			}
+
+			Label[] lbPens = new Label[10];
+			CheckBox[] cbPens = new CheckBox[10];
+			PictureBox[] pboxPens = new PictureBox[10];
+			TextBox[] tbPensAlpha = new TextBox[10];
+			TextBox[] tbPensWidth = new TextBox[10];
+			for (int p = 0; p < 10; p++)
+			{
+				int top = p * 25 + 40;
+				lbPens[p] = new Label();
+				lbPens[p].Left = 20;
+				lbPens[p].Top = top;
+				lbPens[p].Text = "Pen " + p.ToString();
+
+				cbPens[p] = new CheckBox();
+				cbPens[p].Left = 50;
+				cbPens[p].Top = top;
+				cbPens[p].Text = "";
+				cbPens[p].Checked = Root.PenEnabled[p];
+
+				pboxPens[p] = new PictureBox();
+				pboxPens[p].Left = 70;
+				pboxPens[p].Top = top;
+				pboxPens[p].Width = 15;
+				pboxPens[p].Height = 15;
+				pboxPens[p].BackColor = Root.PenAttr[p].Color;
+
+				this.Controls.Add(lbPens[p]);
+				this.Controls.Add(cbPens[p]);
+				this.Controls.Add(pboxPens[p]);
+			}
 		}
 
 		private void FormOptions_FormClosing(object sender, FormClosingEventArgs e)

@@ -94,9 +94,8 @@ namespace gInk
 			ReadOptions("config.ini");
 
 			trayMenu = new ContextMenu();
-			trayMenu.MenuItems.Add("About", OnAbout);
-			trayMenu.MenuItems.Add("Pen Configurations", OnPenSetting);
-			trayMenu.MenuItems.Add("Options", OnOptions);
+			trayMenu.MenuItems.Add("About...", OnAbout);
+			trayMenu.MenuItems.Add("Options...", OnOptions);
 			trayMenu.MenuItems.Add("-");
 			trayMenu.MenuItems.Add("Exit", OnExit);
 
