@@ -273,6 +273,13 @@ namespace gInk
 				SelectObject(hDest, hBmp);
 				bool b = BitBlt(hDest, 0, 0, rect.Width, rect.Height, screenDc, rect.Left, rect.Top, (uint)(CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt));
 				tempbmp = Bitmap.FromHbitmap(hBmp);
+
+				if (!b)
+				{
+					Graphics g = Graphics.FromImage(tempbmp);
+					g.CopyFromScreen(rect.Left, rect.Top, 0, 0, new Size(rect.Width, rect.Height));
+				}
+
 				Clipboard.SetImage(tempbmp);
 				DateTime now = DateTime.Now;
 				string nowstr = now.Year.ToString() + "-" + now.Month.ToString("D2") + "-" + now.Day.ToString("D2") + " " + now.Hour.ToString("D2") + "-" + now.Minute.ToString("D2") + "-" + now.Second.ToString("D2");
