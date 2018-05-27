@@ -561,7 +561,7 @@ namespace gInk
 					if (sName.StartsWith("PEN"))
 					{
 						int penid = 0;
-						if (int.TryParse(sName.Substring(3, 1), out penid))
+						if (int.TryParse(sName.Substring(3, 1), out penid) && penid >= 0 && penid < MaxPenCount)
 						{
 							if (sName.EndsWith("_ENABLED"))
 							{
@@ -570,29 +570,25 @@ namespace gInk
 								else
 									sPara = "False";
 							}
-							int penc = 0;
-							if (int.TryParse(sPara, out penc))
+							else if (sName.EndsWith("_RED"))
 							{
-								if (sName.EndsWith("_RED"))
-								{
-									sPara = PenAttr[penid].Color.R.ToString();
-								}
-								else if (sName.EndsWith("_GREEN") && penc >= 0 && penc <= 255)
-								{
-									sPara = PenAttr[penid].Color.G.ToString();
-								}
-								else if (sName.EndsWith("_BLUE") && penc >= 0 && penc <= 255)
-								{
-									sPara = PenAttr[penid].Color.B.ToString();
-								}
-								else if (sName.EndsWith("_ALPHA") && penc >= 0 && penc <= 255)
-								{
-									sPara = PenAttr[penid].Transparency.ToString();
-								}
-								else if (sName.EndsWith("_WIDTH") && penc >= 30 && penc <= 3000)
-								{
-									sPara = PenAttr[penid].Width.ToString();
-								}
+								sPara = PenAttr[penid].Color.R.ToString();
+							}
+							else if (sName.EndsWith("_GREEN"))
+							{
+								sPara = PenAttr[penid].Color.G.ToString();
+							}
+							else if (sName.EndsWith("_BLUE"))
+							{
+								sPara = PenAttr[penid].Color.B.ToString();
+							}
+							else if (sName.EndsWith("_ALPHA"))
+							{
+								sPara = (255 - PenAttr[penid].Transparency).ToString();
+							}
+							else if (sName.EndsWith("_WIDTH"))
+							{
+								sPara = PenAttr[penid].Width.ToString();
 							}
 						}
 

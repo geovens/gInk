@@ -257,16 +257,16 @@ namespace gInk
 			{
 				if (Root.PenAttr[b].Transparency >= 100)
 				{
-					image_pen[b] = new Bitmap(btPen[2].Width, btPen[2].Height);
+					image_pen[b] = new Bitmap(btPen[b].Width, btPen[b].Height);
 					image_pen[b] = image_highlighter;
-					image_pen_act[b] = new Bitmap(btPen[2].Width, btPen[2].Height);
+					image_pen_act[b] = new Bitmap(btPen[b].Width, btPen[b].Height);
 					image_pen_act[b] = image_highlighter_act;
 				}
 				else
 				{
-					image_pen[b] = new Bitmap(btPen[2].Width, btPen[2].Height);
+					image_pen[b] = new Bitmap(btPen[b].Width, btPen[b].Height);
 					image_pen[b] = image_pencil;
-					image_pen_act[b] = new Bitmap(btPen[2].Width, btPen[2].Height);
+					image_pen_act[b] = new Bitmap(btPen[b].Width, btPen[b].Height);
 					image_pen_act[b] = image_pencil_act;
 				}
 			}

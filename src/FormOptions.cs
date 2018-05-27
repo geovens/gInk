@@ -16,8 +16,8 @@ namespace gInk
 		Label[] lbPens = new Label[10];
 		CheckBox[] cbPens = new CheckBox[10];
 		PictureBox[] pboxPens = new PictureBox[10];
-		TextBox[] tbPensAlpha = new TextBox[10];
-		TextBox[] tbPensWidth = new TextBox[10];
+		ComboBox[] comboPensAlpha = new ComboBox[10];
+		ComboBox[] comboPensWidth = new ComboBox[10];
 
 		private bool HotkeyJustSet = false;
 
@@ -89,10 +89,34 @@ namespace gInk
 				pboxPens[p].BackColor = Root.PenAttr[p].Color;
 				pboxPens[p].Click += pboxPens_Click;
 
+				comboPensAlpha[p] = new ComboBox();
+				comboPensAlpha[p].Items.AddRange(new object[] {"Very narrow","Narrow","Wide","Very wide"});
+				comboPensAlpha[p].Left = 160;
+				comboPensAlpha[p].Top = top - 2;
+				comboPensAlpha[p].Width = 50;
+				comboPensAlpha[p].SelectionChangeCommitted += comboPensAlpha_SelectionChangeCommitted;
+
 				this.Controls.Add(lbPens[p]);
 				this.Controls.Add(cbPens[p]);
 				this.Controls.Add(pboxPens[p]);
+				this.Controls.Add(comboPensAlpha[p]);
 			}
+		}
+
+		private void comboPensAlpha_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			for (int p = 0; p < Root.MaxPenCount; p++)
+				if ((ComboBox)sender == comboPensAlpha[p])
+				{
+					if (comboPensAlpha[p].Text == "Very narrow")
+						comboPensAlpha[p].Text = "30";
+					else if (comboPensAlpha[p].Text == "Narrow")
+						comboPensAlpha[p].Text = "80";
+					else if (comboPensAlpha[p].Text == "Wide")
+						comboPensAlpha[p].Text = "300";
+					else if (comboPensAlpha[p].Text == "Very Wide")
+						comboPensAlpha[p].Text = "1000";
+				}
 		}
 
 		private void pboxPens_Click(object sender, EventArgs e)
