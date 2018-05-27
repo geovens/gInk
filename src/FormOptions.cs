@@ -64,17 +64,42 @@ namespace gInk
 				tbHotkey.Text = "None";
 			}
 
-			for (int p = 0; p < 10; p++)
+			Label lbcbPens = new Label();
+			lbcbPens.Left = 90;
+			lbcbPens.Width = 30;
+			lbcbPens.Top = 15;
+			lbcbPens.Text = "Show";
+			this.Controls.Add(lbcbPens);
+			Label lbpboxPens = new Label();
+			lbpboxPens.Left = 125;
+			lbpboxPens.Width = 35;
+			lbpboxPens.Top = 15;
+			lbpboxPens.Text = "Color";
+			this.Controls.Add(lbpboxPens);
+			Label lbcomboPensAlpha = new Label();
+			lbcomboPensAlpha.Left = 160;
+			lbcomboPensAlpha.Width = 35;
+			lbcomboPensAlpha.Top = 15;
+			lbcomboPensAlpha.Text = "Alpha";
+			this.Controls.Add(lbcomboPensAlpha);
+			Label lbcomboPensWidth = new Label();
+			lbcomboPensWidth.Left = 230;
+			lbcomboPensWidth.Width = 35;
+			lbcomboPensWidth.Top = 15;
+			lbcomboPensWidth.Text = "Width";
+			this.Controls.Add(lbcomboPensWidth);
+
+			for (int p = 0; p < Root.MaxPenCount; p++)
 			{
 				int top = p * 25 + 40;
 				lbPens[p] = new Label();
-				lbPens[p].Left = 20;
+				lbPens[p].Left = 40;
 				lbPens[p].Width = 40;
 				lbPens[p].Top = top;
 				lbPens[p].Text = "Pen " + p.ToString();
 
 				cbPens[p] = new CheckBox();
-				cbPens[p].Left = 80;
+				cbPens[p].Left = 90;
 				cbPens[p].Width = 15;
 				cbPens[p].Top = top - 5;
 				cbPens[p].Text = "";
@@ -82,7 +107,7 @@ namespace gInk
 				cbPens[p].CheckedChanged += cbPens_CheckedChanged;
 
 				pboxPens[p] = new PictureBox();
-				pboxPens[p].Left = 120;
+				pboxPens[p].Left = 125;
 				pboxPens[p].Top = top;
 				pboxPens[p].Width = 15;
 				pboxPens[p].Height = 15;
@@ -90,32 +115,62 @@ namespace gInk
 				pboxPens[p].Click += pboxPens_Click;
 
 				comboPensAlpha[p] = new ComboBox();
-				comboPensAlpha[p].Items.AddRange(new object[] {"Very narrow","Narrow","Wide","Very wide"});
+				comboPensAlpha[p].Items.AddRange(new object[] { "Pencil", "Highlighter" });
 				comboPensAlpha[p].Left = 160;
 				comboPensAlpha[p].Top = top - 2;
 				comboPensAlpha[p].Width = 50;
-				comboPensAlpha[p].SelectionChangeCommitted += comboPensAlpha_SelectionChangeCommitted;
+				comboPensAlpha[p].Text = (255 - Root.PenAttr[p].Transparency).ToString();
+				comboPensAlpha[p].TextChanged += comboPensAlpha_TextChanged;
+
+				comboPensWidth[p] = new ComboBox();
+				comboPensWidth[p].Items.AddRange(new object[] {"Thin","Normal","Thick"});
+				comboPensWidth[p].Left = 230;
+				comboPensWidth[p].Top = top - 2;
+				comboPensWidth[p].Width = 50;
+				comboPensWidth[p].Text = ((int)Root.PenAttr[p].Width).ToString();
+				comboPensWidth[p].TextChanged += comboPensWidth_TextChanged;
 
 				this.Controls.Add(lbPens[p]);
 				this.Controls.Add(cbPens[p]);
 				this.Controls.Add(pboxPens[p]);
 				this.Controls.Add(comboPensAlpha[p]);
+				this.Controls.Add(comboPensWidth[p]);
 			}
 		}
 
-		private void comboPensAlpha_SelectionChangeCommitted(object sender, EventArgs e)
+		private void comboPensAlpha_TextChanged(object sender, EventArgs e)
 		{
 			for (int p = 0; p < Root.MaxPenCount; p++)
 				if ((ComboBox)sender == comboPensAlpha[p])
 				{
-					if (comboPensAlpha[p].Text == "Very narrow")
-						comboPensAlpha[p].Text = "30";
-					else if (comboPensAlpha[p].Text == "Narrow")
-						comboPensAlpha[p].Text = "80";
-					else if (comboPensAlpha[p].Text == "Wide")
-						comboPensAlpha[p].Text = "300";
-					else if (comboPensAlpha[p].Text == "Very Wide")
-						comboPensAlpha[p].Text = "1000";
+					byte o;
+					if (byte.TryParse(comboPensAlpha[p].Text, out o) && o >= 0 && o <= 255)
+					{
+						Root.PenAttr[p].Transparency = (byte)(255 - o);
+						comboPensAlpha[p].BackColor = Color.White;
+					}
+					else
+					{
+						comboPensAlpha[p].BackColor = Color.IndianRed;
+					}
+				}
+		}
+
+		private void comboPensWidth_TextChanged(object sender, EventArgs e)
+		{
+			for (int p = 0; p < Root.MaxPenCount; p++)
+				if ((ComboBox)sender == comboPensWidth[p])
+				{
+					int o;
+					if (int.TryParse(comboPensWidth[p].Text, out o) && o >= 30 && o <= 3000)
+					{
+						Root.PenAttr[p].Width = o;
+						comboPensWidth[p].BackColor = Color.White;
+					}
+					else
+					{
+						comboPensWidth[p].BackColor = Color.IndianRed;
+					}
 				}
 		}
 
@@ -296,6 +351,34 @@ namespace gInk
 		private void tbSnapPath_ModifiedChanged(object sender, EventArgs e)
 		{
 			Root.SnapshotBasePath = tbSnapPath.Text;
+		}
+
+		private void timer1_Tick(object sender, EventArgs e)
+		{
+			for (int p = 0; p < Root.MaxPenCount; p++)
+			{
+				if (comboPensWidth[p].Text.ToString() == "Thin")
+				{
+					comboPensWidth[p].Text = "30";
+				}
+				else if (comboPensWidth[p].Text == "Normal")
+				{
+					comboPensWidth[p].Text = "80";
+				}
+				else if (comboPensWidth[p].Text == "Thick")
+				{
+					comboPensWidth[p].Text = "500";
+				}
+
+				if (comboPensAlpha[p].Text.ToString() == "Pencil")
+				{
+					comboPensAlpha[p].Text = "255";
+				}
+				else if (comboPensAlpha[p].Text == "Highlighter")
+				{
+					comboPensAlpha[p].Text = "80";
+				}
+			}
 		}
 	}
 }

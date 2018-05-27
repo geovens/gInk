@@ -149,8 +149,16 @@ namespace gInk
 			FormDisplay = new FormDisplay(this);
 			FormCollection = new FormCollection(this);
 			FormButtonHitter = new FormButtonHitter(this);
-			if (CurrentPen <= 0)
-				CurrentPen = 1;
+			if (CurrentPen < 0)
+				CurrentPen = 0;
+			if (!PenEnabled[CurrentPen])
+			{
+				CurrentPen = 0;
+				while (CurrentPen < MaxPenCount && !PenEnabled[CurrentPen])
+					CurrentPen++;
+				if (CurrentPen == MaxPenCount)
+					CurrentPen = -2;
+			}
 			SelectPen(CurrentPen);
 			FormDisplay.Show();
 			FormCollection.Show();
@@ -588,7 +596,7 @@ namespace gInk
 							}
 							else if (sName.EndsWith("_WIDTH"))
 							{
-								sPara = PenAttr[penid].Width.ToString();
+								sPara = ((int)PenAttr[penid].Width).ToString();
 							}
 						}
 
@@ -707,7 +715,8 @@ namespace gInk
 
 		private void OnOptions(object sender, EventArgs e)
 		{
-			//System.Diagnostics.Process.Start("notepad.exe", "config.ini");
+			ReadOptions("pens.ini");
+			ReadOptions("config.ini");
 			FormOptions = new FormOptions(this);
 			FormOptions.Show();
 		}

@@ -470,7 +470,7 @@ namespace gInk
 				if (this.Cursor != System.Windows.Forms.Cursors.Default)
 					this.Cursor = System.Windows.Forms.Cursors.Default;
 
-				IC.DefaultDrawingAttributes = Root.PenAttr[pen];
+				IC.DefaultDrawingAttributes = Root.PenAttr[pen].Clone();
 				if (Root.PenWidthEnabled)
 					IC.DefaultDrawingAttributes.Width = Root.GlobalPenWidth;
 				for (int b = 0; b < Root.MaxPenCount; b++)
