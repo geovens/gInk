@@ -689,7 +689,7 @@ namespace gInk
 						else if (Root.gpPenWidthVisible)
 						{
 							Root.gpPenWidthVisible = false;
-							Root.UponButtonsUpdate |= 0x2;
+							Root.UponSubPanelUpdate = true;
 						}
 						else if (Root.Snapping == 0)
 							RetreatAndExit();
@@ -698,79 +698,26 @@ namespace gInk
 				LastESCStatus = retVal;
 			}
 
-			/*
-			if (!Root.FingerInAction)
-			{
-				// Ctrl + 1 : Pen 1
-				retVal = GetKeyState('1');
-				if ((retVal & 0x8000) == 0x8000)
-				{
-					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-					if ((control & 0x8000) == 0x8000)
-					{
-						SelectPen(0);
-					}
-				}
-
-				// Ctrl + 2 : Pen 2
-				retVal = GetKeyState('2');
-				if ((retVal & 0x8000) == 0x8000)
-				{
-					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-					if ((control & 0x8000) == 0x8000)
-					{
-						SelectPen(1);
-					}
-				}
-
-				// Ctrl + 3 : Pen 3
-				retVal = GetKeyState('3');
-				if ((retVal & 0x8000) == 0x8000)
-				{
-					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-					if ((control & 0x8000) == 0x8000)
-					{
-						SelectPen(2);
-					}
-				}
-
-				// Ctrl + 4 : Pen 4
-				retVal = GetKeyState('4');
-				if ((retVal & 0x8000) == 0x8000)
-				{
-					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-					if ((control & 0x8000) == 0x8000)
-					{
-						SelectPen(3);
-					}
-				}
-
-				// Ctrl + 5 : Pen 5
-				retVal = GetKeyState('5');
-				if ((retVal & 0x8000) == 0x8000)
-				{
-					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-					if ((control & 0x8000) == 0x8000)
-					{
-						SelectPen(4);
-					}
-				}
-
-				// Ctrl + 0 : Eraser
-				retVal = GetKeyState('0');
-				if ((retVal & 0x8000) == 0x8000)
-				{
-					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-					if ((control & 0x8000) == 0x8000)
-					{
-						SelectPen(-1);
-					}
-				}
-			}
-			*/
-
+			
 			if (!Root.FingerInAction && !Root.PointerMode && Root.Snapping <= 0)
 			{
+				// 0 ~ 9 : Pen0 ~ Pen9
+				for (int p = 0; p < 10 && p < Root.MaxPenCount; p++)
+				{
+					retVal = GetKeyState('0' + p);
+					if ((retVal & 0x8000) == 0x8000)
+					{
+						SelectPen(p);
+					}
+				}
+
+				// E : Eraser
+				retVal = GetKeyState('E');
+				if ((retVal & 0x8000) == 0x8000)
+				{
+					SelectPen(-1);
+				}
+
 				// Ctrl + Z : Undo
 				retVal = GetKeyState('Z');
 				if ((retVal & 0x8000) == 0x8000)

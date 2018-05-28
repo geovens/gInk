@@ -2,9 +2,9 @@
 v0.5.0 (ongoing)
 =================
 - Add options window.
-- Add a global pen width control panel which, if enabled, overides width setting of each pen.
-- Add hotkeys for each tool (contributed by MrBricodage).
-- Add a new mouse cursor for snapshot.
+- Add a global pen width control panel which, if enabled, overrides width setting of each pen.
+- Add hotkeys for each tool during drawing (contributed by MrBricodage).
+- Add a crosshair mouse cursor during taking snapshot.
 - Save undo history when exit drawing, for restoring inks after accidental exit.
 - Add a new visual tell of which pen is selected.
 
