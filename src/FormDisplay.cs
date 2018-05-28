@@ -267,8 +267,12 @@ namespace gInk
 				rect.Width = (int)(rect.Width * ScreenScalingFactor);
 				rect.Height = (int)(rect.Height * ScreenScalingFactor);
 
-				IntPtr hDest = CreateCompatibleDC(screenDc);
+				
 				Bitmap tempbmp = new Bitmap(rect.Width, rect.Height);
+				Graphics g = Graphics.FromImage(tempbmp);
+				g.Clear(Color.Red);
+
+				IntPtr hDest = CreateCompatibleDC(screenDc);
 				IntPtr hBmp = tempbmp.GetHbitmap();
 				SelectObject(hDest, hBmp);
 				bool b = BitBlt(hDest, 0, 0, rect.Width, rect.Height, screenDc, rect.Left, rect.Top, (uint)(CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt));
@@ -276,7 +280,7 @@ namespace gInk
 
 				if (!b)
 				{
-					Graphics g = Graphics.FromImage(tempbmp);
+					g.Clear(Color.MediumVioletRed);
 					g.CopyFromScreen(rect.Left, rect.Top, 0, 0, new Size(rect.Width, rect.Height));
 				}
 

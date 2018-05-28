@@ -66,7 +66,7 @@ namespace gInk
 
 			Label lbcbPens = new Label();
 			lbcbPens.Left = 90;
-			lbcbPens.Width = 30;
+			lbcbPens.Width = 35;
 			lbcbPens.Top = 15;
 			lbcbPens.Text = "Show";
 			this.Controls.Add(lbcbPens);
