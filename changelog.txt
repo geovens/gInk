@@ -1,5 +1,5 @@
 
-v0.5.0 (ongoing)
+v0.5.0 (May. 30, 2018)
 =================
 - Add options window.
 - Add a global pen width control panel which, if enabled, overrides width setting of each pen.
