@@ -31,4 +31,4 @@ Hotkey support.
 ----
 gInk  
 https://github.com/geovens/gInk  
-Weizhi Nai @ 2016  
+Weizhi Nai @ 2018  
