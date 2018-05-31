@@ -454,14 +454,6 @@ namespace gInk
 			}
 			else if (pen == -1)
 			{
-				if (Root.CanvasCursor == 0)
-				{
-					cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
-					IC.Cursor = cursorred;
-				}
-				else if (Root.CanvasCursor == 1)
-					SetPenTipCursor();
-
 				if (this.Cursor != System.Windows.Forms.Cursors.Default)
 					this.Cursor = System.Windows.Forms.Cursors.Default;
 
@@ -471,6 +463,14 @@ namespace gInk
 				btPointer.Image = image_pointer;
 				EnterEraserMode(true);
 				Root.UnPointer();
+
+				if (Root.CanvasCursor == 0)
+				{
+					cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
+					IC.Cursor = cursorred;
+				}
+				else if (Root.CanvasCursor == 1)
+					SetPenTipCursor();
 			}
 			else if (pen >= 0)
 			{
@@ -487,6 +487,8 @@ namespace gInk
 				btPen[pen].Image = image_pen_act[pen];
 				btEraser.Image = image_eraser;
 				btPointer.Image = image_pointer;
+				EnterEraserMode(false);
+				Root.UnPointer();
 
 				if (Root.CanvasCursor == 0)
 				{
@@ -495,9 +497,6 @@ namespace gInk
 				}
 				else if (Root.CanvasCursor == 1)
 					SetPenTipCursor();
-
-				EnterEraserMode(false);
-				Root.UnPointer();
 			}
 			Root.CurrentPen = pen;
 			if (Root.gpPenWidthVisible)
@@ -656,9 +655,19 @@ namespace gInk
 			Bitmap bitmaptip = (Bitmap)(gInk.Properties.Resources._null).Clone();
 			Graphics g = Graphics.FromImage(bitmaptip);
 			DrawingAttributes dda = IC.DefaultDrawingAttributes;
-			Brush cbrush = new SolidBrush(IC.DefaultDrawingAttributes.Color);
-			//Brush cbrush = new SolidBrush(Color.FromArgb(255 - dda.Transparency, dda.Color.R, dda.Color.G, dda.Color.B));
-			Point widt = new Point((int)IC.DefaultDrawingAttributes.Width, 0);
+			Brush cbrush;
+			Point widt;
+			if (!Root.EraserMode)
+			{
+				cbrush = new SolidBrush(IC.DefaultDrawingAttributes.Color);
+				//Brush cbrush = new SolidBrush(Color.FromArgb(255 - dda.Transparency, dda.Color.R, dda.Color.G, dda.Color.B));
+				widt = new Point((int)IC.DefaultDrawingAttributes.Width, 0);
+			}
+			else
+			{
+				cbrush = new SolidBrush(Color.Black);
+				widt = new Point(60, 0);
+			}
 			IC.Renderer.InkSpaceToPixel(IC.Handle, ref widt);
 			int dia = Math.Max(widt.X, 2);
 			g.FillEllipse(cbrush, 64 - dia / 2, 64 - dia / 2, dia, dia);
@@ -669,6 +678,7 @@ namespace gInk
 				g.DrawEllipse(cpen, 64 - dia / 2, 64 - dia / 2, dia, dia);
 			}
 			IC.Cursor = new System.Windows.Forms.Cursor(bitmaptip.GetHicon());
+			
 		}
 
 		short LastESCStatus = 0;
