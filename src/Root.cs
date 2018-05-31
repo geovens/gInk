@@ -57,6 +57,7 @@ namespace gInk
 		public bool AutoScroll;
 		public bool WhiteTrayIcon;
 		public string SnapshotBasePath;
+		public int CanvasCursor = 0;
 
 		public bool EraserMode = false;
 		public bool Docked = false;
@@ -523,6 +524,12 @@ namespace gInk
 							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
 								ClearEnabled = false;
 							break;
+						case "CANVAS_CURSOR":
+							if (sPara == "0")
+								CanvasCursor = 0;
+							else if (sPara == "1")
+								CanvasCursor = 1;
+							break;
 					}
 				}
 			}
@@ -684,6 +691,9 @@ namespace gInk
 								sPara = "True";
 							else
 								sPara = "False";
+							break;
+						case "CANVAS_CURSOR":
+							sPara = CanvasCursor.ToString();
 							break;
 					}
 				}

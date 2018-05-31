@@ -47,6 +47,8 @@ namespace gInk
 			if (Root.WhiteTrayIcon)
 				cbWhiteIcon.Checked = true;
 
+			comboCanvasCursor.SelectedIndex = Root.CanvasCursor;
+
 			tbSnapPath.Text = Root.SnapshotBasePath;
 
 			tbHotkey.BackColor = Color.White;
@@ -379,6 +381,11 @@ namespace gInk
 					comboPensAlpha[p].Text = "80";
 				}
 			}
+		}
+
+		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			Root.CanvasCursor = comboCanvasCursor.SelectedIndex;
 		}
 	}
 }

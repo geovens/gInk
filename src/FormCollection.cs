@@ -158,9 +158,9 @@ namespace gInk
 			gpPenWidth.Left = gpButtonsLeft + btPenWidth.Left - gpPenWidth.Width / 2 + btPenWidth.Width / 2;
 			gpPenWidth.Top = gpButtonsTop - gpPenWidth.Height - 10;
 
-			gpPenWidth.Controls.Add(pboxPenWidthIndicator);
-			pboxPenWidthIndicator.Left = 45;
 			pboxPenWidthIndicator.Top = 0;
+			pboxPenWidthIndicator.Left = (int)Math.Sqrt(Root.GlobalPenWidth * 30);
+			gpPenWidth.Controls.Add(pboxPenWidthIndicator);
 
 			IC = new InkOverlay(this.Handle);
 			IC.CollectionMode = CollectionMode.InkOnly;
@@ -178,7 +178,7 @@ namespace gInk
 			IC.DefaultDrawingAttributes.AntiAliased = true;
 
 			cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
-			IC.Cursor = cursorred;
+			//IC.Cursor = cursorred;
 			IC.Enabled = true;
 
 			image_exit = new Bitmap(btStop.Width, btStop.Height);
@@ -454,9 +454,13 @@ namespace gInk
 			}
 			else if (pen == -1)
 			{
-				//cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
-				//IC.Cursor = cursorred;
-				SetPenTipCursor();
+				if (Root.CanvasCursor == 0)
+				{
+					cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
+					IC.Cursor = cursorred;
+				}
+				else if (Root.CanvasCursor == 1)
+					SetPenTipCursor();
 
 				if (this.Cursor != System.Windows.Forms.Cursors.Default)
 					this.Cursor = System.Windows.Forms.Cursors.Default;
@@ -470,21 +474,27 @@ namespace gInk
 			}
 			else if (pen >= 0)
 			{
-				//cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
-				//IC.Cursor = cursorred;
 				if (this.Cursor != System.Windows.Forms.Cursors.Default)
 					this.Cursor = System.Windows.Forms.Cursors.Default;
 
 				IC.DefaultDrawingAttributes = Root.PenAttr[pen].Clone();
 				if (Root.PenWidthEnabled)
+				{
 					IC.DefaultDrawingAttributes.Width = Root.GlobalPenWidth;
+				}
 				for (int b = 0; b < Root.MaxPenCount; b++)
 					btPen[b].Image = image_pen[b];
 				btPen[pen].Image = image_pen_act[pen];
 				btEraser.Image = image_eraser;
 				btPointer.Image = image_pointer;
 
-				SetPenTipCursor();
+				if (Root.CanvasCursor == 0)
+				{
+					cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
+					IC.Cursor = cursorred;
+				}
+				else if (Root.CanvasCursor == 1)
+					SetPenTipCursor();
 
 				EnterEraserMode(false);
 				Root.UnPointer();
@@ -603,7 +613,8 @@ namespace gInk
 
 		private void gpPenWidth_MouseUp(object sender, MouseEventArgs e)
 		{
-			SetPenTipCursor();
+			if (Root.CanvasCursor == 1)
+				SetPenTipCursor();
 
 			Root.gpPenWidthVisible = false;
 			Root.UponSubPanelUpdate = true;
@@ -632,7 +643,8 @@ namespace gInk
 
 		private void pboxPenWidthIndicator_MouseUp(object sender, MouseEventArgs e)
 		{
-			SetPenTipCursor();
+			if (Root.CanvasCursor == 1)
+				SetPenTipCursor();
 
 			Root.gpPenWidthVisible = false;
 			Root.UponSubPanelUpdate = true;
@@ -643,7 +655,9 @@ namespace gInk
 		{
 			Bitmap bitmaptip = (Bitmap)(gInk.Properties.Resources._null).Clone();
 			Graphics g = Graphics.FromImage(bitmaptip);
+			DrawingAttributes dda = IC.DefaultDrawingAttributes;
 			Brush cbrush = new SolidBrush(IC.DefaultDrawingAttributes.Color);
+			//Brush cbrush = new SolidBrush(Color.FromArgb(255 - dda.Transparency, dda.Color.R, dda.Color.G, dda.Color.B));
 			Point widt = new Point((int)IC.DefaultDrawingAttributes.Width, 0);
 			IC.Renderer.InkSpaceToPixel(IC.Handle, ref widt);
 			int dia = Math.Max(widt.X, 2);

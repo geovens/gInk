@@ -45,6 +45,8 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.colorDialog1 = new System.Windows.Forms.ColorDialog();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
+			this.label4 = new System.Windows.Forms.Label();
+			this.comboCanvasCursor = new System.Windows.Forms.ComboBox();
 			this.SuspendLayout();
 			// 
 			// cbEraserEnabled
@@ -126,7 +128,7 @@
 			// 
 			// tbSnapPath
 			// 
-			this.tbSnapPath.Location = new System.Drawing.Point(350, 206);
+			this.tbSnapPath.Location = new System.Drawing.Point(350, 250);
 			this.tbSnapPath.Name = "tbSnapPath";
 			this.tbSnapPath.Size = new System.Drawing.Size(168, 21);
 			this.tbSnapPath.TabIndex = 1;
@@ -135,7 +137,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(347, 190);
+			this.label1.Location = new System.Drawing.Point(347, 234);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(113, 12);
 			this.label1.TabIndex = 2;
@@ -143,7 +145,7 @@
 			// 
 			// btSnapPath
 			// 
-			this.btSnapPath.Location = new System.Drawing.Point(528, 205);
+			this.btSnapPath.Location = new System.Drawing.Point(528, 249);
 			this.btSnapPath.Name = "btSnapPath";
 			this.btSnapPath.Size = new System.Drawing.Size(31, 21);
 			this.btSnapPath.TabIndex = 3;
@@ -153,7 +155,7 @@
 			// 
 			// tbHotkey
 			// 
-			this.tbHotkey.Location = new System.Drawing.Point(350, 248);
+			this.tbHotkey.Location = new System.Drawing.Point(350, 292);
 			this.tbHotkey.Name = "tbHotkey";
 			this.tbHotkey.ReadOnly = true;
 			this.tbHotkey.Size = new System.Drawing.Size(168, 21);
@@ -164,7 +166,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(347, 232);
+			this.label2.Location = new System.Drawing.Point(347, 276);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(221, 12);
 			this.label2.TabIndex = 2;
@@ -185,11 +187,34 @@
 			this.timer1.Interval = 50;
 			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
 			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(348, 205);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(83, 12);
+			this.label4.TabIndex = 5;
+			this.label4.Text = "Canvas cursor";
+			// 
+			// comboBox1
+			// 
+			this.comboCanvasCursor.FormattingEnabled = true;
+			this.comboCanvasCursor.Items.AddRange(new object[] {
+            "Arrow",
+            "Pen tip"});
+			this.comboCanvasCursor.Location = new System.Drawing.Point(447, 202);
+			this.comboCanvasCursor.Name = "comboBox1";
+			this.comboCanvasCursor.Size = new System.Drawing.Size(121, 20);
+			this.comboCanvasCursor.TabIndex = 6;
+			this.comboCanvasCursor.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+			// 
 			// FormOptions
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(651, 310);
+			this.ClientSize = new System.Drawing.Size(651, 344);
+			this.Controls.Add(this.comboCanvasCursor);
+			this.Controls.Add(this.label4);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.btSnapPath);
 			this.Controls.Add(this.label2);
@@ -231,5 +256,7 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.ColorDialog colorDialog1;
 		private System.Windows.Forms.Timer timer1;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.ComboBox comboCanvasCursor;
 	}
 }
