@@ -219,6 +219,9 @@
 			this.gpPenWidth.Size = new System.Drawing.Size(200, 53);
 			this.gpPenWidth.TabIndex = 4;
 			this.gpPenWidth.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gpPenWidth_MouseClick);
+			this.gpPenWidth.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpPenWidth_MouseDown);
+			this.gpPenWidth.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpPenWidth_MouseMove);
+			this.gpPenWidth.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpPenWidth_MouseUp);
 			// 
 			// pboxPenWidthIndicator
 			// 
@@ -228,6 +231,9 @@
 			this.pboxPenWidthIndicator.Size = new System.Drawing.Size(5, 53);
 			this.pboxPenWidthIndicator.TabIndex = 5;
 			this.pboxPenWidthIndicator.TabStop = false;
+			this.pboxPenWidthIndicator.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pboxPenWidthIndicator_MouseDown);
+			this.pboxPenWidthIndicator.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pboxPenWidthIndicator_MouseMove);
+			this.pboxPenWidthIndicator.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pboxPenWidthIndicator_MouseUp);
 			// 
 			// FormCollection
 			// 

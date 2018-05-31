@@ -29,6 +29,8 @@ namespace gInk
 		public int ButtonsEntering = 0;  // -1 = exiting
 		public int gpButtonsLeft, gpButtonsTop;
 
+		public bool gpPenWidth_MouseOn = false;
+
 		public FormCollection(Root root)
 		{
 			Root = root;
@@ -576,14 +578,60 @@ namespace gInk
 
 		private void gpPenWidth_MouseClick(object sender, MouseEventArgs e)
 		{
-			if (e.X < 10 || gpPenWidth.Width - e.X < 10)
-				return;
 
-			Root.GlobalPenWidth = e.X * e.X / 30;
-			pboxPenWidthIndicator.Left = e.X - pboxPenWidthIndicator.Width / 2;
-			IC.DefaultDrawingAttributes.Width = Root.GlobalPenWidth;
+		}
+
+		private void gpPenWidth_MouseDown(object sender, MouseEventArgs e)
+		{
+			gpPenWidth_MouseOn = true;
+		}
+
+		private void gpPenWidth_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (gpPenWidth_MouseOn)
+			{
+				if (e.X < 10 || gpPenWidth.Width - e.X < 10)
+					return;
+
+				Root.GlobalPenWidth = e.X * e.X / 30;
+				pboxPenWidthIndicator.Left = e.X - pboxPenWidthIndicator.Width / 2;
+				IC.DefaultDrawingAttributes.Width = Root.GlobalPenWidth;
+				Root.UponButtonsUpdate |= 0x2;
+			}
+		}
+
+		private void gpPenWidth_MouseUp(object sender, MouseEventArgs e)
+		{
 			Root.gpPenWidthVisible = false;
 			Root.UponSubPanelUpdate = true;
+			gpPenWidth_MouseOn = false;
+		}
+
+		private void pboxPenWidthIndicator_MouseDown(object sender, MouseEventArgs e)
+		{
+			gpPenWidth_MouseOn = true;
+		}
+
+		private void pboxPenWidthIndicator_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (gpPenWidth_MouseOn)
+			{
+				int x = e.X + pboxPenWidthIndicator.Left;
+				if (x < 10 || gpPenWidth.Width - x < 10)
+					return;
+
+				Root.GlobalPenWidth = x * x / 30;
+				pboxPenWidthIndicator.Left = x - pboxPenWidthIndicator.Width / 2;
+				IC.DefaultDrawingAttributes.Width = Root.GlobalPenWidth;
+				Root.UponButtonsUpdate |= 0x2;
+			}
+		}
+
+		private void pboxPenWidthIndicator_MouseUp(object sender, MouseEventArgs e)
+		{
+			Root.gpPenWidthVisible = false;
+			Root.UponSubPanelUpdate = true;
+			gpPenWidth_MouseOn = false;
 		}
 
 		short LastESCStatus = 0;
