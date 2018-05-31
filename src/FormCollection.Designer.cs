@@ -218,7 +218,6 @@
 			this.gpPenWidth.Name = "gpPenWidth";
 			this.gpPenWidth.Size = new System.Drawing.Size(200, 53);
 			this.gpPenWidth.TabIndex = 4;
-			this.gpPenWidth.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gpPenWidth_MouseClick);
 			this.gpPenWidth.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpPenWidth_MouseDown);
 			this.gpPenWidth.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpPenWidth_MouseMove);
 			this.gpPenWidth.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpPenWidth_MouseUp);
