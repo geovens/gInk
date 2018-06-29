@@ -1,4 +1,9 @@
 
+v0.5.1 (Jun. 29, 2018)
+=================
+- Add a pen-tip mouse cursor as an option when drawing.
+- Fix dragging on pen width panel.
+
 v0.5.0 (May. 30, 2018)
 =================
 - Add options window.
