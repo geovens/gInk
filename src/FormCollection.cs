@@ -612,6 +612,13 @@ namespace gInk
 
 		private void gpPenWidth_MouseUp(object sender, MouseEventArgs e)
 		{
+			if (e.X >= 10 && gpPenWidth.Width - e.X >= 10)
+			{
+				Root.GlobalPenWidth = e.X * e.X / 30;
+				pboxPenWidthIndicator.Left = e.X - pboxPenWidthIndicator.Width / 2;
+				IC.DefaultDrawingAttributes.Width = Root.GlobalPenWidth;
+			}
+
 			if (Root.CanvasCursor == 1)
 				SetPenTipCursor();
 
@@ -669,7 +676,16 @@ namespace gInk
 				widt = new Point(60, 0);
 			}
 			IC.Renderer.InkSpaceToPixel(IC.Handle, ref widt);
-			int dia = Math.Max(widt.X, 2);
+
+			IntPtr screenDc = GetDC(IntPtr.Zero);
+			const int VERTRES = 10;
+			const int DESKTOPVERTRES = 117;
+			int LogicalScreenHeight = GetDeviceCaps(screenDc, VERTRES);
+			int PhysicalScreenHeight = GetDeviceCaps(screenDc, DESKTOPVERTRES);
+			float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
+			ReleaseDC(IntPtr.Zero, screenDc);
+
+			int dia = Math.Max((int)(widt.X * ScreenScalingFactor), 2);
 			g.FillEllipse(cbrush, 64 - dia / 2, 64 - dia / 2, dia, dia);
 			if (dia <= 5)
 			{
@@ -922,5 +938,12 @@ namespace gInk
 		static extern IntPtr GetDesktopWindow();
 		[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
 		private static extern short GetKeyState(int keyCode);
+
+		[DllImport("gdi32.dll")]
+		static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+		[DllImport("user32.dll")]
+		static extern IntPtr GetDC(IntPtr hWnd);
+		[DllImport("user32.dll")]
+		static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
 	}
 }
