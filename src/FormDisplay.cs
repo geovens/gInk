@@ -275,7 +275,7 @@ namespace gInk
 				IntPtr hDest = CreateCompatibleDC(screenDc);
 				IntPtr hBmp = tempbmp.GetHbitmap();
 				SelectObject(hDest, hBmp);
-				bool b = false; //BitBlt(hDest, 0, 0, rect.Width, rect.Height, screenDc, rect.Left, rect.Top, (uint)(CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt));
+				bool b = BitBlt(hDest, 0, 0, rect.Width, rect.Height, screenDc, rect.Left, rect.Top, (uint)(CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt));
 				tempbmp = Bitmap.FromHbitmap(hBmp);
 
 				if (!b)
