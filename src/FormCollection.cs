@@ -356,7 +356,7 @@ namespace gInk
 					width = this.Width;
 					height = this.Height;
 				}
-				Root.SnappingRect = new Rectangle(left, top, width, height);
+				Root.SnappingRect = new Rectangle(left + this.Left, top + this.Top, width, height);
 				Root.UponTakingSnap = true;
 				ExitSnapping();
 			}
