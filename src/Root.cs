@@ -49,7 +49,8 @@ namespace gInk
 		public bool PointerEnabled = true;
 		public bool PenWidthEnabled = false;
 		public bool SnapEnabled = true;
-		public bool UndoEnabled = true;
+        public bool CloseOnSnap = true;
+        public bool UndoEnabled = true;
 		public bool ClearEnabled = true;
 		public DrawingAttributes[] PenAttr = new DrawingAttributes[MaxPenCount];
 		public bool Hotkey_Control, Hotkey_Alt, Hotkey_Shift, Hotkey_Win;
@@ -516,7 +517,11 @@ namespace gInk
 							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
 								SnapEnabled = false;
 							break;
-						case "UNDO_ICON":
+                        case "CLOSE_ON_SNAP":
+                            if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
+                                CloseOnSnap = false;
+                            break;
+                        case "UNDO_ICON":
 							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
 								UndoEnabled = false;
 							break;
@@ -680,7 +685,13 @@ namespace gInk
 							else
 								sPara = "False";
 							break;
-						case "UNDO_ICON":
+                        case "CLOSE_ON_SNAP":
+                            if (CloseOnSnap)
+                                sPara = "True";
+                            else
+                                sPara = "False";
+                            break;
+                        case "UNDO_ICON":
 							if (UndoEnabled)
 								sPara = "True";
 							else

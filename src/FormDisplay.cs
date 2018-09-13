@@ -420,9 +420,9 @@ namespace gInk
 				UpdateFormDisplay(true);
 				SnapShot(Root.SnappingRect);
 				Root.UponTakingSnap = false;
-				if (Root.FormCollection.IC.Ink.Strokes.Count == 0)
-					Root.FormCollection.RetreatAndExit();
-			}
+                if ((Root.FormCollection.IC.Ink.Strokes.Count == 0) || Root.CloseOnSnap)
+				    Root.FormCollection.RetreatAndExit();
+            }
 
 			else if (Root.Snapping > 0)
 			{

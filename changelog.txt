@@ -1,4 +1,9 @@
 
+v0.5.2 (ongoing)
+=================
+- Fixing some multiple display related issues (thanks to pubpub-zz).
+- Add an option in config.ini to immediately close after snapshot (contributed by pubpub-zz).
+
 v0.5.1 (Jun. 29, 2018)
 =================
 - Add a pen-tip mouse cursor as an option when drawing.
