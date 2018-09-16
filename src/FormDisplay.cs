@@ -39,13 +39,14 @@ namespace gInk
 
 			this.Left = SystemInformation.VirtualScreen.Left;
 			this.Top = SystemInformation.VirtualScreen.Top;
-			int targetbottom = 0;
+			/* int targetbottom = 0;
 			foreach (Screen screen in Screen.AllScreens)
 			{
 				if (screen.WorkingArea.Bottom > targetbottom)
 					targetbottom = screen.WorkingArea.Bottom;
-			}
-			int virwidth = SystemInformation.VirtualScreen.Width;
+			}*/
+            int targetbottom = SystemInformation.VirtualScreen.Height;
+            int virwidth = SystemInformation.VirtualScreen.Width;
 			this.Width = virwidth;
 			this.Height = targetbottom - this.Top;
 
@@ -134,8 +135,12 @@ namespace gInk
 			height = Root.FormCollection.gpButtons.Height;
 			left = Root.FormCollection.gpButtons.Left;
 			width = Root.FormCollection.gpButtons.Width;
-			if (redrawbuttons)
-				Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
+            if (redrawbuttons)
+            {
+                Graphics.FromImage(gpButtonsImage).Clear(Color.Transparent);
+                if (width > 0)
+                    Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
+            }
 
 			if (exiting)
 				gCanvus.FillRectangle(TransparentBrush, left - 120, top, width + 80, height);

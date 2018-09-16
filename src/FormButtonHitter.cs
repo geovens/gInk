@@ -21,8 +21,8 @@ namespace gInk
 			FC = Root.FormCollection;
 			InitializeComponent();
 
-			this.Left = FC.gpButtons.Left;
-			this.Top = FC.gpButtons.Top;
+			this.Left = FC.gpButtons.Left + SystemInformation.VirtualScreen.Left;
+			this.Top = FC.gpButtons.Top + SystemInformation.VirtualScreen.Top;
 			this.Width = FC.gpButtons.Width;
 			this.Height = FC.gpButtons.Height;
 		}
@@ -53,8 +53,8 @@ namespace gInk
 		{
 			if (this.Visible)
 			{
-				this.Left = FC.gpButtons.Left;
-				this.Top = FC.gpButtons.Top;
+				this.Left = FC.gpButtons.Left + SystemInformation.VirtualScreen.Left;
+				this.Top = FC.gpButtons.Top+ SystemInformation.VirtualScreen.Top;
 			}
 		}
 

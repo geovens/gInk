@@ -28,7 +28,7 @@ namespace gInk
 		public System.Windows.Forms.Cursor cursortip;
 
 		public int ButtonsEntering = 0;  // -1 = exiting
-		public int gpButtonsLeft, gpButtonsTop;
+		public int gpButtonsLeft, gpButtonsTop,gpMemoWidth;
 
 		public bool gpPenWidth_MouseOn = false;
 
@@ -135,27 +135,27 @@ namespace gInk
 			}
 			btStop.Left = cumulatedleft + 40;
 			gpButtons.Width = btStop.Right + 20;
-			
+            gpMemoWidth = gpButtons.Width;
 
 			this.Left = SystemInformation.VirtualScreen.Left;
 			this.Top = SystemInformation.VirtualScreen.Top;
-			int targetbottom = 0;
-			foreach (Screen screen in Screen.AllScreens)
+            /* int targetbottom = 0;
+            foreach (Screen screen in Screen.AllScreens)
 			{
 				if (screen.WorkingArea.Bottom > targetbottom)
 					targetbottom = screen.WorkingArea.Bottom;
-			}
-			int virwidth = SystemInformation.VirtualScreen.Width;
+			}*/
+            int targetbottom = SystemInformation.VirtualScreen.Bottom;
+            int virwidth = SystemInformation.VirtualScreen.Width;
 			this.Width = virwidth;
 			this.Height = targetbottom - this.Top;
 			this.DoubleBuffered = true;
 
-			gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width + (Screen.PrimaryScreen.WorkingArea.Left - SystemInformation.VirtualScreen.Left);
-			gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 10 + (Screen.PrimaryScreen.WorkingArea.Top - SystemInformation.VirtualScreen.Top);
-			gpButtons.Left = gpButtonsLeft + gpButtons.Width;
+            gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width -SystemInformation.VirtualScreen.Left;
+            gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 10 - SystemInformation.VirtualScreen.Top;
+            gpButtons.Left = gpButtonsLeft;// + gpButtons.Width;
 			gpButtons.Top = gpButtonsTop;
-
-			gpPenWidth.Left = gpButtonsLeft + btPenWidth.Left - gpPenWidth.Width / 2 + btPenWidth.Width / 2;
+            gpPenWidth.Left = gpButtonsLeft + btPenWidth.Left - gpPenWidth.Width / 2 + btPenWidth.Width / 2;
 			gpPenWidth.Top = gpButtonsTop - gpPenWidth.Height - 10;
 
 			pboxPenWidthIndicator.Top = 0;
@@ -713,56 +713,61 @@ namespace gInk
 			int primbottom = Screen.PrimaryScreen.WorkingArea.Bottom;
 
 			int aimedleft = gpButtonsLeft;
-			if (ButtonsEntering == 0)
-			{
-				if (Root.Snapping > 0)
-					aimedleft = gpButtonsLeft + gpButtons.Width + 5;
-				else if (Root.Docked)
-					aimedleft = gpButtonsLeft + gpButtons.Width - btDock.Right;
-				else
-					aimedleft = gpButtonsLeft;
-			}
-			else if (ButtonsEntering == -1)
-				aimedleft = gpButtonsLeft + gpButtons.Width;
+            if (ButtonsEntering == 0)
+            {
+                if (Root.Snapping > 0)
+                    aimedleft = gpButtonsLeft + gpMemoWidth + 5;
+                else if (Root.Docked)
+                    aimedleft = gpButtonsLeft + gpMemoWidth - btDock.Right;
+                else
+                    aimedleft = gpButtonsLeft;
+            }
+            else if (ButtonsEntering == -1) //doubts about it
+                aimedleft = gpButtonsLeft + gpMemoWidth;
 
-			if (gpButtons.Left > aimedleft)
-			{
-				float dleft = gpButtons.Left - aimedleft;
-				dleft /= 70;
-				if (dleft > 8) dleft = 8;
-				dleft *= (float)(DateTime.Now - LastTickTime).TotalMilliseconds;
-				if (dleft > 120) dleft = 230;
-				if (dleft < 1) dleft = 1;
-				gpButtons.Left -= (int)dleft;
-				LastTickTime = DateTime.Now;
-				if (gpButtons.Left < aimedleft)
-				{
-					gpButtons.Left = aimedleft;
-				}
-				Root.UponButtonsUpdate |= 0x1;
-			}
-			else if (gpButtons.Left < aimedleft)
-			{
-				float dleft = aimedleft - gpButtons.Left;
-				dleft /= 70;
-				if (dleft > 8) dleft = 8;
-				// fast exiting when not docked
-				if (ButtonsEntering == -1 && !Root.Docked)
-					dleft = 8;
-				dleft *= (float)(DateTime.Now - LastTickTime).TotalMilliseconds;
-				if (dleft > 120) dleft = 120;
-				if (dleft < 1) dleft = 1;
-				// fast exiting when docked
-				if (ButtonsEntering == -1 && dleft == 1)
-					dleft = 2;
-				gpButtons.Left += (int)dleft;
-				LastTickTime = DateTime.Now;
-				if (gpButtons.Left > aimedleft)
-				{
-					gpButtons.Left = aimedleft;
-				}
-				Root.UponButtonsUpdate |= 0x1;
-			}
+            if (gpButtons.Left > aimedleft)
+            {
+                float dleft = gpButtons.Left - aimedleft;
+                dleft /= 70;
+                if (dleft > 8) dleft = 8;
+                dleft *= (float)(DateTime.Now - LastTickTime).TotalMilliseconds;
+                if (dleft > 120) dleft = 230;
+                if (dleft < 1) dleft = 1;
+                gpButtons.Left -= (int)dleft;
+                LastTickTime = DateTime.Now;
+                if (gpButtons.Left < aimedleft)
+                {
+                    gpButtons.Left = aimedleft;
+                }
+                Root.UponButtonsUpdate |= 0x1;
+            }
+            else if (gpButtons.Left < aimedleft)
+            {
+                float dleft = aimedleft - gpButtons.Left;
+                dleft /= 70;
+                if (dleft > 8) dleft = 8;
+                // fast exiting when not docked
+                if (ButtonsEntering == -1 && !Root.Docked)
+                    dleft = 8;
+                dleft *= (float)(DateTime.Now - LastTickTime).TotalMilliseconds;
+                if (dleft > 120) dleft = 120;
+                if (dleft < 1) dleft = 1;
+                // fast exiting when docked
+                if (ButtonsEntering == -1 && dleft == 1)
+                    dleft = 2;
+                gpButtons.Left += (int)dleft;
+                LastTickTime = DateTime.Now;
+                if (gpButtons.Left > aimedleft)
+                {
+                    gpButtons.Left = aimedleft;
+                }
+                Root.UponButtonsUpdate |= 0x1;
+            }
+            Boolean b = gpButtons.Width != (primright - gpButtons.Left);
+            gpButtons.Width = primright - gpButtons.Left;
+            if(b)
+                Root.FormDisplay.DrawButtons(true);
+            //Root.FormButtonHitter.Visible = false;
 
 			if (ButtonsEntering == -1 && gpButtons.Left == aimedleft)
 			{
