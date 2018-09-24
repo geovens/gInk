@@ -271,7 +271,7 @@ namespace gInk
 				rect.Width = (int)(rect.Width * ScreenScalingFactor);
 				rect.Height = (int)(rect.Height * ScreenScalingFactor);
 
-				
+
 				Bitmap tempbmp = new Bitmap(rect.Width, rect.Height);
 				Graphics g = Graphics.FromImage(tempbmp);
 				g.Clear(Color.Red);
@@ -424,9 +424,9 @@ namespace gInk
 				UpdateFormDisplay(true);
 				SnapShot(Root.SnappingRect);
 				Root.UponTakingSnap = false;
-                if ((Root.FormCollection.IC.Ink.Strokes.Count == 0) || Root.CloseOnSnap)
-				    Root.FormCollection.RetreatAndExit();
-            }
+				if ((Root.FormCollection.IC.Ink.Strokes.Count == 0) || Root.CloseOnSnap)
+					Root.FormCollection.RetreatAndExit();
+			}
 
 			else if (Root.Snapping > 0)
 			{
