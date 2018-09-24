@@ -39,15 +39,17 @@ namespace gInk
 
 			this.Left = SystemInformation.VirtualScreen.Left;
 			this.Top = SystemInformation.VirtualScreen.Top;
-			int targetbottom = 0;
-			foreach (Screen screen in Screen.AllScreens)
-			{
-				if (screen.WorkingArea.Bottom > targetbottom)
-					targetbottom = screen.WorkingArea.Bottom;
-			}
-			int virwidth = SystemInformation.VirtualScreen.Width;
-			this.Width = virwidth;
-			this.Height = targetbottom - this.Top;
+			//int targetbottom = 0;
+			//foreach (Screen screen in Screen.AllScreens)
+			//{
+			//	if (screen.WorkingArea.Bottom > targetbottom)
+			//		targetbottom = screen.WorkingArea.Bottom;
+			//}
+			//int virwidth = SystemInformation.VirtualScreen.Width;
+			//this.Width = virwidth;
+			//this.Height = targetbottom - this.Top;
+			this.Width = SystemInformation.VirtualScreen.Width;
+			this.Height = SystemInformation.VirtualScreen.Height;
 
 			Bitmap InitCanvus = new Bitmap(this.Width, this.Height);
 			Canvus = InitCanvus.GetHbitmap(Color.FromArgb(0));
@@ -129,17 +131,19 @@ namespace gInk
 		public void DrawButtons(bool redrawbuttons, bool exiting = false)
 		{
 			int top, height, left, width;
+			int fullwidth;
 
 			top = Root.FormCollection.gpButtons.Top;
 			height = Root.FormCollection.gpButtons.Height;
 			left = Root.FormCollection.gpButtons.Left;
 			width = Root.FormCollection.gpButtons.Width;
+			fullwidth = Root.FormCollection.gpButtonsWidth;
 			if (redrawbuttons)
 				Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
 
 			if (exiting)
-				gCanvus.FillRectangle(TransparentBrush, left - 120, top, width + 80, height);
-			gCanvus.DrawImage(gpButtonsImage, left, top);
+				gCanvus.FillRectangle(TransparentBrush, left - 120, top, fullwidth * 2, height);
+			gCanvus.DrawImage(gpButtonsImage, left, top, new Rectangle(0, 0, width, height), GraphicsUnit.Pixel);
 
 			if (Root.gpPenWidthVisible)
 			{

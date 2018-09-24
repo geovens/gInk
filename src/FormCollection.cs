@@ -28,7 +28,7 @@ namespace gInk
 		public System.Windows.Forms.Cursor cursortip;
 
 		public int ButtonsEntering = 0;  // -1 = exiting
-		public int gpButtonsLeft, gpButtonsTop;
+		public int gpButtonsLeft, gpButtonsTop, gpButtonsWidth; // the default location, fixed
 
 		public bool gpPenWidth_MouseOn = false;
 
@@ -139,19 +139,22 @@ namespace gInk
 
 			this.Left = SystemInformation.VirtualScreen.Left;
 			this.Top = SystemInformation.VirtualScreen.Top;
-			int targetbottom = 0;
-			foreach (Screen screen in Screen.AllScreens)
-			{
-				if (screen.WorkingArea.Bottom > targetbottom)
-					targetbottom = screen.WorkingArea.Bottom;
-			}
-			int virwidth = SystemInformation.VirtualScreen.Width;
-			this.Width = virwidth;
-			this.Height = targetbottom - this.Top;
+			//int targetbottom = 0;
+			//foreach (Screen screen in Screen.AllScreens)
+			//{
+			//	if (screen.WorkingArea.Bottom > targetbottom)
+			//		targetbottom = screen.WorkingArea.Bottom;
+			//}
+			//int virwidth = SystemInformation.VirtualScreen.Width;
+			//this.Width = virwidth;
+			//this.Height = targetbottom - this.Top;
+			this.Width = SystemInformation.VirtualScreen.Width;
+			this.Height = SystemInformation.VirtualScreen.Height;
 			this.DoubleBuffered = true;
 
 			gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width + (Screen.PrimaryScreen.WorkingArea.Left - SystemInformation.VirtualScreen.Left);
 			gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 10 + (Screen.PrimaryScreen.WorkingArea.Top - SystemInformation.VirtualScreen.Top);
+			gpButtonsWidth = gpButtons.Width;
 			gpButtons.Left = gpButtonsLeft + gpButtons.Width;
 			gpButtons.Top = gpButtonsTop;
 
@@ -707,23 +710,18 @@ namespace gInk
 				return;
 			}
 
-			int primwidth = Screen.PrimaryScreen.WorkingArea.Width;
-			int primheight = Screen.PrimaryScreen.WorkingArea.Height;
-			int primright = Screen.PrimaryScreen.WorkingArea.Right;
-			int primbottom = Screen.PrimaryScreen.WorkingArea.Bottom;
-
 			int aimedleft = gpButtonsLeft;
 			if (ButtonsEntering == 0)
 			{
 				if (Root.Snapping > 0)
-					aimedleft = gpButtonsLeft + gpButtons.Width + 5;
+					aimedleft = gpButtonsLeft + gpButtonsWidth + 5;
 				else if (Root.Docked)
-					aimedleft = gpButtonsLeft + gpButtons.Width - btDock.Right;
+					aimedleft = gpButtonsLeft + gpButtonsWidth - btDock.Right;
 				else
 					aimedleft = gpButtonsLeft;
 			}
 			else if (ButtonsEntering == -1)
-				aimedleft = gpButtonsLeft + gpButtons.Width;
+				aimedleft = gpButtonsLeft + gpButtonsWidth;
 
 			if (gpButtons.Left > aimedleft)
 			{
@@ -739,6 +737,7 @@ namespace gInk
 				{
 					gpButtons.Left = aimedleft;
 				}
+				gpButtons.Width = Math.Max(gpButtonsWidth - (gpButtons.Left - gpButtonsLeft), btDock.Width);
 				Root.UponButtonsUpdate |= 0x1;
 			}
 			else if (gpButtons.Left < aimedleft)
@@ -761,6 +760,7 @@ namespace gInk
 				{
 					gpButtons.Left = aimedleft;
 				}
+				gpButtons.Width = Math.Max(gpButtonsWidth - (gpButtons.Left - gpButtonsLeft), btDock.Width);
 				Root.UponButtonsUpdate |= 0x1;
 			}
 
