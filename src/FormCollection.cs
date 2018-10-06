@@ -367,7 +367,7 @@ namespace gInk
 
 		private void IC_CursorInRange(object sender, InkCollectorCursorInRangeEventArgs e)
 		{
-			if (e.Cursor.Inverted && Root.CurrentPen != 0)
+			if (e.Cursor.Inverted && Root.CurrentPen != -1)
 			{
 				EnterEraserMode(true);
 				/*
@@ -380,7 +380,7 @@ namespace gInk
 				}
 				*/
 			}
-			else if (!e.Cursor.Inverted && Root.CurrentPen != 0)
+			else if (!e.Cursor.Inverted && Root.CurrentPen != -1)
 			{
 				EnterEraserMode(false);
 				/*
