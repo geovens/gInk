@@ -1,4 +1,8 @@
 
+v0.5.3 (Oct. 6, 2018)
+=================
+- Fix eraser for touchscreen and stylus.
+
 v0.5.2 (Sep. 24, 2018)
 =================
 - Fix snapshot on specific multiple display configurations (thanks to pubpub-zz).
