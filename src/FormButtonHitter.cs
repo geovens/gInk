@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +14,18 @@ namespace gInk
 	{
 		Root Root;
 		FormCollection FC;
+
+		// http://www.csharp411.com/hide-form-from-alttab/
+		protected override CreateParams CreateParams
+		{
+			get
+			{
+				CreateParams cp = base.CreateParams;
+				// turn on WS_EX_TOOLWINDOW style bit
+				cp.ExStyle |= 0x80;
+				return cp;
+			}
+		}
 
 		public FormButtonHitter(Root root)
 		{

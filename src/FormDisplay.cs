@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -31,6 +31,18 @@ namespace gInk
 
 		byte[] screenbits;
 		byte[] lastscreenbits;
+
+		// http://www.csharp411.com/hide-form-from-alttab/
+		protected override CreateParams CreateParams
+		{
+			get
+			{
+				CreateParams cp = base.CreateParams;
+				// turn on WS_EX_TOOLWINDOW style bit
+				cp.ExStyle |= 0x80;
+				return cp;
+			}
+		}
 
 		public FormDisplay(Root root)
 		{
