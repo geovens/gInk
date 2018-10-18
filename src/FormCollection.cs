@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -31,6 +31,18 @@ namespace gInk
 		public int gpButtonsLeft, gpButtonsTop, gpButtonsWidth; // the default location, fixed
 
 		public bool gpPenWidth_MouseOn = false;
+
+		// http://www.csharp411.com/hide-form-from-alttab/
+		protected override CreateParams CreateParams
+		{
+			get
+			{
+				CreateParams cp = base.CreateParams;
+				// turn on WS_EX_TOOLWINDOW style bit
+				cp.ExStyle |= 0x80;
+				return cp;
+			}
+		}
 
 		public FormCollection(Root root)
 		{
