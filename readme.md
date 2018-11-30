@@ -15,7 +15,7 @@ Click the exit button or press ESC to exit drawing.
 
 #### Download
 
-https://github.com/geovens/gInk/releases/download/v0.5.2/gInk_v0.5.2.zip
+https://github.com/geovens/gInk/releases/download/v0.5.3/gInk_v0.5.3.zip
 
 #### Features
 
