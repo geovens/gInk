@@ -1,4 +1,9 @@
 
+v0.5.4 (ongoing)
+=================
+- Fix pointer mode on specific multiple display configurations.
+- Hide forms from alt-tab switcher (contributed by kohanyirobert).
+
 v0.5.3 (Oct. 6, 2018)
 =================
 - Fix eraser for touchscreen and stylus.
