@@ -67,6 +67,8 @@ namespace gInk
 			{
 				this.Left = FC.gpButtons.Left + FC.Left;
 				this.Top = FC.gpButtons.Top + FC.Top;
+				this.Width = FC.gpButtons.Width;
+				this.Height = FC.gpButtons.Height;
 			}
 		}
 
