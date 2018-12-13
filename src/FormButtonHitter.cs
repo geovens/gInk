@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -33,8 +33,8 @@ namespace gInk
 			FC = Root.FormCollection;
 			InitializeComponent();
 
-			this.Left = FC.gpButtons.Left;
-			this.Top = FC.gpButtons.Top;
+			this.Left = FC.gpButtons.Left + FC.Left;
+			this.Top = FC.gpButtons.Top + FC.Top;
 			this.Width = FC.gpButtons.Width;
 			this.Height = FC.gpButtons.Height;
 		}
@@ -65,8 +65,8 @@ namespace gInk
 		{
 			if (this.Visible)
 			{
-				this.Left = FC.gpButtons.Left;
-				this.Top = FC.gpButtons.Top;
+				this.Left = FC.gpButtons.Left + FC.Left;
+				this.Top = FC.gpButtons.Top + FC.Top;
 			}
 		}
 
