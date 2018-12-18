@@ -1,5 +1,5 @@
 
-v0.5.4 (ongoing)
+v0.5.4 (Dec. 18, 2018)
 =================
 - Fix pointer mode on specific multiple display configurations.
 - Hide forms from alt-tab switcher (contributed by kohanyirobert).
