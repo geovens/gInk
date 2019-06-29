@@ -1194,6 +1194,8 @@ namespace gInk
 							gpButtons.Left = gpButtonsLeft + gpButtonsWidth - btDock.Right;
 						else
 							gpButtons.Left = gpButtonsLeft;
+						gpPenWidth.Left = gpButtonsLeft + btPenWidth.Left - gpPenWidth.Width / 2 + btPenWidth.Width / 2;
+						gpPenWidth.Top = gpButtonsTop - gpPenWidth.Height - 10;
 						gpButtons.Top = gpButtonsTop;
 						Root.UponAllDrawingUpdate = true;
 					}
