@@ -61,14 +61,14 @@ namespace gInk
 		public bool PanEnabled = true;
 		public bool InkVisibleEnabled = true;
 		public DrawingAttributes[] PenAttr = new DrawingAttributes[MaxPenCount];
-		public bool Hotkey_Control, Hotkey_Alt, Hotkey_Shift, Hotkey_Win;
-		public int Hotkey = 0;
 		public bool AutoScroll;
 		public bool WhiteTrayIcon;
 		public string SnapshotBasePath;
 		public int CanvasCursor = 0;
 		public bool AllowDraggingToolbar = true;
 		public int gpButtonsLeft, gpButtonsTop;
+
+		public Hotkey Hotkey_Global = new Hotkey();
 
 		public bool EraserMode = false;
 		public bool Docked = false;
@@ -396,11 +396,11 @@ namespace gInk
 
 		public void SetDefaultConfig()
 		{
-			Hotkey_Control = true;
-			Hotkey_Alt = true;
-			Hotkey_Shift = false;
-			Hotkey_Win = false;
-			Hotkey = 'G';
+			Hotkey_Global.Control = true;
+			Hotkey_Global.Alt = true;
+			Hotkey_Global.Shift = false;
+			Hotkey_Global.Win = false;
+			Hotkey_Global.Key = 'G';
 
 			AutoScroll = false;
 			WhiteTrayIcon = false;
@@ -509,25 +509,25 @@ namespace gInk
 						case "HOTKEY":
 							sPara = sPara.ToUpper();
 							if (sPara.Contains("CONTROL"))
-								Hotkey_Control = true;
+								Hotkey_Global.Control = true;
 							else
-								Hotkey_Control = false;
+								Hotkey_Global.Control = false;
 							if (sPara.Contains("ALT"))
-								Hotkey_Alt = true;
+								Hotkey_Global.Alt = true;
 							else
-								Hotkey_Alt = false;
+								Hotkey_Global.Alt = false;
 							if (sPara.Contains("SHIFT"))
-								Hotkey_Shift = true;
+								Hotkey_Global.Shift = true;
 							else
-								Hotkey_Shift = false;
+								Hotkey_Global.Shift = false;
 							if (sPara.Contains("WIN"))
-								Hotkey_Win = true;
+								Hotkey_Global.Win = true;
 							else
-								Hotkey_Win = false;
-							if (Hotkey_Control || Hotkey_Alt || Hotkey_Shift || Hotkey_Win)
-								Hotkey = sPara.Substring(sPara.Length - 1).ToCharArray()[0];
+								Hotkey_Global.Win = false;
+							if (Hotkey_Global.Control || Hotkey_Global.Alt || Hotkey_Global.Shift || Hotkey_Global.Win)
+								Hotkey_Global.Key = sPara.Substring(sPara.Length - 1).ToCharArray()[0];
 							else
-								Hotkey = 0;
+								Hotkey_Global.Key = 0;
 							break;
 						case "WHITE_TRAY_ICON":
 							if (sPara.ToUpper() == "TRUE" || sPara == "1" || sPara.ToUpper() == "ON")
@@ -699,18 +699,18 @@ namespace gInk
 							if (sPara.Length > 0)
 								Hotkey = sPara.Substring(sPara.Length - 1).ToCharArray()[0];
 							*/
-							if (Hotkey_Control)
+							if (Hotkey_Global.Control)
 								sPara += "Control + ";
-							if (Hotkey_Alt)
+							if (Hotkey_Global.Alt)
 								sPara += "Alt + ";
-							if (Hotkey_Shift)
+							if (Hotkey_Global.Shift)
 								sPara += "Shift + ";
-							if (Hotkey_Win)
+							if (Hotkey_Global.Win)
 								sPara += "Win + ";
-							if (sPara == "" || Hotkey == 0)
+							if (sPara == "" || Hotkey_Global.Key == 0)
 								sPara = "None";
 							else
-								sPara += (char)Hotkey;
+								sPara += (char)Hotkey_Global.Key;
 
 							break;
 						case "WHITE_TRAY_ICON":
@@ -830,21 +830,21 @@ namespace gInk
 		public void SetHotkey()
 		{
 			int modifier = 0;
-			if (Hotkey_Control) modifier |= 0x2;
-			if (Hotkey_Alt) modifier |= 0x1;
-			if (Hotkey_Shift) modifier |= 0x4;
-			if (Hotkey_Win) modifier |= 0x8;
+			if (Hotkey_Global.Control) modifier |= 0x2;
+			if (Hotkey_Global.Alt) modifier |= 0x1;
+			if (Hotkey_Global.Shift) modifier |= 0x4;
+			if (Hotkey_Global.Win) modifier |= 0x8;
 			if (modifier != 0)
-				RegisterHotKey(IntPtr.Zero, 0, modifier, Hotkey);
+				RegisterHotKey(IntPtr.Zero, 0, modifier, Hotkey_Global.Key);
 		}
 
 		public void UnsetHotkey()
 		{
 			int modifier = 0;
-			if (Hotkey_Control) modifier |= 0x2;
-			if (Hotkey_Alt) modifier |= 0x1;
-			if (Hotkey_Shift) modifier |= 0x4;
-			if (Hotkey_Win) modifier |= 0x8;
+			if (Hotkey_Global.Control) modifier |= 0x2;
+			if (Hotkey_Global.Alt) modifier |= 0x1;
+			if (Hotkey_Global.Shift) modifier |= 0x4;
+			if (Hotkey_Global.Win) modifier |= 0x8;
 			if (modifier != 0)
 				UnregisterHotKey(IntPtr.Zero, 0);
 		}

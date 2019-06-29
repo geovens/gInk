@@ -11,13 +11,15 @@ namespace gInk
 {
 	public partial class HotkeyInputBox : TextBox
 	{
-		private int _Key;
-		private bool _Control, _Alt, _Shift, _Win;
-		public int Key { get { return _Key; } set { _Key = value; UpdateText(); } }
-		public bool Control { get { return _Control; } set { _Control = value; UpdateText(); } }
-		public bool Alt { get { return _Alt; } set { _Alt = value;  UpdateText(); } }
-		public bool Shift { get { return _Shift; } set { _Shift = value; UpdateText(); } }
-		public bool Win { get { return _Win; } set { _Win = value; UpdateText(); } }
+		//private int _Key;
+		//private bool _Control, _Alt, _Shift, _Win;
+		private Hotkey _Hotkey;
+		//public int Key { get { return _Key; } set { _Key = value; UpdateText(); } }
+		//public bool Control { get { return _Control; } set { _Control = value; UpdateText(); } }
+		//public bool Alt { get { return _Alt; } set { _Alt = value;  UpdateText(); } }
+		//public bool Shift { get { return _Shift; } set { _Shift = value; UpdateText(); } }
+		//public bool Win { get { return _Win; } set { _Win = value; UpdateText(); } }
+		public Hotkey Hotkey { get { return _Hotkey; } set { _Hotkey = value; UpdateText(); } }
 
 		public bool RequireModifier { get; set; }
 
@@ -30,18 +32,18 @@ namespace gInk
 
 		protected void UpdateText()
 		{
-			if (Key > 0)
+			if (Hotkey.Key > 0)
 			{
 				Text = "";
-				if (Control)
+				if (Hotkey.Control)
 					Text += "Ctrl + ";
-				if (Alt)
+				if (Hotkey.Alt)
 					Text += "Alt + ";
-				if (Shift)
+				if (Hotkey.Shift)
 					Text += "Shift + ";
-				if (Win)
+				if (Hotkey.Win)
 					Text += "Win + ";
-				Text += (char)Key;
+				Text += (char)Hotkey.Key;
 			}
 			else
 			{
@@ -57,7 +59,6 @@ namespace gInk
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			e.SuppressKeyPress = true;
-			e.Handled = true;
 
 			Keys modifierKeys = e.Modifiers;
 			Keys pressedKey = e.KeyData ^ modifierKeys;
@@ -65,7 +66,11 @@ namespace gInk
 			if (pressedKey == Keys.Escape)
 			{
 				Text = "None";
-				Key = 0;
+				Hotkey.Key = 0;
+				Hotkey.Control = false;
+				Hotkey.Alt = false;
+				Hotkey.Shift = false;
+				Hotkey.Win = false;
 			}
 
 			if (modifierKeys != Keys.None)
@@ -87,32 +92,16 @@ namespace gInk
 				}
 			}
 
-			if (RequireModifier)
+
+			if ((!RequireModifier || modifierKeys != Keys.None) && (pressedKey >= Keys.A && pressedKey <= Keys.Z || pressedKey >= Keys.D0 && pressedKey <= Keys.D9))
 			{
-				if (modifierKeys != Keys.None && (pressedKey >= Keys.A && pressedKey <= Keys.Z || pressedKey >= Keys.D0 && pressedKey <= Keys.D9))
-				{
-					Key = (int)pressedKey;
-					Control = (modifierKeys & Keys.Control) > 0;
-					Alt = (modifierKeys & Keys.Alt) > 0;
-					Shift = (modifierKeys & Keys.Shift) > 0;
-					Win = (modifierKeys & Keys.LWin) > 0 || (modifierKeys & Keys.RWin) > 0;
-					HotkeyJustSet = true;
-					BackColor = Color.White;
-				}
-			}
-			else
-			{
-				if (pressedKey >= Keys.A && pressedKey <= Keys.Z || pressedKey >= Keys.D0 && pressedKey <= Keys.D9)
-				{
-					Key = (int)pressedKey;
-					Control = (modifierKeys & Keys.Control) > 0;
-					Alt = (modifierKeys & Keys.Alt) > 0;
-					Shift = (modifierKeys & Keys.Shift) > 0;
-					Win = (modifierKeys & Keys.LWin) > 0 || (modifierKeys & Keys.RWin) > 0;
-					HotkeyJustSet = true;
-					UpdateText();
-					BackColor = Color.White;
-				}
+				Hotkey.Key = (int)pressedKey;
+				Hotkey.Control = (modifierKeys & Keys.Control) > 0;
+				Hotkey.Alt = (modifierKeys & Keys.Alt) > 0;
+				Hotkey.Shift = (modifierKeys & Keys.Shift) > 0;
+				Hotkey.Win = (modifierKeys & Keys.LWin) > 0 || (modifierKeys & Keys.RWin) > 0;
+				HotkeyJustSet = true;
+				BackColor = Color.White;
 			}
 		}
 

@@ -96,6 +96,7 @@
     <Compile Include="FormOptions.Designer.cs">
       <DependentUpon>FormOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Hotkey.cs" />
     <Compile Include="HotkeyInputBox.cs">
       <SubType>Component</SubType>
     </Compile>

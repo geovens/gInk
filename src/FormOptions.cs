@@ -54,12 +54,8 @@ namespace gInk
 			comboCanvasCursor.SelectedIndex = Root.CanvasCursor;
 
 			tbSnapPath.Text = Root.SnapshotBasePath;
-
 			
 			lbNote.ForeColor = Color.Black;
-
-			HotkeyInputBox hib = new HotkeyInputBox();
-			tabPage3.Controls.Add(hib);
 
 			Label lbcbPens = new Label();
 			lbcbPens.Left = 90;
@@ -140,6 +136,8 @@ namespace gInk
 				tabPage2.Controls.Add(comboPensAlpha[p]);
 				tabPage2.Controls.Add(comboPensWidth[p]);
 			}
+
+			hiGlobal.Hotkey = Root.Hotkey_Global;
 		}
 
 		private void comboPensAlpha_TextChanged(object sender, EventArgs e)

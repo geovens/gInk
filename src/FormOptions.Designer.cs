@@ -54,6 +54,7 @@
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.label2 = new System.Windows.Forms.Label();
+			this.hiGlobal = new gInk.HotkeyInputBox();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -288,6 +289,7 @@
 			// tabPage3
 			// 
 			this.tabPage3.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.tabPage3.Controls.Add(this.hiGlobal);
 			this.tabPage3.Controls.Add(this.label2);
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
@@ -303,6 +305,14 @@
 			this.label2.Size = new System.Drawing.Size(431, 12);
 			this.label2.TabIndex = 4;
 			this.label2.Text = "Global hotkey (start drawing, switch between mouse pointer and drawing)";
+			// 
+			// hiGlobal
+			// 
+			this.hiGlobal.Location = new System.Drawing.Point(19, 45);
+			this.hiGlobal.Name = "hiGlobal";
+			this.hiGlobal.RequireModifier = false;
+			this.hiGlobal.Size = new System.Drawing.Size(100, 21);
+			this.hiGlobal.TabIndex = 5;
 			// 
 			// FormOptions
 			// 
@@ -354,5 +364,6 @@
 		private System.Windows.Forms.CheckBox cbInkVisibleEnabled;
 		private System.Windows.Forms.CheckBox cbPanEnabled;
 		private System.Windows.Forms.CheckBox cbAllowDragging;
+		private HotkeyInputBox hiGlobal;
 	}
 }
