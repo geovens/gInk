@@ -438,7 +438,7 @@ namespace gInk
 			{
 				ClearCanvus();
 				DrawStrokes();
-				DrawButtons(false);
+				DrawButtons(true);
 				if (Root.Snapping > 0)
 					DrawSnapping(Root.SnappingRect);
 				UpdateFormDisplay(true);
@@ -512,7 +512,7 @@ namespace gInk
 			else if (Root.UponButtonsUpdate > 0)
 			{
 				if ((Root.UponButtonsUpdate & 0x2) > 0)
-					DrawButtons(true, true);
+					DrawButtons(true, (Root.UponButtonsUpdate & 0x4) > 0);
 				else if ((Root.UponButtonsUpdate & 0x1) > 0)
 					DrawButtons(false, (Root.UponButtonsUpdate & 0x4) > 0);
 				UpdateFormDisplay(true);
