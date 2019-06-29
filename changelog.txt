@@ -1,4 +1,11 @@
 
+v0.5.5 (ongoing)
+=================
+- Add a button to pan (move) inks.
+- Add a button to temporarily hide inks.
+- Fix a visual bug on rim of semi-transparent inks that occurs occasionally.
+- Fix missing inks around the toolbar when the toolbar is moving. 
+
 v0.5.4 (Dec. 18, 2018)
 =================
 - Fix pointer mode on specific multiple display configurations.

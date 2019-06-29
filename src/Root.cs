@@ -73,6 +73,7 @@ namespace gInk
 		public bool UponTakingSnap = false;
 		public bool UponBalloonSnap = false;
 		public bool UponSubPanelUpdate = false;
+		public bool UponAllDrawingUpdate = false;
 
 		public bool PanMode = false;
 		public bool InkVisible = true;
@@ -168,6 +169,7 @@ namespace gInk
 			}
 			SelectPen(CurrentPen);
 			SetInkVisible(true);
+			FormCollection.ButtonsEntering = 1;
 			FormDisplay.Show();
 			FormCollection.Show();
 			FormDisplay.DrawButtons(true);
@@ -282,6 +284,7 @@ namespace gInk
 			Docked = true;
 			gpPenWidthVisible = false;
 			FormCollection.btDock.Image = FormCollection.image_dockback;
+			FormCollection.ButtonsEntering = -1;
 			UponButtonsUpdate |= 0x2;
 		}
 
@@ -292,6 +295,7 @@ namespace gInk
 
 			Docked = false;
 			FormCollection.btDock.Image = FormCollection.image_dock;
+			FormCollection.ButtonsEntering = 1;
 			UponButtonsUpdate |= 0x2;
 		}
 

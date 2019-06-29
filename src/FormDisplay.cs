@@ -154,7 +154,10 @@ namespace gInk
 				Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
 
 			if (exiting)
-				gCanvus.FillRectangle(TransparentBrush, left - 120, top, fullwidth * 2, height);
+			{
+				int clearleft = Math.Max(left - 120, Root.FormCollection.gpButtonsLeft);
+				gCanvus.FillRectangle(TransparentBrush, clearleft, top, fullwidth * 2, height);
+			}
 			gCanvus.DrawImage(gpButtonsImage, left, top, new Rectangle(0, 0, width, height), GraphicsUnit.Pixel);
 
 			if (Root.gpPenWidthVisible)
@@ -181,7 +184,10 @@ namespace gInk
 				Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
 
 			if (exiting)
-				g.FillRectangle(TransparentBrush, left - 120, top, width + 80, height);
+			{
+				int clearleft = Math.Max(left - 120, Root.FormCollection.gpButtonsLeft);
+				g.FillRectangle(TransparentBrush, clearleft, top, width + 80, height);
+			}
 			g.DrawImage(gpButtonsImage, left, top);
 
 			if (Root.gpPenWidthVisible)
@@ -428,7 +434,18 @@ namespace gInk
 			}
 			*/
 
-			if (Root.UponTakingSnap)
+			if (Root.UponAllDrawingUpdate)
+			{
+				ClearCanvus();
+				DrawStrokes();
+				DrawButtons(false);
+				if (Root.Snapping > 0)
+					DrawSnapping(Root.SnappingRect);
+				UpdateFormDisplay(true);
+				Root.UponAllDrawingUpdate = false;
+			}
+
+			else if (Root.UponTakingSnap)
 			{
 				if (Root.SnappingRect.Width == this.Width && Root.SnappingRect.Height == this.Height)
 					System.Threading.Thread.Sleep(200);
@@ -442,13 +459,15 @@ namespace gInk
 					Root.FormCollection.RetreatAndExit();
 			}
 
-			else if (Root.Snapping > 0)
+			else if (Root.Snapping == 2)
 			{
+
 				ClearCanvus();
 				DrawStrokes();
 				DrawButtons(false);
 				DrawSnapping(Root.SnappingRect);
 				UpdateFormDisplay(true);
+
 			}
 
 			else if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false && Root.InkVisible)
@@ -495,7 +514,7 @@ namespace gInk
 				if ((Root.UponButtonsUpdate & 0x2) > 0)
 					DrawButtons(true, true);
 				else if ((Root.UponButtonsUpdate & 0x1) > 0)
-					DrawButtons(false, true);
+					DrawButtons(false, (Root.UponButtonsUpdate & 0x4) > 0);
 				UpdateFormDisplay(true);
 				Root.UponButtonsUpdate = 0;
 			}

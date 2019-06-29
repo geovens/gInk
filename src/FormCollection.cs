@@ -623,7 +623,7 @@ namespace gInk
 			Root.gpPenWidthVisible = false;
 
 			LastTickTime = DateTime.Now;
-			ButtonsEntering = -1;
+			ButtonsEntering = -9;
 		}
 
 		private void Form1_Load(object sender, EventArgs e)
@@ -676,6 +676,7 @@ namespace gInk
 			Root.SnappingY = -1;
 			Root.SnappingRect = new Rectangle(0, 0, 0, 0);
 			Root.Snapping = 1;
+			ButtonsEntering = -2;
 			Root.UnPointer();
 		}
 
@@ -685,7 +686,10 @@ namespace gInk
 			Root.SnappingX = -1;
 			Root.SnappingY = -1;
 			Root.Snapping = -60;
+			ButtonsEntering = 1;
 			Root.SelectPen(Root.CurrentPen);
+
+			this.Cursor = System.Windows.Forms.Cursors.Default;
 		}
 
 		public void btStop_Click(object sender, EventArgs e)
@@ -815,17 +819,25 @@ namespace gInk
 			}
 
 			int aimedleft = gpButtonsLeft;
-			if (ButtonsEntering == 0)
+			if (ButtonsEntering == -9)
+			{
+				aimedleft = gpButtonsLeft + gpButtonsWidth;
+			}
+			else if (ButtonsEntering < 0)
 			{
 				if (Root.Snapping > 0)
 					aimedleft = gpButtonsLeft + gpButtonsWidth + 5;
 				else if (Root.Docked)
 					aimedleft = gpButtonsLeft + gpButtonsWidth - btDock.Right;
-				else
-					aimedleft = gpButtonsLeft;
 			}
-			else if (ButtonsEntering == -1)
-				aimedleft = gpButtonsLeft + gpButtonsWidth;
+			else if (ButtonsEntering > 0)
+			{
+				aimedleft = gpButtonsLeft;
+			}
+			else if (ButtonsEntering == 0)
+			{
+				aimedleft = gpButtons.Left; // stay at current location
+			}
 
 			if (gpButtons.Left > aimedleft)
 			{
@@ -850,13 +862,13 @@ namespace gInk
 				dleft /= 70;
 				if (dleft > 8) dleft = 8;
 				// fast exiting when not docked
-				if (ButtonsEntering == -1 && !Root.Docked)
+				if (ButtonsEntering == -9 && !Root.Docked)
 					dleft = 8;
 				dleft *= (float)(DateTime.Now - LastTickTime).TotalMilliseconds;
 				if (dleft > 120) dleft = 120;
 				if (dleft < 1) dleft = 1;
 				// fast exiting when docked
-				if (ButtonsEntering == -1 && dleft == 1)
+				if (ButtonsEntering == -9 && dleft == 1)
 					dleft = 2;
 				gpButtons.Left += (int)dleft;
 				LastTickTime = DateTime.Now;
@@ -866,14 +878,26 @@ namespace gInk
 				}
 				gpButtons.Width = Math.Max(gpButtonsWidth - (gpButtons.Left - gpButtonsLeft), btDock.Width);
 				Root.UponButtonsUpdate |= 0x1;
+				Root.UponButtonsUpdate |= 0x4;
 			}
 
-			if (ButtonsEntering == -1 && gpButtons.Left == aimedleft)
+			if (ButtonsEntering == -9 && gpButtons.Left == aimedleft)
 			{
 				tiSlide.Enabled = false;
 				Root.StopInk();
 				return;
 			}
+			else if (ButtonsEntering < 0)
+			{
+				Root.UponAllDrawingUpdate = true;
+				Root.UponButtonsUpdate = 0;
+				if (gpButtons.Left == aimedleft)
+				{
+					ButtonsEntering = 0;
+				}
+			}
+
+
 
 			if (!Root.PointerMode && !this.TopMost)
 				ToTopMost();
