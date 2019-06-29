@@ -67,6 +67,9 @@
 			this.gpButtons.Name = "gpButtons";
 			this.gpButtons.Size = new System.Drawing.Size(828, 53);
 			this.gpButtons.TabIndex = 3;
+			this.gpButtons.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+			this.gpButtons.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+			this.gpButtons.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
 			// 
 			// btInkVisible
 			// 

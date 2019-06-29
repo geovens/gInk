@@ -30,7 +30,7 @@ namespace gInk
 		public System.Windows.Forms.Cursor cursortip;
 
 		public int ButtonsEntering = 0;  // -1 = exiting
-		public int gpButtonsLeft, gpButtonsTop, gpButtonsWidth; // the default location, fixed
+		public int gpButtonsLeft, gpButtonsTop, gpButtonsWidth, gpButtonsHeight; // the default location, fixed
 
 		public bool gpPenWidth_MouseOn = false;
 
@@ -189,6 +189,7 @@ namespace gInk
 			gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width + (Screen.PrimaryScreen.Bounds.Left - SystemInformation.VirtualScreen.Left);
 			gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 10 + (Screen.PrimaryScreen.Bounds.Top - SystemInformation.VirtualScreen.Top);
 			gpButtonsWidth = gpButtons.Width;
+			gpButtonsHeight = gpButtons.Height;
 			gpButtons.Left = gpButtonsLeft + gpButtons.Width;
 			gpButtons.Top = gpButtonsTop;
 
@@ -1027,6 +1028,40 @@ namespace gInk
 
 			if (Root.Snapping < 0)
 				Root.Snapping++;
+		}
+
+		bool IsMovingToolbar = false;
+		Point HitMovingToolbareXY = new Point();
+		private void gpButtons_MouseDown(object sender, MouseEventArgs e)
+		{
+			IsMovingToolbar = true;
+			HitMovingToolbareXY.X = e.X;
+			HitMovingToolbareXY.Y = e.Y;
+		}
+
+		private void gpButtons_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (IsMovingToolbar)
+			{
+				gpButtonsLeft += e.X - HitMovingToolbareXY.X;
+				gpButtonsTop += e.Y - HitMovingToolbareXY.Y;
+				if (gpButtonsLeft + gpButtonsWidth > SystemInformation.VirtualScreen.Right)
+					gpButtonsLeft = SystemInformation.VirtualScreen.Right - gpButtonsWidth;
+				if (gpButtonsLeft < SystemInformation.VirtualScreen.Left)
+					gpButtonsLeft = SystemInformation.VirtualScreen.Left;
+				if (gpButtonsTop + gpButtonsHeight > SystemInformation.VirtualScreen.Bottom)
+					gpButtonsTop = SystemInformation.VirtualScreen.Bottom - gpButtonsHeight;
+				if (gpButtonsTop < SystemInformation.VirtualScreen.Top)
+					gpButtonsTop = SystemInformation.VirtualScreen.Top;
+				gpButtons.Left = gpButtonsLeft;
+				gpButtons.Top = gpButtonsTop;
+				Root.UponAllDrawingUpdate = true; 
+			}
+		}
+
+		private void gpButtons_MouseUp(object sender, MouseEventArgs e)
+		{
+			IsMovingToolbar = false;
 		}
 
 		private void btInkVisible_Click(object sender, EventArgs e)
