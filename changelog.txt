@@ -1,5 +1,5 @@
 
-v0.5.5 (ongoing)
+v0.6.0 (ongoing)
 =================
 - Add a button to pan (move) inks.
 - Add a button to temporarily hide inks.
