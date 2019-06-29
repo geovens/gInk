@@ -72,6 +72,10 @@ namespace gInk
 				btPen[b].FlatAppearance.MouseDownBackColor = Root.PenAttr[b].Color;
 				btPen[b].FlatAppearance.MouseOverBackColor = Root.PenAttr[b].Color;
 
+				btPen[b].MouseDown += gpButtons_MouseDown;
+				btPen[b].MouseMove += gpButtons_MouseMove;
+				btPen[b].MouseUp += gpButtons_MouseUp;
+
 				gpButtons.Controls.Add(btPen[b]);
 
 				if (Root.PenEnabled[b])
@@ -633,6 +637,12 @@ namespace gInk
 
 		public void btDock_Click(object sender, EventArgs e)
 		{
+			if (ToolbarMoved)
+			{
+				ToolbarMoved = false;
+				return;
+			}
+
 			LastTickTime = DateTime.Now;
 			if (!Root.Docked)
 			{
@@ -646,12 +656,24 @@ namespace gInk
 
 		public void btPointer_Click(object sender, EventArgs e)
 		{
+			if (ToolbarMoved)
+			{
+				ToolbarMoved = false;
+				return;
+			}
+
 			SelectPen(-2);
 		}
 
 
 		private void btPenWidth_Click(object sender, EventArgs e)
 		{
+			if (ToolbarMoved)
+			{
+				ToolbarMoved = false;
+				return;
+			}
+
 			if (Root.PointerMode)
 				return;
 
@@ -664,6 +686,12 @@ namespace gInk
 
 		public void btSnap_Click(object sender, EventArgs e)
 		{
+			if (ToolbarMoved)
+			{
+				ToolbarMoved = false;
+				return;
+			}
+
 			if (Root.Snapping > 0)
 				return;
 
@@ -695,6 +723,12 @@ namespace gInk
 
 		public void btStop_Click(object sender, EventArgs e)
 		{
+			if (ToolbarMoved)
+			{
+				ToolbarMoved = false;
+				return;
+			}
+
 			RetreatAndExit();
 		}
 
@@ -1030,58 +1064,154 @@ namespace gInk
 				Root.Snapping++;
 		}
 
-		bool IsMovingToolbar = false;
+		int IsMovingToolbar = 0;
 		Point HitMovingToolbareXY = new Point();
+		bool ToolbarMoved = false;
 		private void gpButtons_MouseDown(object sender, MouseEventArgs e)
 		{
-			IsMovingToolbar = true;
+			IsMovingToolbar = 1;
 			HitMovingToolbareXY.X = e.X;
 			HitMovingToolbareXY.Y = e.Y;
 		}
 
 		private void gpButtons_MouseMove(object sender, MouseEventArgs e)
 		{
-			if (IsMovingToolbar)
+			if (IsMovingToolbar == 1)
 			{
-				gpButtonsLeft += e.X - HitMovingToolbareXY.X;
-				gpButtonsTop += e.Y - HitMovingToolbareXY.Y;
-				if (gpButtonsLeft + gpButtonsWidth > SystemInformation.VirtualScreen.Right)
-					gpButtonsLeft = SystemInformation.VirtualScreen.Right - gpButtonsWidth;
-				if (gpButtonsLeft < SystemInformation.VirtualScreen.Left)
-					gpButtonsLeft = SystemInformation.VirtualScreen.Left;
-				if (gpButtonsTop + gpButtonsHeight > SystemInformation.VirtualScreen.Bottom)
-					gpButtonsTop = SystemInformation.VirtualScreen.Bottom - gpButtonsHeight;
-				if (gpButtonsTop < SystemInformation.VirtualScreen.Top)
-					gpButtonsTop = SystemInformation.VirtualScreen.Top;
-				gpButtons.Left = gpButtonsLeft;
-				gpButtons.Top = gpButtonsTop;
-				Root.UponAllDrawingUpdate = true; 
+				if (Math.Abs(e.X - HitMovingToolbareXY.X) > 10 || Math.Abs(e.Y - HitMovingToolbareXY.Y) > 10)
+					IsMovingToolbar = 2;
+			}
+			if (IsMovingToolbar == 2)
+			{
+				if (e.X != HitMovingToolbareXY.X || e.Y != HitMovingToolbareXY.Y)
+				{
+					/*
+					gpButtonsLeft += e.X - HitMovingToolbareXY.X;
+					gpButtonsTop += e.Y - HitMovingToolbareXY.Y;
+					
+					if (gpButtonsLeft + gpButtonsWidth > SystemInformation.VirtualScreen.Right)
+						gpButtonsLeft = SystemInformation.VirtualScreen.Right - gpButtonsWidth;
+					if (gpButtonsLeft < SystemInformation.VirtualScreen.Left)
+						gpButtonsLeft = SystemInformation.VirtualScreen.Left;
+					if (gpButtonsTop + gpButtonsHeight > SystemInformation.VirtualScreen.Bottom)
+						gpButtonsTop = SystemInformation.VirtualScreen.Bottom - gpButtonsHeight;
+					if (gpButtonsTop < SystemInformation.VirtualScreen.Top)
+						gpButtonsTop = SystemInformation.VirtualScreen.Top;
+					*/
+					int newleft = gpButtonsLeft + e.X - HitMovingToolbareXY.X;
+					int newtop = gpButtonsTop + e.Y - HitMovingToolbareXY.Y;
+					int dleft = 0, dtop = 0;
+					bool continuemoving;
+					bool toolbarmovedthisframe = false;
+					do
+					{
+						if (dleft != newleft - gpButtonsLeft)
+							dleft += Math.Sign(newleft - gpButtonsLeft);
+						else
+							break;
+						if
+						(
+							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + dleft, gpButtonsTop + dtop) &&
+							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtons.Width + dleft, gpButtonsTop + dtop) &&
+							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + dleft, gpButtonsTop + gpButtonsHeight + dtop) &&
+							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtons.Width + dleft, gpButtonsTop + gpButtonsHeight + dtop)
+						)
+						{
+							continuemoving = true;
+							ToolbarMoved = true;
+							toolbarmovedthisframe = true;
+						}
+						else
+						{
+							continuemoving = false;
+							dleft -= Math.Sign(newleft - gpButtonsLeft);
+						}
+					}
+					while (continuemoving);
+					do
+					{
+						if (dtop != newtop - gpButtonsTop)
+							dtop += Math.Sign(newtop - gpButtonsTop);
+						else
+							break;
+						if
+						(
+							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + dleft, gpButtonsTop + dtop) &&
+							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtons.Width + dleft, gpButtonsTop + dtop) &&
+							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + dleft, gpButtonsTop + gpButtonsHeight + dtop) &&
+							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtons.Width + dleft, gpButtonsTop + gpButtonsHeight + dtop)
+						)
+						{
+							continuemoving = true;
+							ToolbarMoved = true;
+							toolbarmovedthisframe = true;
+						}
+						else
+						{
+							continuemoving = false;
+							dtop -= Math.Sign(newtop - gpButtonsTop);
+						}
+					}
+					while (continuemoving);
+					if (toolbarmovedthisframe)
+					{
+						gpButtonsLeft += dleft;
+						gpButtonsTop += dtop;
+						gpButtons.Left = gpButtonsLeft;
+						gpButtons.Top = gpButtonsTop;
+						Root.UponAllDrawingUpdate = true;
+					}
+				}
 			}
 		}
 
 		private void gpButtons_MouseUp(object sender, MouseEventArgs e)
 		{
-			IsMovingToolbar = false;
+			IsMovingToolbar = 0;
 		}
 
 		private void btInkVisible_Click(object sender, EventArgs e)
 		{
+			if (ToolbarMoved)
+			{
+				ToolbarMoved = false;
+				return;
+			}
+
 			SetInkVisible(!Root.InkVisible);
 		}
 
 		public void btClear_Click(object sender, EventArgs e)
 		{
+			if (ToolbarMoved)
+			{
+				ToolbarMoved = false;
+				return;
+			}
+
 			Root.ClearInk();
 			SaveUndoStrokes();
 		}
 
 		private void btUndo_Click(object sender, EventArgs e)
 		{
+			if (ToolbarMoved)
+			{
+				ToolbarMoved = false;
+				return;
+			}
+
 			Root.UndoInk();
 		}
 
 		public void btColor_Click(object sender, EventArgs e)
 		{
+			if (ToolbarMoved)
+			{
+				ToolbarMoved = false;
+				return;
+			}
+
 			for (int b = 0; b < Root.MaxPenCount; b++)
 				if ((Button)sender == btPen[b])
 				{
@@ -1091,12 +1221,24 @@ namespace gInk
 
 		public void btEraser_Click(object sender, EventArgs e)
 		{
+			if (ToolbarMoved)
+			{
+				ToolbarMoved = false;
+				return;
+			}
+
 			SelectPen(-1);
 		}
 
 
 		private void btPan_Click(object sender, EventArgs e)
 		{
+			if (ToolbarMoved)
+			{
+				ToolbarMoved = false;
+				return;
+			}
+
 			SelectPen(-3);
 		}
 

@@ -78,7 +78,7 @@
 			this.btInkVisible.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btInkVisible.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btInkVisible.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btInkVisible.Image = global::gInk.Properties.Resources.undo;
+			this.btInkVisible.Image = global::gInk.Properties.Resources.visible;
 			this.btInkVisible.Location = new System.Drawing.Point(702, 3);
 			this.btInkVisible.Margin = new System.Windows.Forms.Padding(2);
 			this.btInkVisible.Name = "btInkVisible";
@@ -87,6 +87,9 @@
 			this.toolTip.SetToolTip(this.btInkVisible, "Ink visible");
 			this.btInkVisible.UseVisualStyleBackColor = true;
 			this.btInkVisible.Click += new System.EventHandler(this.btInkVisible_Click);
+			this.btInkVisible.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+			this.btInkVisible.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+			this.btInkVisible.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
 			// 
 			// btPan
 			// 
@@ -95,7 +98,7 @@
 			this.btPan.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btPan.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btPan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btPan.Image = global::gInk.Properties.Resources.undo;
+			this.btPan.Image = global::gInk.Properties.Resources.pan;
 			this.btPan.Location = new System.Drawing.Point(652, 3);
 			this.btPan.Margin = new System.Windows.Forms.Padding(2);
 			this.btPan.Name = "btPan";
@@ -104,6 +107,9 @@
 			this.toolTip.SetToolTip(this.btPan, "Pan");
 			this.btPan.UseVisualStyleBackColor = true;
 			this.btPan.Click += new System.EventHandler(this.btPan_Click);
+			this.btPan.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+			this.btPan.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+			this.btPan.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
 			// 
 			// btDock
 			// 
@@ -123,6 +129,9 @@
 			this.toolTip.SetToolTip(this.btDock, "Dock / Undock");
 			this.btDock.UseVisualStyleBackColor = false;
 			this.btDock.Click += new System.EventHandler(this.btDock_Click);
+			this.btDock.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+			this.btDock.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+			this.btDock.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
 			// 
 			// btPenWidth
 			// 
@@ -140,6 +149,9 @@
 			this.toolTip.SetToolTip(this.btPenWidth, "Pen width");
 			this.btPenWidth.UseVisualStyleBackColor = true;
 			this.btPenWidth.Click += new System.EventHandler(this.btPenWidth_Click);
+			this.btPenWidth.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+			this.btPenWidth.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+			this.btPenWidth.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
 			// 
 			// btEraser
 			// 
@@ -157,6 +169,9 @@
 			this.toolTip.SetToolTip(this.btEraser, "Eraser");
 			this.btEraser.UseVisualStyleBackColor = true;
 			this.btEraser.Click += new System.EventHandler(this.btEraser_Click);
+			this.btEraser.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+			this.btEraser.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+			this.btEraser.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
 			// 
 			// btSnap
 			// 
@@ -174,6 +189,9 @@
 			this.toolTip.SetToolTip(this.btSnap, "Snapshot");
 			this.btSnap.UseVisualStyleBackColor = true;
 			this.btSnap.Click += new System.EventHandler(this.btSnap_Click);
+			this.btSnap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+			this.btSnap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+			this.btSnap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
 			// 
 			// btPointer
 			// 
@@ -192,6 +210,9 @@
 			this.toolTip.SetToolTip(this.btPointer, "Mouse pointer");
 			this.btPointer.UseVisualStyleBackColor = true;
 			this.btPointer.Click += new System.EventHandler(this.btPointer_Click);
+			this.btPointer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+			this.btPointer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+			this.btPointer.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
 			// 
 			// btStop
 			// 
@@ -209,6 +230,9 @@
 			this.toolTip.SetToolTip(this.btStop, "Exit drawing");
 			this.btStop.UseVisualStyleBackColor = true;
 			this.btStop.Click += new System.EventHandler(this.btStop_Click);
+			this.btStop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+			this.btStop.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+			this.btStop.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
 			// 
 			// btClear
 			// 
@@ -226,6 +250,9 @@
 			this.toolTip.SetToolTip(this.btClear, "Clear");
 			this.btClear.UseVisualStyleBackColor = true;
 			this.btClear.Click += new System.EventHandler(this.btClear_Click);
+			this.btClear.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+			this.btClear.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+			this.btClear.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
 			// 
 			// btUndo
 			// 
@@ -243,6 +270,9 @@
 			this.toolTip.SetToolTip(this.btUndo, "Undo");
 			this.btUndo.UseVisualStyleBackColor = true;
 			this.btUndo.Click += new System.EventHandler(this.btUndo_Click);
+			this.btUndo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+			this.btUndo.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+			this.btUndo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
 			// 
 			// tiSlide
 			// 
