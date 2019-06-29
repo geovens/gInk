@@ -926,10 +926,10 @@ namespace gInk
 			{
 				Root.UponAllDrawingUpdate = true;
 				Root.UponButtonsUpdate = 0;
-				if (gpButtons.Left == aimedleft)
-				{
-					ButtonsEntering = 0;
-				}
+			}
+			if (gpButtons.Left == aimedleft)
+			{
+				ButtonsEntering = 0;
 			}
 
 
@@ -1069,6 +1069,10 @@ namespace gInk
 		bool ToolbarMoved = false;
 		private void gpButtons_MouseDown(object sender, MouseEventArgs e)
 		{
+			if (ButtonsEntering != 0)
+				return;
+
+			ToolbarMoved = false;
 			IsMovingToolbar = 1;
 			HitMovingToolbareXY.X = e.X;
 			HitMovingToolbareXY.Y = e.Y;
@@ -1078,7 +1082,7 @@ namespace gInk
 		{
 			if (IsMovingToolbar == 1)
 			{
-				if (Math.Abs(e.X - HitMovingToolbareXY.X) > 10 || Math.Abs(e.Y - HitMovingToolbareXY.Y) > 10)
+				if (Math.Abs(e.X - HitMovingToolbareXY.X) > 20 || Math.Abs(e.Y - HitMovingToolbareXY.Y) > 20)
 					IsMovingToolbar = 2;
 			}
 			if (IsMovingToolbar == 2)
@@ -1112,9 +1116,9 @@ namespace gInk
 						if
 						(
 							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + dleft, gpButtonsTop + dtop) &&
-							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtons.Width + dleft, gpButtonsTop + dtop) &&
+							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtonsWidth + dleft, gpButtonsTop + dtop) &&
 							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + dleft, gpButtonsTop + gpButtonsHeight + dtop) &&
-							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtons.Width + dleft, gpButtonsTop + gpButtonsHeight + dtop)
+							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtonsWidth + dleft, gpButtonsTop + gpButtonsHeight + dtop)
 						)
 						{
 							continuemoving = true;
@@ -1137,9 +1141,9 @@ namespace gInk
 						if
 						(
 							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + dleft, gpButtonsTop + dtop) &&
-							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtons.Width + dleft, gpButtonsTop + dtop) &&
+							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtonsWidth + dleft, gpButtonsTop + dtop) &&
 							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + dleft, gpButtonsTop + gpButtonsHeight + dtop) &&
-							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtons.Width + dleft, gpButtonsTop + gpButtonsHeight + dtop)
+							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtonsWidth + dleft, gpButtonsTop + gpButtonsHeight + dtop)
 						)
 						{
 							continuemoving = true;
@@ -1157,7 +1161,10 @@ namespace gInk
 					{
 						gpButtonsLeft += dleft;
 						gpButtonsTop += dtop;
-						gpButtons.Left = gpButtonsLeft;
+						if (Root.Docked)
+							gpButtons.Left = gpButtonsLeft + gpButtonsWidth - btDock.Width;
+						else
+							gpButtons.Left = gpButtonsLeft;
 						gpButtons.Top = gpButtonsTop;
 						Root.UponAllDrawingUpdate = true;
 					}
