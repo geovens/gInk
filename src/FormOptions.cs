@@ -19,6 +19,9 @@ namespace gInk
 		ComboBox[] comboPensAlpha = new ComboBox[10];
 		ComboBox[] comboPensWidth = new ComboBox[10];
 
+		Label[] lbHotkeyPens = new Label[10];
+		HotkeyInputBox[] hiPens = new HotkeyInputBox[10];
+
 		public FormOptions(Root root)
 		{
 			Root = root;
@@ -123,13 +126,6 @@ namespace gInk
 				comboPensWidth[p].Text = ((int)Root.PenAttr[p].Width).ToString();
 				comboPensWidth[p].TextChanged += comboPensWidth_TextChanged;
 
-				/*
-				this.Controls.Add(lbPens[p]);
-				this.Controls.Add(cbPens[p]);
-				this.Controls.Add(pboxPens[p]);
-				this.Controls.Add(comboPensAlpha[p]);
-				this.Controls.Add(comboPensWidth[p]);
-				*/
 				tabPage2.Controls.Add(lbPens[p]);
 				tabPage2.Controls.Add(cbPens[p]);
 				tabPage2.Controls.Add(pboxPens[p]);
@@ -137,7 +133,34 @@ namespace gInk
 				tabPage2.Controls.Add(comboPensWidth[p]);
 			}
 
+			for (int p = 0; p < Root.MaxPenCount; p++)
+			{
+				int top = p * 25 + 100;
+				lbHotkeyPens[p] = new Label();
+				lbHotkeyPens[p].Left = 20;
+				lbHotkeyPens[p].Width = 40;
+				lbHotkeyPens[p].Top = top;
+				lbHotkeyPens[p].Text = "Pen " + p.ToString();
+
+				hiPens[p] = new HotkeyInputBox();
+				hiPens[p].Hotkey = Root.Hotkey_Pens[p];
+				hiPens[p].Left = 70;
+				hiPens[p].Width = 150;
+				hiPens[p].Top = top;
+
+				tabPage3.Controls.Add(lbHotkeyPens[p]);
+				tabPage3.Controls.Add(hiPens[p]);
+			}
+
 			hiGlobal.Hotkey = Root.Hotkey_Global;
+			hiEraser.Hotkey = Root.Hotkey_Eraser;
+			hiPan.Hotkey = Root.Hotkey_Pan;
+			hiInkVisible.Hotkey = Root.Hotkey_InkVisible;
+			hiPointer.Hotkey = Root.Hotkey_Pointer;
+			hiSnapshot.Hotkey = Root.Hotkey_Snap;
+			hiUndo.Hotkey = Root.Hotkey_Undo;
+			hiRedo.Hotkey = Root.Hotkey_Redo;
+			hiClear.Hotkey = Root.Hotkey_Clear;
 		}
 
 		private void comboPensAlpha_TextChanged(object sender, EventArgs e)
@@ -203,6 +226,7 @@ namespace gInk
 
 			Root.SaveOptions("pens.ini");
 			Root.SaveOptions("config.ini");
+			Root.SaveOptions("hotkeys.ini");
 		}
 
 		private void cbWidthEnabled_CheckedChanged(object sender, EventArgs e)

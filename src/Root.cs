@@ -69,6 +69,15 @@ namespace gInk
 		public int gpButtonsLeft, gpButtonsTop;
 
 		public Hotkey Hotkey_Global = new Hotkey();
+		public Hotkey[] Hotkey_Pens = new Hotkey[10];
+		public Hotkey Hotkey_Eraser = new Hotkey();
+		public Hotkey Hotkey_InkVisible = new Hotkey();
+		public Hotkey Hotkey_Pointer = new Hotkey();
+		public Hotkey Hotkey_Pan = new Hotkey();
+		public Hotkey Hotkey_Undo = new Hotkey();
+		public Hotkey Hotkey_Redo = new Hotkey();
+		public Hotkey Hotkey_Snap = new Hotkey();
+		public Hotkey Hotkey_Clear = new Hotkey();
 
 		public bool EraserMode = false;
 		public bool Docked = false;
@@ -105,10 +114,14 @@ namespace gInk
 
 		public Root()
 		{
+			for (int p = 0; p < MaxPenCount; p++)
+				Hotkey_Pens[p] = new Hotkey();
+
 			SetDefaultPens();
 			SetDefaultConfig();
 			ReadOptions("pens.ini");
 			ReadOptions("config.ini");
+			ReadOptions("hotkeys.ini");
 
 			trayMenu = new ContextMenu();
 			trayMenu.MenuItems.Add("About...", OnAbout);
@@ -150,6 +163,7 @@ namespace gInk
 				{
 					ReadOptions("pens.ini");
 					ReadOptions("config.ini");
+					ReadOptions("hotkeys.ini");
 					StartInk();
 				}
 				else if (Docked)
@@ -499,6 +513,11 @@ namespace gInk
 									PenAttr[penid].Width = penc;
 								}
 							}
+
+							if (sName.EndsWith("_HOTKEY"))
+							{
+								Hotkey_Pens[penid].Parse(sPara);
+							}
 						}
 
 					}
@@ -506,29 +525,34 @@ namespace gInk
 					int tempi = 0;
 					switch (sName)
 					{
-						case "HOTKEY":
-							sPara = sPara.ToUpper();
-							if (sPara.Contains("CONTROL"))
-								Hotkey_Global.Control = true;
-							else
-								Hotkey_Global.Control = false;
-							if (sPara.Contains("ALT"))
-								Hotkey_Global.Alt = true;
-							else
-								Hotkey_Global.Alt = false;
-							if (sPara.Contains("SHIFT"))
-								Hotkey_Global.Shift = true;
-							else
-								Hotkey_Global.Shift = false;
-							if (sPara.Contains("WIN"))
-								Hotkey_Global.Win = true;
-							else
-								Hotkey_Global.Win = false;
-							if (Hotkey_Global.Control || Hotkey_Global.Alt || Hotkey_Global.Shift || Hotkey_Global.Win)
-								Hotkey_Global.Key = sPara.Substring(sPara.Length - 1).ToCharArray()[0];
-							else
-								Hotkey_Global.Key = 0;
+						case "HOTKEY_GLOBAL":
+							Hotkey_Global.Parse(sPara);
 							break;
+						case "HOTKEY_ERASER":
+							Hotkey_Eraser.Parse(sPara);
+							break;
+						case "HOTKEY_INKVISIBLE":
+							Hotkey_InkVisible.Parse(sPara);
+							break;
+						case "HOTKEY_POINTER":
+							Hotkey_Pointer.Parse(sPara);
+							break;
+						case "HOTKEY_PAN":
+							Hotkey_Pan.Parse(sPara);
+							break;
+						case "HOTKEY_UNDO":
+							Hotkey_Undo.Parse(sPara);
+							break;
+						case "HOTKEY_REDO":
+							Hotkey_Redo.Parse(sPara);
+							break;
+						case "HOTKEY_SNAPSHOT":
+							Hotkey_Snap.Parse(sPara);
+							break;
+						case "HOTKEY_CLEAR":
+							Hotkey_Clear.Parse(sPara);
+							break;
+
 						case "WHITE_TRAY_ICON":
 							if (sPara.ToUpper() == "TRUE" || sPara == "1" || sPara.ToUpper() == "ON")
 								WhiteTrayIcon = true;
@@ -671,48 +695,44 @@ namespace gInk
 							{
 								sPara = ((int)PenAttr[penid].Width).ToString();
 							}
+							else if (sName.EndsWith("_HOTKEY"))
+							{
+								sPara = Hotkey_Pens[penid].ToString();
+							}
 						}
 
 					}
 
 					switch (sName)
 					{
-						case "HOTKEY":
-							/*
-							sPara = sPara.ToUpper();
-							if (sPara.Contains("CONTROL"))
-								Hotkey_Control = true;
-							else
-								Hotkey_Control = false;
-							if (sPara.Contains("ALT"))
-								Hotkey_Alt = true;
-							else
-								Hotkey_Alt = false;
-							if (sPara.Contains("SHIFT"))
-								Hotkey_Shift = true;
-							else
-								Hotkey_Shift = false;
-							if (sPara.Contains("WIN"))
-								Hotkey_Win = true;
-							else
-								Hotkey_Win = false;
-							if (sPara.Length > 0)
-								Hotkey = sPara.Substring(sPara.Length - 1).ToCharArray()[0];
-							*/
-							if (Hotkey_Global.Control)
-								sPara += "Control + ";
-							if (Hotkey_Global.Alt)
-								sPara += "Alt + ";
-							if (Hotkey_Global.Shift)
-								sPara += "Shift + ";
-							if (Hotkey_Global.Win)
-								sPara += "Win + ";
-							if (sPara == "" || Hotkey_Global.Key == 0)
-								sPara = "None";
-							else
-								sPara += (char)Hotkey_Global.Key;
-
+						case "HOTKEY_GLOBAL":
+							sPara = Hotkey_Global.ToString();
 							break;
+						case "HOTKEY_ERASER":
+							sPara = Hotkey_Eraser.ToString();
+							break;
+						case "HOTKEY_INKVISIBLE":
+							sPara = Hotkey_InkVisible.ToString();
+							break;
+						case "HOTKEY_POINTER":
+							sPara = Hotkey_Pointer.ToString();
+							break;
+						case "HOTKEY_PAN":
+							sPara = Hotkey_Pan.ToString();
+							break;
+						case "HOTKEY_UNDO":
+							sPara = Hotkey_Undo.ToString();
+							break;
+						case "HOTKEY_REDO":
+							sPara = Hotkey_Redo.ToString();
+							break;
+						case "HOTKEY_SNAPSHOT":
+							sPara = Hotkey_Snap.ToString();
+							break;
+						case "HOTKEY_CLEAR":
+							sPara = Hotkey_Clear.ToString();
+							break;
+
 						case "WHITE_TRAY_ICON":
 							if (WhiteTrayIcon)
 								sPara = "True";
@@ -813,16 +833,17 @@ namespace gInk
 			FormAbout FormAbout = new FormAbout();
 			FormAbout.Show();
 		}
-
+		/*
 		private void OnPenSetting(object sender, EventArgs e)
 		{
 			System.Diagnostics.Process.Start("notepad.exe", "pens.ini");
 		}
-
+		*/
 		private void OnOptions(object sender, EventArgs e)
 		{
 			ReadOptions("pens.ini");
 			ReadOptions("config.ini");
+			ReadOptions("hotkeys.ini");
 			FormOptions = new FormOptions(this);
 			FormOptions.Show();
 		}

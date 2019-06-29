@@ -460,6 +460,10 @@ namespace gInk
 				Root.UponTakingSnap = true;
 				ExitSnapping();
 			}
+			else if (Root.PanMode)
+			{
+				SaveUndoStrokes();
+			}
 		}
 
 		private void IC_CursorInRange(object sender, InkCollectorCursorInRangeEventArgs e)
@@ -758,9 +762,15 @@ namespace gInk
 		}
 
 		DateTime LastTickTime;
-		short LastZStatus = 0;
-		short LastYStatus = 0;
-		short LastDStatus = 0;
+		bool[] LastPenStatus = new bool[10];
+		bool LastEraserStatus = false;
+		bool LastVisibleStatus = false;
+		bool LastPointerStatus = false;
+		bool LastPanStatus = false;
+		bool LastUndoStatus = false;
+		bool LastRedoStatus = false;
+		bool LastSnapStatus = false;
+		bool LastClearStatus = false;
 
 		private void gpPenWidth_MouseDown(object sender, MouseEventArgs e)
 		{
@@ -974,11 +984,18 @@ namespace gInk
 
 			const int VK_LCONTROL = 0xA2;
 			const int VK_RCONTROL = 0xA3;
-			short retVal;
+			const int VK_LSHIFT = 0xA0;
+			const int VK_RSHIFT = 0xA1;
+			const int VK_LMENU = 0xA4;
+			const int VK_RMENU = 0xA5;
+			const int VK_LWIN = 0x5B;
+			const int VK_RWIN = 0x5C;
+			bool pressed;
 
 			if (!Root.PointerMode)
 			{
 				// ESC key : Exit
+				short retVal;
 				retVal = GetKeyState(27);
 				if ((retVal & 0x8000) == 0x8000)
 				{
@@ -1003,89 +1020,76 @@ namespace gInk
 			
 			if (!Root.FingerInAction && !Root.PointerMode && Root.Snapping <= 0)
 			{
-				// 0 ~ 9 : Pen0 ~ Pen9
-				for (int p = 0; p < 10 && p < Root.MaxPenCount; p++)
+				bool control = ((short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL)) & 0x8000) == 0x8000;
+				bool alt = ((short)(GetKeyState(VK_LMENU) | GetKeyState(VK_RMENU)) & 0x8000) == 0x8000;
+				bool shift = ((short)(GetKeyState(VK_LSHIFT) | GetKeyState(VK_RSHIFT)) & 0x8000) == 0x8000;
+				bool win = ((short)(GetKeyState(VK_LWIN) | GetKeyState(VK_RWIN)) & 0x8000) == 0x8000;
+
+				for (int p = 0; p < Root.MaxPenCount; p++)
 				{
-					retVal = GetKeyState('0' + p);
-					if ((retVal & 0x8000) == 0x8000)
+					pressed = (GetKeyState(Root.Hotkey_Pens[p].Key) & 0x8000) == 0x8000;
+					if(pressed && !LastPenStatus[p] && Root.Hotkey_Pens[p].ModifierMatch(control, alt, shift, win))
 					{
 						SelectPen(p);
 					}
+					LastPenStatus[p] = pressed;
 				}
 
-				// E : Eraser
-				retVal = GetKeyState('E');
-				if ((retVal & 0x8000) == 0x8000)
+				pressed = (GetKeyState(Root.Hotkey_Eraser.Key) & 0x8000) == 0x8000;
+				if (pressed && !LastEraserStatus && Root.Hotkey_Eraser.ModifierMatch(control, alt, shift, win))
 				{
 					SelectPen(-1);
 				}
+				LastEraserStatus = pressed;
 
-				// Ctrl + Z : Undo
-				retVal = GetKeyState('Z');
-				if ((retVal & 0x8000) == 0x8000)
+				pressed = (GetKeyState(Root.Hotkey_InkVisible.Key) & 0x8000) == 0x8000;
+				if (pressed && !LastVisibleStatus && Root.Hotkey_InkVisible.ModifierMatch(control, alt, shift, win))
 				{
-					if ((LastZStatus & 0x8000) == 0x0000)
-					{
-						short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-						if ((control & 0x8000) == 0x8000)
-						{
-							Root.UndoInk();
-						}
-					}
+					btInkVisible_Click(null, null);
 				}
-				LastZStatus = retVal;
+				LastVisibleStatus = pressed;
 
-				// Ctrl + Y : Redo
-				retVal = GetKeyState('Y');
-				if ((retVal & 0x8000) == 0x8000)
+				pressed = (GetKeyState(Root.Hotkey_Undo.Key) & 0x8000) == 0x8000;
+				if (pressed && !LastUndoStatus && Root.Hotkey_Undo.ModifierMatch(control, alt, shift, win))
 				{
-					if ((LastYStatus & 0x8000) == 0x0000)
-					{
-						short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-						if ((control & 0x8000) == 0x8000)
-						{
-							Root.RedoInk();
-						}
-					}
+					Root.UndoInk();
 				}
-				LastYStatus = retVal;
+				LastUndoStatus = pressed;
 
-				// Ctrl + P : Pointer
-				retVal = GetKeyState('P');
-				if ((retVal & 0x8000) == 0x8000)
+				pressed = (GetKeyState(Root.Hotkey_Redo.Key) & 0x8000) == 0x8000;
+				if (pressed && !LastRedoStatus && Root.Hotkey_Redo.ModifierMatch(control, alt, shift, win))
 				{
-					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-					if ((control & 0x8000) == 0x8000)
-					{
-						SelectPen(-2);
-					}
+					Root.RedoInk();
 				}
+				LastRedoStatus = pressed;
 
-				// Ctrl + S : Snap
-				retVal = GetKeyState('S');
-				if ((retVal & 0x8000) == 0x8000)
+				pressed = (GetKeyState(Root.Hotkey_Pointer.Key) & 0x8000) == 0x8000;
+				if (pressed && !LastPointerStatus && Root.Hotkey_Pointer.ModifierMatch(control, alt, shift, win))
 				{
-					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-					if ((control & 0x8000) == 0x8000)
-					{
-						btSnap_Click(null, null);
-					}
+					SelectPen(-2);
 				}
+				LastPointerStatus = pressed;
 
-				// Ctrl + D : Clear
-				retVal = GetKeyState('D');
-				if ((retVal & 0x8000) == 0x8000)
+				pressed = (GetKeyState(Root.Hotkey_Pan.Key) & 0x8000) == 0x8000;
+				if (pressed && !LastPanStatus && Root.Hotkey_Pan.ModifierMatch(control, alt, shift, win))
 				{
-					if ((LastDStatus & 0x8000) == 0x0000)
-					{
-						short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-						if ((control & 0x8000) == 0x8000)
-						{
-							btClear_Click(null, null);
-						}
-					}
+					SelectPen(-3);
 				}
-				LastDStatus = retVal;
+				LastPanStatus = pressed;
+
+				pressed = (GetKeyState(Root.Hotkey_Clear.Key) & 0x8000) == 0x8000;
+				if (pressed && !LastClearStatus && Root.Hotkey_Clear.ModifierMatch(control, alt, shift, win))
+				{
+					btClear_Click(null, null);
+				}
+				LastClearStatus = pressed;
+
+				pressed = (GetKeyState(Root.Hotkey_Snap.Key) & 0x8000) == 0x8000;
+				if (pressed && !LastSnapStatus && Root.Hotkey_Snap.ModifierMatch(control, alt, shift, win))
+				{
+					btSnap_Click(null, null);
+				}
+				LastSnapStatus = pressed;
 			}
 
 			if (Root.Snapping < 0)

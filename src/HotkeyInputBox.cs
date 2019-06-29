@@ -13,7 +13,7 @@ namespace gInk
 	{
 		//private int _Key;
 		//private bool _Control, _Alt, _Shift, _Win;
-		private Hotkey _Hotkey;
+		private Hotkey _Hotkey = new Hotkey();
 		//public int Key { get { return _Key; } set { _Key = value; UpdateText(); } }
 		//public bool Control { get { return _Control; } set { _Control = value; UpdateText(); } }
 		//public bool Alt { get { return _Alt; } set { _Alt = value;  UpdateText(); } }
@@ -28,6 +28,8 @@ namespace gInk
 		public HotkeyInputBox()
 		{
 			InitializeComponent();
+
+			//BackColor = Color.White;
 		}
 
 		protected void UpdateText()
@@ -93,7 +95,7 @@ namespace gInk
 			}
 
 
-			if ((!RequireModifier || modifierKeys != Keys.None) && (pressedKey >= Keys.A && pressedKey <= Keys.Z || pressedKey >= Keys.D0 && pressedKey <= Keys.D9))
+			if ((!RequireModifier || modifierKeys != Keys.None) && Hotkey.IsValidKey(pressedKey))
 			{
 				Hotkey.Key = (int)pressedKey;
 				Hotkey.Control = (modifierKeys & Keys.Control) > 0;
@@ -122,7 +124,7 @@ namespace gInk
 				if ((modifierKeys & Keys.LWin) > 0 || (modifierKeys & Keys.RWin) > 0)
 					Text += "Win + ";
 
-				if (pressedKey >= Keys.A && pressedKey <= Keys.Z || pressedKey >= Keys.D0 && pressedKey <= Keys.D9)
+				if (Hotkey.IsValidKey(pressedKey))
 					Text += (char)pressedKey;
 			}
 
