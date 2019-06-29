@@ -30,10 +30,16 @@ namespace gInk
 
 				if (Root.FormCollection == null && Root.FormDisplay == null)
 					Root.StartInk();
-				else if (Root.Docked)
-					Root.UnDock();
+				else if (Root.PointerMode)
+				{
+					Root.UnPointer();
+					Root.SelectPen(Root.LastPen);
+				}
 				else
-					Root.Dock();
+				{
+					Root.Pointer();
+					Root.SelectPen(-2);
+				}
 			}
 			return false;
 		}
@@ -93,6 +99,7 @@ namespace gInk
 		public FormOptions FormOptions;
 
 		public int CurrentPen = 1;  // defaut pen
+		public int LastPen = 1;
 		public int GlobalPenWidth = 80;
 		public bool gpPenWidthVisible = false;
 
@@ -330,60 +337,61 @@ namespace gInk
 
 		public void SetDefaultPens()
 		{
-			PenEnabled[0] = true;
+			PenEnabled[0] = false;
 			PenAttr[0] = new DrawingAttributes();
-			PenAttr[0].Color = Color.FromArgb(220, 95, 60);
+			PenAttr[0].Color = Color.FromArgb(80, 80, 80);
 			PenAttr[0].Width = 80;
-			PenAttr[0].Transparency = 5;
+			PenAttr[0].Transparency = 0;
 
 			PenEnabled[1] = true;
 			PenAttr[1] = new DrawingAttributes();
-			PenAttr[1].Color = Color.FromArgb(30, 110, 200);
+			PenAttr[1].Color = Color.FromArgb(225, 60, 60);
 			PenAttr[1].Width = 80;
-			PenAttr[1].Transparency = 5;
+			PenAttr[1].Transparency = 0;
 
 			PenEnabled[2] = true;
 			PenAttr[2] = new DrawingAttributes();
-			PenAttr[2].Color = Color.FromArgb(235, 180, 55);
+			PenAttr[2].Color = Color.FromArgb(30, 110, 200);
 			PenAttr[2].Width = 80;
-			PenAttr[2].Transparency = 5;
+			PenAttr[2].Transparency = 0;
 
 			PenEnabled[3] = true;
 			PenAttr[3] = new DrawingAttributes();
-			PenAttr[3].Color = Color.FromArgb(120, 175, 70);
+			PenAttr[3].Color = Color.FromArgb(235, 180, 55);
 			PenAttr[3].Width = 80;
-			PenAttr[3].Transparency = 5;
+			PenAttr[3].Transparency = 0;
 
 			PenEnabled[4] = true;
 			PenAttr[4] = new DrawingAttributes();
-			PenAttr[4].Color = Color.FromArgb(145, 70, 160);
-			PenAttr[4].Width = 500;
-			PenAttr[4].Transparency = 200;
+			PenAttr[4].Color = Color.FromArgb(120, 175, 70);
+			PenAttr[4].Width = 80;
+			PenAttr[4].Transparency = 0;
 
+			PenEnabled[5] = true;
 			PenAttr[5] = new DrawingAttributes();
-			PenAttr[5].Color = Color.FromArgb(220, 95, 60);
-			PenAttr[5].Width = 80;
-			PenAttr[5].Transparency = 5;
+			PenAttr[5].Color = Color.FromArgb(235, 125, 15);
+			PenAttr[5].Width = 500;
+			PenAttr[5].Transparency = 175;
 
 			PenAttr[6] = new DrawingAttributes();
-			PenAttr[6].Color = Color.FromArgb(30, 110, 200);
+			PenAttr[6].Color = Color.FromArgb(230, 230, 230);
 			PenAttr[6].Width = 80;
-			PenAttr[6].Transparency = 5;
+			PenAttr[6].Transparency = 0;
 
 			PenAttr[7] = new DrawingAttributes();
-			PenAttr[7].Color = Color.FromArgb(235, 180, 55);
+			PenAttr[7].Color = Color.FromArgb(250, 140, 200);
 			PenAttr[7].Width = 80;
-			PenAttr[7].Transparency = 5;
+			PenAttr[7].Transparency = 0;
 
 			PenAttr[8] = new DrawingAttributes();
-			PenAttr[8].Color = Color.FromArgb(120, 175, 70);
+			PenAttr[8].Color = Color.FromArgb(25, 180, 175);
 			PenAttr[8].Width = 80;
-			PenAttr[8].Transparency = 5;
+			PenAttr[8].Transparency = 0;
 
 			PenAttr[9] = new DrawingAttributes();
 			PenAttr[9].Color = Color.FromArgb(145, 70, 160);
 			PenAttr[9].Width = 500;
-			PenAttr[9].Transparency = 200;
+			PenAttr[9].Transparency = 175;
 		}
 
 		public void SetDefaultConfig()

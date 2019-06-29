@@ -193,6 +193,7 @@
     <None Include="buttonback.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="paneloption.png" />
     <None Include="visible_not.png" />
     <None Include="visible.png" />
     <None Include="pan_act.png" />

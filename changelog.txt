@@ -7,6 +7,7 @@ v0.6.0 (ongoing)
 - Fix a visual bug on rim of semi-transparent inks.
 - Fix missing inks around the toolbar when the toolbar is moving. 
 - Fix the default position of the toolbar when the Windows taskbar is on top of screen.
+- The global hotkey now switches between mouse pointer mode and the last used pen.
 
 v0.5.4 (Dec. 18, 2018)
 =================

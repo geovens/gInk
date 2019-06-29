@@ -190,6 +190,8 @@ namespace gInk
 			this.Height = SystemInformation.VirtualScreen.Height;
 			this.DoubleBuffered = true;
 
+			gpButtonsWidth = gpButtons.Width;
+			gpButtonsHeight = gpButtons.Height;
 			if (Root.AllowDraggingToolbar)
 			{
 				gpButtonsLeft = Root.gpButtonsLeft;
@@ -213,11 +215,9 @@ namespace gInk
 				gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width + (Screen.PrimaryScreen.Bounds.Left - SystemInformation.VirtualScreen.Left);
 				gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 10 + (Screen.PrimaryScreen.Bounds.Top - SystemInformation.VirtualScreen.Top);
 			}
-			gpButtonsWidth = gpButtons.Width;
-			gpButtonsHeight = gpButtons.Height;
+
 			gpButtons.Left = gpButtonsLeft + gpButtons.Width;
 			gpButtons.Top = gpButtonsTop;
-
 			gpPenWidth.Left = gpButtonsLeft + btPenWidth.Left - gpPenWidth.Width / 2 + btPenWidth.Width / 2;
 			gpPenWidth.Top = gpButtonsTop - gpPenWidth.Height - 10;
 
@@ -629,6 +629,9 @@ namespace gInk
 			}
 			else
 				Root.UponButtonsUpdate |= 0x2;
+
+			if (pen != -2)
+				Root.LastPen = pen;
 		}
 
 		public void SetInkVisible(bool visible)

@@ -43,15 +43,22 @@ namespace gInk
 				cbClearEnabled.Checked = true;
 			if (Root.PenWidthEnabled)
 				cbWidthEnabled.Checked = true;
+			if (Root.PanEnabled)
+				cbPanEnabled.Checked = true;
+			if (Root.InkVisibleEnabled)
+				cbInkVisibleEnabled.Checked = true;
 
 			if (Root.WhiteTrayIcon)
 				cbWhiteIcon.Checked = true;
+			if (Root.AllowDraggingToolbar)
+				cbAllowDragging.Checked = true;
 
 			comboCanvasCursor.SelectedIndex = Root.CanvasCursor;
 
 			tbSnapPath.Text = Root.SnapshotBasePath;
 
 			tbHotkey.BackColor = Color.White;
+			lbNote.ForeColor = Color.Black;
 			if (Root.Hotkey > 0)
 			{
 				tbHotkey.Text = "";
@@ -71,25 +78,25 @@ namespace gInk
 			lbcbPens.Width = 35;
 			lbcbPens.Top = 15;
 			lbcbPens.Text = "Show";
-			this.Controls.Add(lbcbPens);
+			tabPage2.Controls.Add(lbcbPens);
 			Label lbpboxPens = new Label();
 			lbpboxPens.Left = 125;
 			lbpboxPens.Width = 35;
 			lbpboxPens.Top = 15;
 			lbpboxPens.Text = "Color";
-			this.Controls.Add(lbpboxPens);
+			tabPage2.Controls.Add(lbpboxPens);
 			Label lbcomboPensAlpha = new Label();
 			lbcomboPensAlpha.Left = 160;
-			lbcomboPensAlpha.Width = 35;
+			lbcomboPensAlpha.Width = 55;
 			lbcomboPensAlpha.Top = 15;
 			lbcomboPensAlpha.Text = "Alpha";
-			this.Controls.Add(lbcomboPensAlpha);
+			tabPage2.Controls.Add(lbcomboPensAlpha);
 			Label lbcomboPensWidth = new Label();
-			lbcomboPensWidth.Left = 230;
-			lbcomboPensWidth.Width = 35;
+			lbcomboPensWidth.Left = 250;
+			lbcomboPensWidth.Width = 55;
 			lbcomboPensWidth.Top = 15;
 			lbcomboPensWidth.Text = "Width";
-			this.Controls.Add(lbcomboPensWidth);
+			tabPage2.Controls.Add(lbcomboPensWidth);
 
 			for (int p = 0; p < Root.MaxPenCount; p++)
 			{
@@ -120,24 +127,31 @@ namespace gInk
 				comboPensAlpha[p].Items.AddRange(new object[] { "Pencil", "Highlighter" });
 				comboPensAlpha[p].Left = 160;
 				comboPensAlpha[p].Top = top - 2;
-				comboPensAlpha[p].Width = 50;
+				comboPensAlpha[p].Width = 70;
 				comboPensAlpha[p].Text = (255 - Root.PenAttr[p].Transparency).ToString();
 				comboPensAlpha[p].TextChanged += comboPensAlpha_TextChanged;
 
 				comboPensWidth[p] = new ComboBox();
 				comboPensWidth[p].Items.AddRange(new object[] {"Thin","Normal","Thick"});
-				comboPensWidth[p].Left = 230;
+				comboPensWidth[p].Left = 250;
 				comboPensWidth[p].Top = top - 2;
-				comboPensWidth[p].Width = 50;
+				comboPensWidth[p].Width = 70;
 				comboPensWidth[p].Text = ((int)Root.PenAttr[p].Width).ToString();
 				comboPensWidth[p].TextChanged += comboPensWidth_TextChanged;
 
+				/*
 				this.Controls.Add(lbPens[p]);
 				this.Controls.Add(cbPens[p]);
 				this.Controls.Add(pboxPens[p]);
 				this.Controls.Add(comboPensAlpha[p]);
 				this.Controls.Add(comboPensWidth[p]);
-			}
+				*/
+				tabPage2.Controls.Add(lbPens[p]);
+				tabPage2.Controls.Add(cbPens[p]);
+				tabPage2.Controls.Add(pboxPens[p]);
+				tabPage2.Controls.Add(comboPensAlpha[p]);
+				tabPage2.Controls.Add(comboPensWidth[p]);
+		}
 		}
 
 		private void comboPensAlpha_TextChanged(object sender, EventArgs e)
@@ -208,6 +222,7 @@ namespace gInk
 		private void cbWidthEnabled_CheckedChanged(object sender, EventArgs e)
 		{
 			Root.PenWidthEnabled = cbWidthEnabled.Checked;
+			lbNote.ForeColor = Color.Red;
 		}
 
 		private void cbEraserEnabled_CheckedChanged(object sender, EventArgs e)
@@ -233,6 +248,16 @@ namespace gInk
 		private void cbClearEnabled_CheckedChanged(object sender, EventArgs e)
 		{
 			Root.ClearEnabled = cbClearEnabled.Checked;
+		}
+
+		private void cbPanEnabled_CheckedChanged(object sender, EventArgs e)
+		{
+			Root.PanEnabled = cbPanEnabled.Checked;
+		}
+
+		private void cbInkVisibleEnabled_CheckedChanged(object sender, EventArgs e)
+		{
+			Root.InkVisibleEnabled = cbInkVisibleEnabled.Checked;
 		}
 
 		private void cbWhiteIcon_CheckedChanged(object sender, EventArgs e)
@@ -386,6 +411,11 @@ namespace gInk
 		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			Root.CanvasCursor = comboCanvasCursor.SelectedIndex;
+		}
+
+		private void cbAllowDragging_CheckedChanged(object sender, EventArgs e)
+		{
+			Root.AllowDraggingToolbar = cbAllowDragging.Checked;
 		}
 	}
 }
