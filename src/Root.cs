@@ -52,6 +52,7 @@ namespace gInk
 		public bool CloseOnSnap = true;
 		public bool UndoEnabled = true;
 		public bool ClearEnabled = true;
+		public bool PanEnabled = true;
 		public DrawingAttributes[] PenAttr = new DrawingAttributes[MaxPenCount];
 		public bool Hotkey_Control, Hotkey_Alt, Hotkey_Shift, Hotkey_Win;
 		public int Hotkey = 0;
@@ -71,6 +72,8 @@ namespace gInk
 		public bool UponTakingSnap = false;
 		public bool UponBalloonSnap = false;
 		public bool UponSubPanelUpdate = false;
+
+		public bool PanMode = false;
 
 		public Ink[] UndoStrokes;
 		//public Ink UponUndoStrokes;
@@ -221,6 +224,16 @@ namespace gInk
 			FormCollection.IC.Ink.DeleteStrokes();
 			if (UndoStrokes[UndoP].Strokes.Count > 0)
 				FormCollection.IC.Ink.AddStrokesAtRectangle(UndoStrokes[UndoP].Strokes, UndoStrokes[UndoP].Strokes.GetBoundingBox());
+
+			FormDisplay.ClearCanvus();
+			FormDisplay.DrawStrokes();
+			FormDisplay.DrawButtons(true);
+			FormDisplay.UpdateFormDisplay(true);
+		}
+
+		public void Pan(int x, int y)
+		{
+			FormCollection.IC.Ink.Strokes.Move(x, y);
 
 			FormDisplay.ClearCanvus();
 			FormDisplay.DrawStrokes();
@@ -529,6 +542,10 @@ namespace gInk
 							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
 								ClearEnabled = false;
 							break;
+						case "PAN_ICON":
+							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
+								PanEnabled = false;
+							break;
 						case "CANVAS_CURSOR":
 							if (sPara == "0")
 								CanvasCursor = 0;
@@ -699,6 +716,12 @@ namespace gInk
 							break;
 						case "CLEAR_ICON":
 							if (ClearEnabled)
+								sPara = "True";
+							else
+								sPara = "False";
+							break;
+						case "PAN_ICON":
+							if (PanEnabled)
 								sPara = "True";
 							else
 								sPara = "False";

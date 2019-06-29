@@ -193,6 +193,8 @@
     <None Include="buttonback.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="pan_act.png" />
+    <None Include="pan.png" />
     <None Include="null.png" />
     <None Include="penwidthpanel.png" />
     <None Include="penwidth.png" />

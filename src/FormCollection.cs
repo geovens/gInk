@@ -24,6 +24,7 @@ namespace gInk
 		public Bitmap[] image_pen;
 		public Bitmap[] image_pen_act;
 		public Bitmap image_eraser_act, image_eraser;
+		public Bitmap image_pan_act, image_pan;
 		public System.Windows.Forms.Cursor cursorred, cursorsnap;
 		public System.Windows.Forms.Cursor cursortip;
 
@@ -114,6 +115,16 @@ namespace gInk
 			else
 			{
 				btPenWidth.Visible = false;
+			}
+			if (Root.PanEnabled)
+			{
+				btPan.Visible = true;
+				btPan.Left = cumulatedleft;
+				cumulatedleft += 50;
+			}
+			else
+			{
+				btPan.Visible = false;
 			}
 			if (Root.SnapEnabled)
 			{
@@ -220,6 +231,17 @@ namespace gInk
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.eraser, 0, 0, btEraser.Width, btEraser.Height);
 			btEraser.Image = image_eraser;
+
+			image_pan_act = new Bitmap(btPan.Width, btPan.Height);
+			g = Graphics.FromImage(image_pan_act);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.pan_act, 0, 0, btPan.Width, btPan.Height);
+			image_pan = new Bitmap(btPan.Width, btPan.Height);
+			g = Graphics.FromImage(image_pan);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.pan, 0, 0, btPan.Width, btPan.Height);
+			btPan.Image = image_pan;
+
 			image_snap = new Bitmap(btSnap.Width, btSnap.Height);
 			g = Graphics.FromImage(image_snap);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
@@ -343,8 +365,18 @@ namespace gInk
 			}
 		}
 
+		public Point LasteXY;
 		private void IC_MouseMove(object sender, CancelMouseEventArgs e)
 		{
+			if (LasteXY.X == 0 && LasteXY.Y == 0)
+			{
+				LasteXY.X = e.X;
+				LasteXY.Y = e.Y;
+				IC.Renderer.PixelToInkSpace(Root.FormDisplay.gOneStrokeCanvus, ref LasteXY);
+			}
+			Point currentxy = new Point(e.X, e.Y);
+			IC.Renderer.PixelToInkSpace(Root.FormDisplay.gOneStrokeCanvus, ref currentxy);
+
 			if (Root.Snapping == 2)
 			{
 				int left = Math.Min(Root.SnappingX, e.X);
@@ -353,6 +385,12 @@ namespace gInk
 				int height = Math.Abs(Root.SnappingY - e.Y);
 				Root.SnappingRect = new Rectangle(left, top, width, height);
 			}
+			else if (Root.PanMode && Root.FingerInAction)
+			{
+				Root.Pan(currentxy.X - LasteXY.X, currentxy.Y - LasteXY.Y);			
+			}
+
+			LasteXY = currentxy;
 		}
 
 		private void IC_MouseUp(object sender, CancelMouseEventArgs e)
@@ -457,15 +495,30 @@ namespace gInk
 
 		public void SelectPen(int pen)
 		{
-			// -2 = pointer, -1 = erasor, 0+ = pens
-			if (pen == -2)
+			// -3=pan, -2=pointer, -1=erasor, 0+=pens
+			if (pen == -3)
+			{
+				for (int b = 0; b < Root.MaxPenCount; b++)
+					btPen[b].Image = image_pen[b];
+				btEraser.Image = image_eraser;
+				btPointer.Image = image_pointer;
+				btPan.Image = image_pan_act;
+				EnterEraserMode(false);
+				Root.UnPointer();
+				Root.PanMode = true;
+
+				IC.SetWindowInputRectangle(new Rectangle(0, 0, 1, 1));
+			}
+			else if (pen == -2)
 			{
 				for (int b = 0; b < Root.MaxPenCount; b++)
 					btPen[b].Image = image_pen[b];
 				btEraser.Image = image_eraser;
 				btPointer.Image = image_pointer_act;
+				btPan.Image = image_pan;
 				EnterEraserMode(false);
 				Root.Pointer();
+				Root.PanMode = false;
 			}
 			else if (pen == -1)
 			{
@@ -476,8 +529,10 @@ namespace gInk
 					btPen[b].Image = image_pen[b];
 				btEraser.Image = image_eraser_act;
 				btPointer.Image = image_pointer;
+				btPan.Image = image_pan;
 				EnterEraserMode(true);
 				Root.UnPointer();
+				Root.PanMode = false;
 
 				if (Root.CanvasCursor == 0)
 				{
@@ -486,6 +541,8 @@ namespace gInk
 				}
 				else if (Root.CanvasCursor == 1)
 					SetPenTipCursor();
+
+				IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
 			}
 			else if (pen >= 0)
 			{
@@ -502,8 +559,10 @@ namespace gInk
 				btPen[pen].Image = image_pen_act[pen];
 				btEraser.Image = image_eraser;
 				btPointer.Image = image_pointer;
+				btPan.Image = image_pan;
 				EnterEraserMode(false);
 				Root.UnPointer();
+				Root.PanMode = false;
 
 				if (Root.CanvasCursor == 0)
 				{
@@ -512,6 +571,8 @@ namespace gInk
 				}
 				else if (Root.CanvasCursor == 1)
 					SetPenTipCursor();
+
+				IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
 			}
 			Root.CurrentPen = pen;
 			if (Root.gpPenWidthVisible)
@@ -936,6 +997,12 @@ namespace gInk
 		public void btEraser_Click(object sender, EventArgs e)
 		{
 			SelectPen(-1);
+		}
+
+
+		private void btPan_Click(object sender, EventArgs e)
+		{
+			SelectPen(-3);
 		}
 
 		[DllImport("user32.dll")]
