@@ -183,18 +183,28 @@ namespace gInk
 		public void DrawButtons(Graphics g, bool redrawbuttons, bool exiting = false)
 		{
 			int top, height, left, width;
+			int fullwidth;
+			int gpbl;
+			int drawwidth;
 
 			top = Root.FormCollection.gpButtons.Top;
 			height = Root.FormCollection.gpButtons.Height;
 			left = Root.FormCollection.gpButtons.Left;
 			width = Root.FormCollection.gpButtons.Width;
+			fullwidth = Root.FormCollection.gpButtonsWidth;
+			drawwidth = width;
+			gpbl = Root.FormCollection.gpButtonsLeft;
+			if (left + width > gpbl + fullwidth)
+				drawwidth = gpbl + fullwidth - left;
+
 			if (redrawbuttons)
 				Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
 
 			if (exiting)
 			{
-				int clearleft = Math.Max(left - 120, Root.FormCollection.gpButtonsLeft);
-				g.FillRectangle(TransparentBrush, clearleft, top, width + 80, height);
+				int clearleft = Math.Max(left - 120, gpbl);
+				//g.FillRectangle(TransparentBrush, clearleft, top, width + 80, height);
+				g.FillRectangle(TransparentBrush, clearleft, top, drawwidth, height);
 			}
 			g.DrawImage(gpButtonsImage, left, top);
 

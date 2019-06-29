@@ -3,8 +3,10 @@ v0.6.0 (ongoing)
 =================
 - Add a button to pan (move) inks.
 - Add a button to temporarily hide inks.
+- Allow dragging the toolbar (default is off, experimental).
 - Fix a visual bug on rim of semi-transparent inks.
 - Fix missing inks around the toolbar when the toolbar is moving. 
+- Fix the default position of the toolbar when the Windows taskbar is on top of screen.
 
 v0.5.4 (Dec. 18, 2018)
 =================

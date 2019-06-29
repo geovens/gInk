@@ -883,13 +883,16 @@ namespace gInk
 			else if (ButtonsEntering < 0)
 			{
 				if (Root.Snapping > 0)
-					aimedleft = gpButtonsLeft + gpButtonsWidth + 5;
+					aimedleft = gpButtonsLeft + gpButtonsWidth + 0;
 				else if (Root.Docked)
 					aimedleft = gpButtonsLeft + gpButtonsWidth - btDock.Right;
 			}
 			else if (ButtonsEntering > 0)
 			{
-				aimedleft = gpButtonsLeft;
+				if (Root.Docked)
+					aimedleft = gpButtonsLeft + gpButtonsWidth - btDock.Right;
+				else
+					aimedleft = gpButtonsLeft;
 			}
 			else if (ButtonsEntering == 0)
 			{
@@ -1188,7 +1191,7 @@ namespace gInk
 						Root.gpButtonsLeft = gpButtonsLeft;
 						Root.gpButtonsTop = gpButtonsTop;
 						if (Root.Docked)
-							gpButtons.Left = gpButtonsLeft + gpButtonsWidth - btDock.Width;
+							gpButtons.Left = gpButtonsLeft + gpButtonsWidth - btDock.Right;
 						else
 							gpButtons.Left = gpButtonsLeft;
 						gpButtons.Top = gpButtonsTop;
