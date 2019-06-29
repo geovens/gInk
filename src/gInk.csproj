@@ -96,6 +96,12 @@
     <Compile Include="FormOptions.Designer.cs">
       <DependentUpon>FormOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="HotkeyInputBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HotkeyInputBox.Designer.cs">
+      <DependentUpon>HotkeyInputBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Root.cs" />
@@ -115,6 +121,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormOptions.resx">
       <DependentUpon>FormOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HotkeyInputBox.resx">
+      <DependentUpon>HotkeyInputBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -48,13 +48,12 @@
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.cbInkVisibleEnabled = new System.Windows.Forms.CheckBox();
+			this.cbPanEnabled = new System.Windows.Forms.CheckBox();
+			this.cbAllowDragging = new System.Windows.Forms.CheckBox();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.label2 = new System.Windows.Forms.Label();
-			this.tbHotkey = new System.Windows.Forms.TextBox();
-			this.cbPanEnabled = new System.Windows.Forms.CheckBox();
-			this.cbInkVisibleEnabled = new System.Windows.Forms.CheckBox();
-			this.cbAllowDragging = new System.Windows.Forms.CheckBox();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -245,13 +244,44 @@
 			this.pictureBox1.TabIndex = 7;
 			this.pictureBox1.TabStop = false;
 			// 
+			// cbInkVisibleEnabled
+			// 
+			this.cbInkVisibleEnabled.AutoSize = true;
+			this.cbInkVisibleEnabled.Location = new System.Drawing.Point(275, 76);
+			this.cbInkVisibleEnabled.Name = "cbInkVisibleEnabled";
+			this.cbInkVisibleEnabled.Size = new System.Drawing.Size(15, 14);
+			this.cbInkVisibleEnabled.TabIndex = 0;
+			this.cbInkVisibleEnabled.UseVisualStyleBackColor = true;
+			this.cbInkVisibleEnabled.CheckedChanged += new System.EventHandler(this.cbInkVisibleEnabled_CheckedChanged);
+			// 
+			// cbPanEnabled
+			// 
+			this.cbPanEnabled.AutoSize = true;
+			this.cbPanEnabled.Location = new System.Drawing.Point(87, 75);
+			this.cbPanEnabled.Name = "cbPanEnabled";
+			this.cbPanEnabled.Size = new System.Drawing.Size(15, 14);
+			this.cbPanEnabled.TabIndex = 0;
+			this.cbPanEnabled.UseVisualStyleBackColor = true;
+			this.cbPanEnabled.CheckedChanged += new System.EventHandler(this.cbPanEnabled_CheckedChanged);
+			// 
+			// cbAllowDragging
+			// 
+			this.cbAllowDragging.AutoSize = true;
+			this.cbAllowDragging.Location = new System.Drawing.Point(11, 214);
+			this.cbAllowDragging.Name = "cbAllowDragging";
+			this.cbAllowDragging.Size = new System.Drawing.Size(246, 16);
+			this.cbAllowDragging.TabIndex = 0;
+			this.cbAllowDragging.Text = "Allow dragging toolbar (experimental)";
+			this.cbAllowDragging.UseVisualStyleBackColor = true;
+			this.cbAllowDragging.CheckedChanged += new System.EventHandler(this.cbAllowDragging_CheckedChanged);
+			// 
 			// tabPage2
 			// 
 			this.tabPage2.BackColor = System.Drawing.SystemColors.ControlLightLight;
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(432, 397);
+			this.tabPage2.Size = new System.Drawing.Size(484, 397);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Pens";
 			// 
@@ -259,7 +289,6 @@
 			// 
 			this.tabPage3.BackColor = System.Drawing.SystemColors.ControlLightLight;
 			this.tabPage3.Controls.Add(this.label2);
-			this.tabPage3.Controls.Add(this.tbHotkey);
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Size = new System.Drawing.Size(484, 397);
@@ -274,47 +303,6 @@
 			this.label2.Size = new System.Drawing.Size(431, 12);
 			this.label2.TabIndex = 4;
 			this.label2.Text = "Global hotkey (start drawing, switch between mouse pointer and drawing)";
-			// 
-			// tbHotkey
-			// 
-			this.tbHotkey.Location = new System.Drawing.Point(23, 40);
-			this.tbHotkey.Name = "tbHotkey";
-			this.tbHotkey.ReadOnly = true;
-			this.tbHotkey.Size = new System.Drawing.Size(168, 21);
-			this.tbHotkey.TabIndex = 3;
-			this.tbHotkey.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbHotkey_KeyDown);
-			this.tbHotkey.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbHotkey_KeyUp);
-			// 
-			// cbPanEnabled
-			// 
-			this.cbPanEnabled.AutoSize = true;
-			this.cbPanEnabled.Location = new System.Drawing.Point(87, 75);
-			this.cbPanEnabled.Name = "cbPanEnabled";
-			this.cbPanEnabled.Size = new System.Drawing.Size(15, 14);
-			this.cbPanEnabled.TabIndex = 0;
-			this.cbPanEnabled.UseVisualStyleBackColor = true;
-			this.cbPanEnabled.CheckedChanged += new System.EventHandler(this.cbPanEnabled_CheckedChanged);
-			// 
-			// cbInkVisibleEnabled
-			// 
-			this.cbInkVisibleEnabled.AutoSize = true;
-			this.cbInkVisibleEnabled.Location = new System.Drawing.Point(275, 76);
-			this.cbInkVisibleEnabled.Name = "cbInkVisibleEnabled";
-			this.cbInkVisibleEnabled.Size = new System.Drawing.Size(15, 14);
-			this.cbInkVisibleEnabled.TabIndex = 0;
-			this.cbInkVisibleEnabled.UseVisualStyleBackColor = true;
-			this.cbInkVisibleEnabled.CheckedChanged += new System.EventHandler(this.cbInkVisibleEnabled_CheckedChanged);
-			// 
-			// cbAllowDragging
-			// 
-			this.cbAllowDragging.AutoSize = true;
-			this.cbAllowDragging.Location = new System.Drawing.Point(11, 214);
-			this.cbAllowDragging.Name = "cbAllowDragging";
-			this.cbAllowDragging.Size = new System.Drawing.Size(246, 16);
-			this.cbAllowDragging.TabIndex = 0;
-			this.cbAllowDragging.Text = "Allow dragging toolbar (experimental)";
-			this.cbAllowDragging.UseVisualStyleBackColor = true;
-			this.cbAllowDragging.CheckedChanged += new System.EventHandler(this.cbAllowDragging_CheckedChanged);
 			// 
 			// FormOptions
 			// 
@@ -362,7 +350,6 @@
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.TabPage tabPage3;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.TextBox tbHotkey;
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.CheckBox cbInkVisibleEnabled;
 		private System.Windows.Forms.CheckBox cbPanEnabled;

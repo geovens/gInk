@@ -19,8 +19,6 @@ namespace gInk
 		ComboBox[] comboPensAlpha = new ComboBox[10];
 		ComboBox[] comboPensWidth = new ComboBox[10];
 
-		private bool HotkeyJustSet = false;
-
 		public FormOptions(Root root)
 		{
 			Root = root;
@@ -57,21 +55,11 @@ namespace gInk
 
 			tbSnapPath.Text = Root.SnapshotBasePath;
 
-			tbHotkey.BackColor = Color.White;
+			
 			lbNote.ForeColor = Color.Black;
-			if (Root.Hotkey > 0)
-			{
-				tbHotkey.Text = "";
-				if (Root.Hotkey_Control) tbHotkey.Text += "Ctrl + ";
-				if (Root.Hotkey_Alt) tbHotkey.Text += "Alt + ";
-				if (Root.Hotkey_Shift) tbHotkey.Text += "Shift + ";
-				if (Root.Hotkey_Win) tbHotkey.Text += "Win + ";
-				tbHotkey.Text += (char)Root.Hotkey;
-			}
-			else
-			{
-				tbHotkey.Text = "None";
-			}
+
+			HotkeyInputBox hib = new HotkeyInputBox();
+			tabPage3.Controls.Add(hib);
 
 			Label lbcbPens = new Label();
 			lbcbPens.Left = 90;
@@ -151,7 +139,7 @@ namespace gInk
 				tabPage2.Controls.Add(pboxPens[p]);
 				tabPage2.Controls.Add(comboPensAlpha[p]);
 				tabPage2.Controls.Add(comboPensWidth[p]);
-		}
+			}
 		}
 
 		private void comboPensAlpha_TextChanged(object sender, EventArgs e)
@@ -278,101 +266,6 @@ namespace gInk
 				tbSnapPath.Text = folderBrowserDialog1.SelectedPath;
 				Root.SnapshotBasePath = folderBrowserDialog1.SelectedPath;
 			}
-		}
-
-		private void tbHotkey_KeyDown(object sender, KeyEventArgs e)
-		{
-			Keys modifierKeys = e.Modifiers;
-			Keys pressedKey = e.KeyData ^ modifierKeys;
-
-			if (pressedKey == Keys.Escape)
-			{
-				tbHotkey.Text = "None";
-				Root.Hotkey = 0;
-			}
-
-			if (modifierKeys != Keys.None)
-			{
-				tbHotkey.BackColor = Color.LimeGreen;
-				tbHotkey.Text = "";
-				if ((modifierKeys & Keys.Control) > 0)
-					tbHotkey.Text += "Ctrl + ";
-				if ((modifierKeys & Keys.Alt) > 0)
-					tbHotkey.Text += "Alt + ";
-				if ((modifierKeys & Keys.Shift) > 0)
-					tbHotkey.Text += "Shift + ";
-				if ((modifierKeys & Keys.LWin) > 0 || (modifierKeys & Keys.RWin) > 0)
-					tbHotkey.Text += "Win + ";
-
-				if (pressedKey >= Keys.A && pressedKey <= Keys.Z || pressedKey >= Keys.D0 && pressedKey <= Keys.D9)
-					tbHotkey.Text += (char)pressedKey;
-			}
-
-			if (modifierKeys != Keys.None && (pressedKey >= Keys.A && pressedKey <= Keys.Z || pressedKey >= Keys.D0 && pressedKey <= Keys.D9))
-			{
-				if ((modifierKeys & Keys.Control) > 0)
-					Root.Hotkey_Control = true;
-				else
-					Root.Hotkey_Control = false;
-				if ((modifierKeys & Keys.Alt) > 0)
-					Root.Hotkey_Alt = true;
-				else
-					Root.Hotkey_Alt = false;
-				if ((modifierKeys & Keys.Shift) > 0)
-					Root.Hotkey_Shift = true;
-				else
-					Root.Hotkey_Shift = false;
-				if ((modifierKeys & Keys.LWin) > 0 || (modifierKeys & Keys.RWin) > 0)
-					Root.Hotkey_Win = true;
-				else
-					Root.Hotkey_Win = false;
-				Root.Hotkey = (char)pressedKey;
-
-				HotkeyJustSet = true;
-				tbHotkey.BackColor = Color.White;
-			}
-		}
-
-		private void tbHotkey_KeyUp(object sender, KeyEventArgs e)
-		{
-			Keys modifierKeys = e.Modifiers;
-			Keys pressedKey = e.KeyData ^ modifierKeys;
-
-			if (modifierKeys != Keys.None && !HotkeyJustSet)
-			{
-				tbHotkey.Text = "";
-				if ((modifierKeys & Keys.Control) > 0)
-					tbHotkey.Text += "Ctrl + ";
-				if ((modifierKeys & Keys.Alt) > 0)
-					tbHotkey.Text += "Alt + ";
-				if ((modifierKeys & Keys.Shift) > 0)
-					tbHotkey.Text += "Shift + ";
-				if ((modifierKeys & Keys.LWin) > 0 || (modifierKeys & Keys.RWin) > 0)
-					tbHotkey.Text += "Win + ";
-
-				if (pressedKey >= Keys.A && pressedKey <= Keys.Z || pressedKey >= Keys.D0 && pressedKey <= Keys.D9)
-					tbHotkey.Text += (char)pressedKey;
-			}
-
-			if (modifierKeys == Keys.None)
-			{
-				tbHotkey.BackColor = Color.White;
-				if (Root.Hotkey > 0)
-				{
-					tbHotkey.Text = "";
-					if (Root.Hotkey_Control) tbHotkey.Text += "Ctrl + ";
-					if (Root.Hotkey_Alt) tbHotkey.Text += "Alt + ";
-					if (Root.Hotkey_Shift) tbHotkey.Text += "Shift + ";
-					if (Root.Hotkey_Win) tbHotkey.Text += "Win + ";
-					tbHotkey.Text += (char)Root.Hotkey;
-				}
-				else
-				{
-					tbHotkey.Text = "None";
-				}
-				HotkeyJustSet = false;
-			}
-
 		}
 
 		private void tbSnapPath_ModifiedChanged(object sender, EventArgs e)
