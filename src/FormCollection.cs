@@ -190,8 +190,29 @@ namespace gInk
 			this.Height = SystemInformation.VirtualScreen.Height;
 			this.DoubleBuffered = true;
 
-			gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width + (Screen.PrimaryScreen.Bounds.Left - SystemInformation.VirtualScreen.Left);
-			gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 10 + (Screen.PrimaryScreen.Bounds.Top - SystemInformation.VirtualScreen.Top);
+			if (Root.AllowDraggingToolbar)
+			{
+				gpButtonsLeft = Root.gpButtonsLeft;
+				gpButtonsTop = Root.gpButtonsTop;
+				if
+				(
+					!(SystemInformation.VirtualScreen.Contains(gpButtonsLeft, gpButtonsTop) &&
+					SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtonsWidth, gpButtonsTop) &&
+					SystemInformation.VirtualScreen.Contains(gpButtonsLeft, gpButtonsTop + gpButtonsHeight) &&
+					SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtonsWidth, gpButtonsTop + gpButtonsHeight))
+					||
+					(gpButtonsLeft == 0 && gpButtonsTop == 0)
+				)
+				{
+					gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width + (Screen.PrimaryScreen.Bounds.Left - SystemInformation.VirtualScreen.Left);
+					gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 10 + (Screen.PrimaryScreen.Bounds.Top - SystemInformation.VirtualScreen.Top);
+				}
+			}
+			else
+			{
+				gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width + (Screen.PrimaryScreen.Bounds.Left - SystemInformation.VirtualScreen.Left);
+				gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 10 + (Screen.PrimaryScreen.Bounds.Top - SystemInformation.VirtualScreen.Top);
+			}
 			gpButtonsWidth = gpButtons.Width;
 			gpButtonsHeight = gpButtons.Height;
 			gpButtons.Left = gpButtonsLeft + gpButtons.Width;
@@ -625,6 +646,7 @@ namespace gInk
 			ToThrough();
 			Root.ClearInk();
 			SaveUndoStrokes();
+			Root.SaveOptions("config.ini");
 			Root.gpPenWidthVisible = false;
 
 			LastTickTime = DateTime.Now;
@@ -1069,6 +1091,8 @@ namespace gInk
 		bool ToolbarMoved = false;
 		private void gpButtons_MouseDown(object sender, MouseEventArgs e)
 		{
+			if (!Root.AllowDraggingToolbar)
+				return;
 			if (ButtonsEntering != 0)
 				return;
 
@@ -1161,6 +1185,8 @@ namespace gInk
 					{
 						gpButtonsLeft += dleft;
 						gpButtonsTop += dtop;
+						Root.gpButtonsLeft = gpButtonsLeft;
+						Root.gpButtonsTop = gpButtonsTop;
 						if (Root.Docked)
 							gpButtons.Left = gpButtonsLeft + gpButtonsWidth - btDock.Width;
 						else

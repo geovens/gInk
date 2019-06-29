@@ -144,21 +144,29 @@ namespace gInk
 		{
 			int top, height, left, width;
 			int fullwidth;
+			int gpbl;
+			int drawwidth;
 
 			top = Root.FormCollection.gpButtons.Top;
 			height = Root.FormCollection.gpButtons.Height;
 			left = Root.FormCollection.gpButtons.Left;
 			width = Root.FormCollection.gpButtons.Width;
 			fullwidth = Root.FormCollection.gpButtonsWidth;
+			drawwidth = width;
+			gpbl = Root.FormCollection.gpButtonsLeft;
+			if (left + width > gpbl + fullwidth)
+				drawwidth = gpbl + fullwidth - left;
+
 			if (redrawbuttons)
 				Root.FormCollection.gpButtons.DrawToBitmap(gpButtonsImage, new Rectangle(0, 0, width, height));
 
 			if (exiting)
 			{
-				int clearleft = Math.Max(left - 120, Root.FormCollection.gpButtonsLeft);
-				gCanvus.FillRectangle(TransparentBrush, clearleft, top, fullwidth * 2, height);
+				int clearleft = Math.Max(left - 120, gpbl);
+				//gCanvus.FillRectangle(TransparentBrush, clearleft, top, fullwidth * 2, height);
+				gCanvus.FillRectangle(TransparentBrush, clearleft, top, drawwidth, height);
 			}
-			gCanvus.DrawImage(gpButtonsImage, left, top, new Rectangle(0, 0, width, height), GraphicsUnit.Pixel);
+			gCanvus.DrawImage(gpButtonsImage, left, top, new Rectangle(0, 0, drawwidth, height), GraphicsUnit.Pixel);
 
 			if (Root.gpPenWidthVisible)
 			{

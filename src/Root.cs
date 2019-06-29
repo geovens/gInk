@@ -61,6 +61,8 @@ namespace gInk
 		public bool WhiteTrayIcon;
 		public string SnapshotBasePath;
 		public int CanvasCursor = 0;
+		public bool AllowDraggingToolbar = true;
+		public int gpButtonsLeft, gpButtonsTop;
 
 		public bool EraserMode = false;
 		public bool Docked = false;
@@ -493,6 +495,7 @@ namespace gInk
 
 					}
 
+					int tempi = 0;
 					switch (sName)
 					{
 						case "HOTKEY":
@@ -562,6 +565,22 @@ namespace gInk
 						case "PAN_ICON":
 							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
 								PanEnabled = false;
+							break;
+						case "INKVISIBLE_ICON":
+							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
+								InkVisibleEnabled = false;
+							break;
+						case "ALLOW_DRAGGING_TOOLBAR":
+							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
+								AllowDraggingToolbar = false;
+							break;
+						case "TOOLBAR_LEFT":
+							if (int.TryParse(sPara, out tempi))
+								gpButtonsLeft = tempi;
+							break;
+						case "TOOLBAR_TOP":
+							if (int.TryParse(sPara, out tempi))
+								gpButtonsTop = tempi;
 							break;
 						case "CANVAS_CURSOR":
 							if (sPara == "0")
@@ -742,6 +761,24 @@ namespace gInk
 								sPara = "True";
 							else
 								sPara = "False";
+							break;
+						case "INKVISIBLE_ICON":
+							if (PanEnabled)
+								sPara = "True";
+							else
+								sPara = "False";
+							break;
+						case "ALLOW_DRAGGING_TOOLBAR":
+							if (AllowDraggingToolbar)
+								sPara = "True";
+							else
+								sPara = "False";
+							break;
+						case "TOOLBAR_LEFT":
+							sPara = gpButtonsLeft.ToString();
+							break;
+						case "TOOLBAR_TOP":
+							sPara = gpButtonsTop.ToString();
 							break;
 						case "CANVAS_CURSOR":
 							sPara = CanvasCursor.ToString();
