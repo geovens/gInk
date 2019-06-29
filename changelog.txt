@@ -1,6 +1,7 @@
 
 v0.6.0 (ongoing)
 =================
+- Add hotkey options for pens and tools.
 - Add a button to pan (move) inks.
 - Add a button to temporarily hide inks.
 - Allow dragging the toolbar (default is off, experimental).

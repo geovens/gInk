@@ -486,7 +486,7 @@
 			// hiGlobal
 			// 
 			this.hiGlobal.Hotkey = hotkey9;
-			this.hiGlobal.Location = new System.Drawing.Point(19, 45);
+			this.hiGlobal.Location = new System.Drawing.Point(19, 40);
 			this.hiGlobal.Name = "hiGlobal";
 			this.hiGlobal.RequireModifier = true;
 			this.hiGlobal.Size = new System.Drawing.Size(100, 21);
