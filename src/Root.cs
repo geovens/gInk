@@ -53,6 +53,7 @@ namespace gInk
 		public bool UndoEnabled = true;
 		public bool ClearEnabled = true;
 		public bool PanEnabled = true;
+		public bool InkVisibleEnabled = true;
 		public DrawingAttributes[] PenAttr = new DrawingAttributes[MaxPenCount];
 		public bool Hotkey_Control, Hotkey_Alt, Hotkey_Shift, Hotkey_Win;
 		public int Hotkey = 0;
@@ -74,6 +75,7 @@ namespace gInk
 		public bool UponSubPanelUpdate = false;
 
 		public bool PanMode = false;
+		public bool InkVisible = true;
 
 		public Ink[] UndoStrokes;
 		//public Ink UponUndoStrokes;
@@ -165,6 +167,7 @@ namespace gInk
 					CurrentPen = -2;
 			}
 			SelectPen(CurrentPen);
+			SetInkVisible(true);
 			FormDisplay.Show();
 			FormCollection.Show();
 			FormDisplay.DrawButtons(true);
@@ -234,6 +237,16 @@ namespace gInk
 		public void Pan(int x, int y)
 		{
 			FormCollection.IC.Ink.Strokes.Move(x, y);
+
+			FormDisplay.ClearCanvus();
+			FormDisplay.DrawStrokes();
+			FormDisplay.DrawButtons(true);
+			FormDisplay.UpdateFormDisplay(true);
+		}
+
+		public void SetInkVisible(bool visible)
+		{
+			InkVisible = visible;
 
 			FormDisplay.ClearCanvus();
 			FormDisplay.DrawStrokes();

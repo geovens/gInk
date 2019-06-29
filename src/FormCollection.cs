@@ -25,6 +25,7 @@ namespace gInk
 		public Bitmap[] image_pen_act;
 		public Bitmap image_eraser_act, image_eraser;
 		public Bitmap image_pan_act, image_pan;
+		public Bitmap image_visible_not, image_visible;
 		public System.Windows.Forms.Cursor cursorred, cursorsnap;
 		public System.Windows.Forms.Cursor cursortip;
 
@@ -95,6 +96,16 @@ namespace gInk
 			{
 				btEraser.Visible = false;
 			}
+			if (Root.PanEnabled)
+			{
+				btPan.Visible = true;
+				btPan.Left = cumulatedleft;
+				cumulatedleft += 50;
+			}
+			else
+			{
+				btPan.Visible = false;
+			}
 			if (Root.PointerEnabled)
 			{
 				btPointer.Visible = true;
@@ -116,15 +127,15 @@ namespace gInk
 			{
 				btPenWidth.Visible = false;
 			}
-			if (Root.PanEnabled)
+			if (Root.InkVisibleEnabled)
 			{
-				btPan.Visible = true;
-				btPan.Left = cumulatedleft;
+				btInkVisible.Visible = true;
+				btInkVisible.Left = cumulatedleft;
 				cumulatedleft += 50;
 			}
 			else
 			{
-				btPan.Visible = false;
+				btInkVisible.Visible = false;
 			}
 			if (Root.SnapEnabled)
 			{
@@ -241,6 +252,16 @@ namespace gInk
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.pan, 0, 0, btPan.Width, btPan.Height);
 			btPan.Image = image_pan;
+
+			image_visible_not = new Bitmap(btInkVisible.Width, btInkVisible.Height);
+			g = Graphics.FromImage(image_visible_not);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.visible_not, 0, 0, btInkVisible.Width, btInkVisible.Height);
+			image_visible = new Bitmap(btInkVisible.Width, btInkVisible.Height);
+			g = Graphics.FromImage(image_visible);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.visible, 0, 0, btInkVisible.Width, btInkVisible.Height);
+			btInkVisible.Image = image_visible;
 
 			image_snap = new Bitmap(btSnap.Width, btSnap.Height);
 			g = Graphics.FromImage(image_snap);
@@ -582,6 +603,16 @@ namespace gInk
 			}
 			else
 				Root.UponButtonsUpdate |= 0x2;
+		}
+
+		public void SetInkVisible(bool visible)
+		{
+			if (visible)
+				btInkVisible.Image = image_visible;
+			else
+				btInkVisible.Image = image_visible_not;
+
+			Root.SetInkVisible(visible);
 		}
 
 		public void RetreatAndExit()
@@ -972,6 +1003,11 @@ namespace gInk
 
 			if (Root.Snapping < 0)
 				Root.Snapping++;
+		}
+
+		private void btInkVisible_Click(object sender, EventArgs e)
+		{
+			SetInkVisible(!Root.InkVisible);
 		}
 
 		public void btClear_Click(object sender, EventArgs e)

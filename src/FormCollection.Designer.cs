@@ -30,6 +30,8 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			this.gpButtons = new System.Windows.Forms.Panel();
+			this.btInkVisible = new System.Windows.Forms.Button();
+			this.btPan = new System.Windows.Forms.Button();
 			this.btDock = new System.Windows.Forms.Button();
 			this.btPenWidth = new System.Windows.Forms.Button();
 			this.btEraser = new System.Windows.Forms.Button();
@@ -42,7 +44,6 @@
 			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.gpPenWidth = new System.Windows.Forms.Panel();
 			this.pboxPenWidthIndicator = new System.Windows.Forms.PictureBox();
-			this.btPan = new System.Windows.Forms.Button();
 			this.gpButtons.SuspendLayout();
 			this.gpPenWidth.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pboxPenWidthIndicator)).BeginInit();
@@ -51,6 +52,7 @@
 			// gpButtons
 			// 
 			this.gpButtons.BackColor = System.Drawing.Color.WhiteSmoke;
+			this.gpButtons.Controls.Add(this.btInkVisible);
 			this.gpButtons.Controls.Add(this.btPan);
 			this.gpButtons.Controls.Add(this.btDock);
 			this.gpButtons.Controls.Add(this.btPenWidth);
@@ -65,6 +67,40 @@
 			this.gpButtons.Name = "gpButtons";
 			this.gpButtons.Size = new System.Drawing.Size(828, 53);
 			this.gpButtons.TabIndex = 3;
+			// 
+			// btInkVisible
+			// 
+			this.btInkVisible.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.btInkVisible.FlatAppearance.BorderSize = 0;
+			this.btInkVisible.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btInkVisible.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btInkVisible.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btInkVisible.Image = global::gInk.Properties.Resources.undo;
+			this.btInkVisible.Location = new System.Drawing.Point(702, 3);
+			this.btInkVisible.Margin = new System.Windows.Forms.Padding(2);
+			this.btInkVisible.Name = "btInkVisible";
+			this.btInkVisible.Size = new System.Drawing.Size(46, 46);
+			this.btInkVisible.TabIndex = 3;
+			this.toolTip.SetToolTip(this.btInkVisible, "Ink visible");
+			this.btInkVisible.UseVisualStyleBackColor = true;
+			this.btInkVisible.Click += new System.EventHandler(this.btInkVisible_Click);
+			// 
+			// btPan
+			// 
+			this.btPan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.btPan.FlatAppearance.BorderSize = 0;
+			this.btPan.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btPan.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btPan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btPan.Image = global::gInk.Properties.Resources.undo;
+			this.btPan.Location = new System.Drawing.Point(652, 3);
+			this.btPan.Margin = new System.Windows.Forms.Padding(2);
+			this.btPan.Name = "btPan";
+			this.btPan.Size = new System.Drawing.Size(46, 46);
+			this.btPan.TabIndex = 2;
+			this.toolTip.SetToolTip(this.btPan, "Pan");
+			this.btPan.UseVisualStyleBackColor = true;
+			this.btPan.Click += new System.EventHandler(this.btPan_Click);
 			// 
 			// btDock
 			// 
@@ -236,23 +272,6 @@
 			this.pboxPenWidthIndicator.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pboxPenWidthIndicator_MouseMove);
 			this.pboxPenWidthIndicator.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pboxPenWidthIndicator_MouseUp);
 			// 
-			// btPan
-			// 
-			this.btPan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-			this.btPan.FlatAppearance.BorderSize = 0;
-			this.btPan.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
-			this.btPan.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
-			this.btPan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btPan.Image = global::gInk.Properties.Resources.undo;
-			this.btPan.Location = new System.Drawing.Point(652, 3);
-			this.btPan.Margin = new System.Windows.Forms.Padding(2);
-			this.btPan.Name = "btPan";
-			this.btPan.Size = new System.Drawing.Size(46, 46);
-			this.btPan.TabIndex = 2;
-			this.toolTip.SetToolTip(this.btPan, "Pan");
-			this.btPan.UseVisualStyleBackColor = true;
-			this.btPan.Click += new System.EventHandler(this.btPan_Click);
-			// 
 			// FormCollection
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -294,6 +313,7 @@
 		public System.Windows.Forms.Panel gpPenWidth;
 		private System.Windows.Forms.PictureBox pboxPenWidthIndicator;
 		public System.Windows.Forms.Button btPan;
+		public System.Windows.Forms.Button btInkVisible;
 	}
 }
 

@@ -199,11 +199,13 @@ namespace gInk
 
 		public void DrawStrokes()
 		{
-			Root.FormCollection.IC.Renderer.Draw(gCanvus, Root.FormCollection.IC.Ink.Strokes);
+			if (Root.InkVisible)
+				Root.FormCollection.IC.Renderer.Draw(gCanvus, Root.FormCollection.IC.Ink.Strokes);
 		}
 		public void DrawStrokes(Graphics g)
 		{
-			Root.FormCollection.IC.Renderer.Draw(g, Root.FormCollection.IC.Ink.Strokes);
+			if (Root.InkVisible)
+				Root.FormCollection.IC.Renderer.Draw(g, Root.FormCollection.IC.Ink.Strokes);
 		}
 
 		public void MoveStrokes(int dy)
@@ -449,7 +451,7 @@ namespace gInk
 				UpdateFormDisplay(true);
 			}
 
-			else if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false)
+			else if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false && Root.InkVisible)
 			{
 				//ClearCanvus();
 				//DrawStrokes();
@@ -462,7 +464,7 @@ namespace gInk
 					{
 						Rectangle box = stroke.GetBoundingBox();
 						Point lt = new Point(box.Left, box.Top);
-						Point rb = new Point(box.Right, box.Bottom);
+						Point rb = new Point(box.Right + 1, box.Bottom + 1);
 						Root.FormCollection.IC.Renderer.InkSpaceToPixel(gCanvus, ref lt);
 						Root.FormCollection.IC.Renderer.InkSpaceToPixel(gCanvus, ref rb);
 						BitBlt(canvusDc, lt.X, lt.Y, rb.X - lt.X, rb.Y - lt.Y, onestrokeDc, lt.X, lt.Y, (uint)CopyPixelOperation.SourceCopy);
