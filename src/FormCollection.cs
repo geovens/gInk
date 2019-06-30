@@ -198,7 +198,7 @@ namespace gInk
 
 			gpButtonsWidth = gpButtons.Width;
 			gpButtonsHeight = gpButtons.Height;
-			if (Root.AllowDraggingToolbar)
+			if (true || Root.AllowDraggingToolbar)
 			{
 				gpButtonsLeft = Root.gpButtonsLeft;
 				gpButtonsTop = Root.gpButtonsTop;

@@ -96,17 +96,13 @@ namespace gInk
 			Keys modifierKeys = e.Modifiers;
 			Keys pressedKey = e.KeyData ^ modifierKeys;
 
-			if (pressedKey == Keys.Escape || pressedKey == Keys.Delete)
+			bool deleting = pressedKey == Keys.Escape || pressedKey == Keys.Delete || pressedKey == Keys.Back;
+
+			if (deleting)
 			{
 				Text = "None";
-				Hotkey.Key = 0;
-				Hotkey.Control = false;
-				Hotkey.Alt = false;
-				Hotkey.Shift = false;
-				Hotkey.Win = false;
 			}
-
-			else if (modifierKeys != Keys.None)
+			else
 			{
 				Text = "";
 				if ((modifierKeys & Keys.Control) > 0)
@@ -122,8 +118,20 @@ namespace gInk
 					Text += (char)pressedKey;
 			}
 
-
-			if ((!RequireModifier || modifierKeys != Keys.None) && Hotkey.IsValidKey(pressedKey))
+			if (deleting)
+			{
+				Hotkey.Key = 0;
+				Hotkey.Control = false;
+				Hotkey.Alt = false;
+				Hotkey.Shift = false;
+				Hotkey.Win = false;
+				HotkeyJustSet = true;
+				_InWaitingKey = false;
+				SetBackColor();
+				if (OnHotkeyChanged != null)
+					OnHotkeyChanged(this, null);
+			}
+			else if ((!RequireModifier || modifierKeys != Keys.None) && Hotkey.IsValidKey(pressedKey))
 			{
 				Hotkey.Key = (int)pressedKey;
 				Hotkey.Control = (modifierKeys & Keys.Control) > 0;
