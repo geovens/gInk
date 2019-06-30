@@ -390,6 +390,11 @@ namespace gInk
 
 		private void IC_CursorDown(object sender, InkCollectorCursorDownEventArgs e)
 		{
+			if (!Root.InkVisible && Root.Snapping <= 0)
+			{
+				Root.SetInkVisible(true);
+			}
+
 			Root.FormDisplay.ClearCanvus(Root.FormDisplay.gOneStrokeCanvus);
 			Root.FormDisplay.DrawStrokes(Root.FormDisplay.gOneStrokeCanvus);
 			Root.FormDisplay.DrawButtons(Root.FormDisplay.gOneStrokeCanvus, false);
@@ -416,6 +421,10 @@ namespace gInk
 			{
 				Root.SetInkVisible(true);
 			}
+
+			LasteXY.X = e.X;
+			LasteXY.Y = e.Y;
+			IC.Renderer.PixelToInkSpace(Root.FormDisplay.gOneStrokeCanvus, ref LasteXY);
 		}
 
 		public Point LasteXY;
