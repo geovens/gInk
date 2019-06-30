@@ -149,6 +149,7 @@ namespace gInk
 				hiPens[p].Left = 70;
 				hiPens[p].Width = 150;
 				hiPens[p].Top = top;
+				hiPens[p].OnHotkeyChanged += hi_OnHotkeyChanged;
 
 				tabPage3.Controls.Add(lbHotkeyPens[p]);
 				tabPage3.Controls.Add(hiPens[p]);
@@ -338,6 +339,32 @@ namespace gInk
 		private void cbAllowHotkeyInPointer_CheckedChanged(object sender, EventArgs e)
 		{
 			Root.AllowHotkeyInPointerMode = cbAllowHotkeyInPointer.Checked;
+		}
+
+		private void hi_OnHotkeyChanged(object sender, EventArgs e)
+		{
+			foreach (Control c in tabPage3.Controls)
+			{
+				if (c.GetType() != typeof(HotkeyInputBox))
+					continue;
+				HotkeyInputBox hi = (HotkeyInputBox)c;
+
+				hi.ExternalConflictFlag = false;
+				foreach (Control c2 in tabPage3.Controls)
+				{
+					if (c2.GetType() != typeof(HotkeyInputBox))
+						continue;
+					if (c == c2)
+						continue;
+					HotkeyInputBox hi2 = (HotkeyInputBox)c2;
+
+					if (hi.Hotkey.ConflictWith(hi2.Hotkey))
+					{
+						hi.ExternalConflictFlag = true;
+						break;
+					}
+				}
+			}
 		}
 	}
 }

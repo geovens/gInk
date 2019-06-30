@@ -11,17 +11,42 @@ namespace gInk
 {
 	public partial class HotkeyInputBox : TextBox
 	{
-		//private int _Key;
-		//private bool _Control, _Alt, _Shift, _Win;
+
 		private Hotkey _Hotkey = new Hotkey();
-		//public int Key { get { return _Key; } set { _Key = value; UpdateText(); } }
-		//public bool Control { get { return _Control; } set { _Control = value; UpdateText(); } }
-		//public bool Alt { get { return _Alt; } set { _Alt = value;  UpdateText(); } }
-		//public bool Shift { get { return _Shift; } set { _Shift = value; UpdateText(); } }
-		//public bool Win { get { return _Win; } set { _Win = value; UpdateText(); } }
-		public Hotkey Hotkey { get { return _Hotkey; } set { _Hotkey = value; UpdateText(); } }
+		private bool _ExternalConflictFlag;
+		private bool _InWaitingKey;
+
+		public event EventHandler OnHotkeyChanged;
+
+		public Hotkey Hotkey
+		{
+			get
+			{
+				return _Hotkey;
+			}
+			set
+			{
+				_Hotkey = value;
+				UpdateText();
+				if (OnHotkeyChanged != null)
+					OnHotkeyChanged(this, null);
+			}
+		}
 
 		public bool RequireModifier { get; set; }
+
+		public bool ExternalConflictFlag
+		{
+			get
+			{
+				return _ExternalConflictFlag;
+			}
+			set
+			{
+				_ExternalConflictFlag = value;
+				SetBackColor();
+			}
+		}
 
 		private bool HotkeyJustSet = false;
 
@@ -52,12 +77,18 @@ namespace gInk
 				Text = "None";
 			}
 		}
-		/*
-		protected override void OnPaint(PaintEventArgs pe)
+
+		protected void SetBackColor()
 		{
-			base.OnPaint(pe);
+			if (_InWaitingKey)
+				BackColor = Color.LimeGreen;
+			else if (_ExternalConflictFlag)
+				BackColor = Color.IndianRed;
+			else
+				BackColor = Color.White;
 		}
-		*/
+
+
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			e.SuppressKeyPress = true;
@@ -77,7 +108,6 @@ namespace gInk
 
 			else if (modifierKeys != Keys.None)
 			{
-				BackColor = Color.LimeGreen;
 				Text = "";
 				if ((modifierKeys & Keys.Control) > 0)
 					Text += "Ctrl + ";
@@ -88,10 +118,8 @@ namespace gInk
 				if ((modifierKeys & Keys.LWin) > 0 || (modifierKeys & Keys.RWin) > 0)
 					Text += "Win + ";
 
-				if (pressedKey >= Keys.A && pressedKey <= Keys.Z || pressedKey >= Keys.D0 && pressedKey <= Keys.D9)
-				{
+				if (Hotkey.IsValidKey(pressedKey))
 					Text += (char)pressedKey;
-				}
 			}
 
 
@@ -103,7 +131,15 @@ namespace gInk
 				Hotkey.Shift = (modifierKeys & Keys.Shift) > 0;
 				Hotkey.Win = (modifierKeys & Keys.LWin) > 0 || (modifierKeys & Keys.RWin) > 0;
 				HotkeyJustSet = true;
-				BackColor = Color.White;
+				_InWaitingKey = false;
+				SetBackColor();
+				if (OnHotkeyChanged != null)
+					OnHotkeyChanged(this, null);
+			}
+			else
+			{
+				_InWaitingKey = true;
+				SetBackColor();
 			}
 		}
 
@@ -131,7 +167,8 @@ namespace gInk
 			if (modifierKeys == Keys.None)
 			{
 				UpdateText();
-				BackColor = Color.White;
+				_InWaitingKey = false;
+				SetBackColor();
 				HotkeyJustSet = false;
 			}
 		}

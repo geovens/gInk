@@ -29,15 +29,15 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			gInk.Hotkey hotkey19 = new gInk.Hotkey();
-			gInk.Hotkey hotkey20 = new gInk.Hotkey();
-			gInk.Hotkey hotkey21 = new gInk.Hotkey();
-			gInk.Hotkey hotkey22 = new gInk.Hotkey();
-			gInk.Hotkey hotkey23 = new gInk.Hotkey();
-			gInk.Hotkey hotkey24 = new gInk.Hotkey();
-			gInk.Hotkey hotkey25 = new gInk.Hotkey();
-			gInk.Hotkey hotkey26 = new gInk.Hotkey();
-			gInk.Hotkey hotkey27 = new gInk.Hotkey();
+			gInk.Hotkey hotkey1 = new gInk.Hotkey();
+			gInk.Hotkey hotkey2 = new gInk.Hotkey();
+			gInk.Hotkey hotkey3 = new gInk.Hotkey();
+			gInk.Hotkey hotkey4 = new gInk.Hotkey();
+			gInk.Hotkey hotkey5 = new gInk.Hotkey();
+			gInk.Hotkey hotkey6 = new gInk.Hotkey();
+			gInk.Hotkey hotkey7 = new gInk.Hotkey();
+			gInk.Hotkey hotkey8 = new gInk.Hotkey();
+			gInk.Hotkey hotkey9 = new gInk.Hotkey();
 			this.cbEraserEnabled = new System.Windows.Forms.CheckBox();
 			this.cbPointerEnabled = new System.Windows.Forms.CheckBox();
 			this.cbSnapEnabled = new System.Windows.Forms.CheckBox();
@@ -353,13 +353,15 @@
 			// 
 			// hiInkVisible
 			// 
-			this.hiInkVisible.Hotkey = hotkey19;
+			this.hiInkVisible.ExternalConflictFlag = false;
+			this.hiInkVisible.Hotkey = hotkey1;
 			this.hiInkVisible.Location = new System.Drawing.Point(309, 175);
 			this.hiInkVisible.Name = "hiInkVisible";
 			this.hiInkVisible.RequireModifier = false;
 			this.hiInkVisible.Size = new System.Drawing.Size(150, 21);
 			this.hiInkVisible.TabIndex = 17;
 			this.hiInkVisible.Text = "None";
+			this.hiInkVisible.OnHotkeyChanged += new System.EventHandler(this.hi_OnHotkeyChanged);
 			// 
 			// label11
 			// 
@@ -445,37 +447,44 @@
 			// 
 			// hiSnapshot
 			// 
-			this.hiSnapshot.Hotkey = hotkey20;
+			this.hiSnapshot.ExternalConflictFlag = false;
+			this.hiSnapshot.Hotkey = hotkey2;
 			this.hiSnapshot.Location = new System.Drawing.Point(309, 200);
 			this.hiSnapshot.Name = "hiSnapshot";
 			this.hiSnapshot.RequireModifier = false;
 			this.hiSnapshot.Size = new System.Drawing.Size(150, 21);
 			this.hiSnapshot.TabIndex = 14;
 			this.hiSnapshot.Text = "None";
+			this.hiSnapshot.OnHotkeyChanged += new System.EventHandler(this.hi_OnHotkeyChanged);
 			// 
 			// hiClear
 			// 
-			this.hiClear.Hotkey = hotkey21;
+			this.hiClear.ExternalConflictFlag = false;
+			this.hiClear.Hotkey = hotkey3;
 			this.hiClear.Location = new System.Drawing.Point(309, 275);
 			this.hiClear.Name = "hiClear";
 			this.hiClear.RequireModifier = false;
 			this.hiClear.Size = new System.Drawing.Size(150, 21);
 			this.hiClear.TabIndex = 15;
 			this.hiClear.Text = "None";
+			this.hiClear.OnHotkeyChanged += new System.EventHandler(this.hi_OnHotkeyChanged);
 			// 
 			// hiPan
 			// 
-			this.hiPan.Hotkey = hotkey22;
+			this.hiPan.ExternalConflictFlag = false;
+			this.hiPan.Hotkey = hotkey4;
 			this.hiPan.Location = new System.Drawing.Point(309, 125);
 			this.hiPan.Name = "hiPan";
 			this.hiPan.RequireModifier = false;
 			this.hiPan.Size = new System.Drawing.Size(150, 21);
 			this.hiPan.TabIndex = 11;
 			this.hiPan.Text = "None";
+			this.hiPan.OnHotkeyChanged += new System.EventHandler(this.hi_OnHotkeyChanged);
 			// 
 			// hiPointer
 			// 
-			this.hiPointer.Hotkey = hotkey23;
+			this.hiPointer.ExternalConflictFlag = false;
+			this.hiPointer.Hotkey = hotkey5;
 			this.hiPointer.Location = new System.Drawing.Point(309, 150);
 			this.hiPointer.Name = "hiPointer";
 			this.hiPointer.RequireModifier = false;
@@ -483,46 +492,55 @@
 			this.hiPointer.TabIndex = 8;
 			this.hiPointer.Text = "None";
 			this.hiPointer.Visible = false;
+			this.hiPointer.OnHotkeyChanged += new System.EventHandler(this.hi_OnHotkeyChanged);
 			// 
 			// hiRedo
 			// 
-			this.hiRedo.Hotkey = hotkey24;
+			this.hiRedo.ExternalConflictFlag = false;
+			this.hiRedo.Hotkey = hotkey6;
 			this.hiRedo.Location = new System.Drawing.Point(309, 250);
 			this.hiRedo.Name = "hiRedo";
 			this.hiRedo.RequireModifier = false;
 			this.hiRedo.Size = new System.Drawing.Size(150, 21);
 			this.hiRedo.TabIndex = 9;
 			this.hiRedo.Text = "None";
+			this.hiRedo.OnHotkeyChanged += new System.EventHandler(this.hi_OnHotkeyChanged);
 			// 
 			// hiUndo
 			// 
-			this.hiUndo.Hotkey = hotkey25;
+			this.hiUndo.ExternalConflictFlag = false;
+			this.hiUndo.Hotkey = hotkey7;
 			this.hiUndo.Location = new System.Drawing.Point(309, 225);
 			this.hiUndo.Name = "hiUndo";
 			this.hiUndo.RequireModifier = false;
 			this.hiUndo.Size = new System.Drawing.Size(150, 21);
 			this.hiUndo.TabIndex = 5;
 			this.hiUndo.Text = "None";
+			this.hiUndo.OnHotkeyChanged += new System.EventHandler(this.hi_OnHotkeyChanged);
 			// 
 			// hiEraser
 			// 
-			this.hiEraser.Hotkey = hotkey26;
+			this.hiEraser.ExternalConflictFlag = false;
+			this.hiEraser.Hotkey = hotkey8;
 			this.hiEraser.Location = new System.Drawing.Point(309, 100);
 			this.hiEraser.Name = "hiEraser";
 			this.hiEraser.RequireModifier = false;
 			this.hiEraser.Size = new System.Drawing.Size(150, 21);
 			this.hiEraser.TabIndex = 5;
 			this.hiEraser.Text = "None";
+			this.hiEraser.OnHotkeyChanged += new System.EventHandler(this.hi_OnHotkeyChanged);
 			// 
 			// hiGlobal
 			// 
-			this.hiGlobal.Hotkey = hotkey27;
+			this.hiGlobal.ExternalConflictFlag = false;
+			this.hiGlobal.Hotkey = hotkey9;
 			this.hiGlobal.Location = new System.Drawing.Point(19, 36);
 			this.hiGlobal.Name = "hiGlobal";
 			this.hiGlobal.RequireModifier = true;
 			this.hiGlobal.Size = new System.Drawing.Size(150, 21);
 			this.hiGlobal.TabIndex = 5;
 			this.hiGlobal.Text = "None";
+			this.hiGlobal.OnHotkeyChanged += new System.EventHandler(this.hi_OnHotkeyChanged);
 			// 
 			// FormOptions
 			// 

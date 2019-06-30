@@ -84,7 +84,9 @@ namespace gInk
 
 		public bool ConflictWith(Hotkey hotkey)
 		{
-			if (Control == hotkey.Control && Alt == hotkey.Alt && Shift == hotkey.Shift && Win == hotkey.Win && Key == hotkey.Key)
+			if (Key == 0 || hotkey.Key == 0)
+				return false;
+			else if (Control == hotkey.Control && Alt == hotkey.Alt && Shift == hotkey.Shift && Win == hotkey.Win && Key == hotkey.Key)
 			{
 				return true;
 			}
