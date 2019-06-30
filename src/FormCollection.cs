@@ -34,6 +34,8 @@ namespace gInk
 
 		public bool gpPenWidth_MouseOn = false;
 
+		public int PrimaryLeft, PrimaryTop;
+
 		// http://www.csharp411.com/hide-form-from-alttab/
 		protected override CreateParams CreateParams
 		{
@@ -50,6 +52,9 @@ namespace gInk
 		{
 			Root = root;
 			InitializeComponent();
+
+			PrimaryLeft = Screen.PrimaryScreen.Bounds.Left - SystemInformation.VirtualScreen.Left;
+			PrimaryTop = Screen.PrimaryScreen.Bounds.Top - SystemInformation.VirtualScreen.Top;
 
 			btPen = new Button[Root.MaxPenCount];
 
@@ -199,22 +204,22 @@ namespace gInk
 				gpButtonsTop = Root.gpButtonsTop;
 				if
 				(
-					!(SystemInformation.VirtualScreen.Contains(gpButtonsLeft, gpButtonsTop) &&
-					SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtonsWidth, gpButtonsTop) &&
-					SystemInformation.VirtualScreen.Contains(gpButtonsLeft, gpButtonsTop + gpButtonsHeight) &&
-					SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtonsWidth, gpButtonsTop + gpButtonsHeight))
+					!(IsInsideVisibleScreen(gpButtonsLeft, gpButtonsTop) &&
+					IsInsideVisibleScreen(gpButtonsLeft + gpButtonsWidth, gpButtonsTop) &&
+					IsInsideVisibleScreen(gpButtonsLeft, gpButtonsTop + gpButtonsHeight) &&
+					IsInsideVisibleScreen(gpButtonsLeft + gpButtonsWidth, gpButtonsTop + gpButtonsHeight))
 					||
 					(gpButtonsLeft == 0 && gpButtonsTop == 0)
 				)
 				{
-					gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width + (Screen.PrimaryScreen.Bounds.Left - SystemInformation.VirtualScreen.Left);
-					gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 10 + (Screen.PrimaryScreen.Bounds.Top - SystemInformation.VirtualScreen.Top);
+					gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width + PrimaryLeft;
+					gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 15 + PrimaryTop;
 				}
 			}
 			else
 			{
-				gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width + (Screen.PrimaryScreen.Bounds.Left - SystemInformation.VirtualScreen.Left);
-				gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 10 + (Screen.PrimaryScreen.Bounds.Top - SystemInformation.VirtualScreen.Top);
+				gpButtonsLeft = Screen.PrimaryScreen.WorkingArea.Right - gpButtons.Width + PrimaryLeft;
+				gpButtonsTop = Screen.PrimaryScreen.WorkingArea.Bottom - gpButtons.Height - 15 + PrimaryTop;
 			}
 
 			gpButtons.Left = gpButtonsLeft + gpButtons.Width;
@@ -1108,6 +1113,20 @@ namespace gInk
 				Root.Snapping++;
 		}
 
+		private bool IsInsideVisibleScreen(int x, int y)
+		{
+			x -= PrimaryLeft;
+			y -= PrimaryTop;
+			//foreach (Screen s in Screen.AllScreens)
+			//	Console.WriteLine(s.Bounds);
+			//Console.WriteLine(x.ToString() + ", " + y.ToString());
+
+			foreach (Screen s in Screen.AllScreens)
+				if (s.Bounds.Contains(x, y))
+					return true;
+			return false;
+		}
+
 		int IsMovingToolbar = 0;
 		Point HitMovingToolbareXY = new Point();
 		bool ToolbarMoved = false;
@@ -1150,59 +1169,78 @@ namespace gInk
 					*/
 					int newleft = gpButtonsLeft + e.X - HitMovingToolbareXY.X;
 					int newtop = gpButtonsTop + e.Y - HitMovingToolbareXY.Y;
-					int dleft = 0, dtop = 0;
+
 					bool continuemoving;
 					bool toolbarmovedthisframe = false;
-					do
+					int dleft = 0, dtop = 0;
+					if
+					(
+						IsInsideVisibleScreen(newleft, newtop) &&
+						IsInsideVisibleScreen(newleft + gpButtonsWidth, newtop) &&
+						IsInsideVisibleScreen(newleft, newtop + gpButtonsHeight) &&
+						IsInsideVisibleScreen(newleft + gpButtonsWidth, newtop + gpButtonsHeight)
+					)
 					{
-						if (dleft != newleft - gpButtonsLeft)
-							dleft += Math.Sign(newleft - gpButtonsLeft);
-						else
-							break;
-						if
-						(
-							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + dleft, gpButtonsTop + dtop) &&
-							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtonsWidth + dleft, gpButtonsTop + dtop) &&
-							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + dleft, gpButtonsTop + gpButtonsHeight + dtop) &&
-							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtonsWidth + dleft, gpButtonsTop + gpButtonsHeight + dtop)
-						)
-						{
-							continuemoving = true;
-							ToolbarMoved = true;
-							toolbarmovedthisframe = true;
-						}
-						else
-						{
-							continuemoving = false;
-							dleft -= Math.Sign(newleft - gpButtonsLeft);
-						}
+						continuemoving = true;
+						ToolbarMoved = true;
+						toolbarmovedthisframe = true;
+						dleft = newleft - gpButtonsLeft;
+						dtop = newtop - gpButtonsTop;
 					}
-					while (continuemoving);
-					do
+					else
 					{
-						if (dtop != newtop - gpButtonsTop)
-							dtop += Math.Sign(newtop - gpButtonsTop);
-						else
-							break;
-						if
-						(
-							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + dleft, gpButtonsTop + dtop) &&
-							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtonsWidth + dleft, gpButtonsTop + dtop) &&
-							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + dleft, gpButtonsTop + gpButtonsHeight + dtop) &&
-							SystemInformation.VirtualScreen.Contains(gpButtonsLeft + gpButtonsWidth + dleft, gpButtonsTop + gpButtonsHeight + dtop)
-						)
+						do
 						{
-							continuemoving = true;
-							ToolbarMoved = true;
-							toolbarmovedthisframe = true;
+							if (dleft != newleft - gpButtonsLeft)
+								dleft += Math.Sign(newleft - gpButtonsLeft);
+							else
+								break;
+							if
+							(
+								IsInsideVisibleScreen(gpButtonsLeft + dleft, gpButtonsTop + dtop) &&
+								IsInsideVisibleScreen(gpButtonsLeft + gpButtonsWidth + dleft, gpButtonsTop + dtop) &&
+								IsInsideVisibleScreen(gpButtonsLeft + dleft, gpButtonsTop + gpButtonsHeight + dtop) &&
+								IsInsideVisibleScreen(gpButtonsLeft + gpButtonsWidth + dleft, gpButtonsTop + gpButtonsHeight + dtop)
+							)
+							{
+								continuemoving = true;
+								ToolbarMoved = true;
+								toolbarmovedthisframe = true;
+							}
+							else
+							{
+								continuemoving = false;
+								dleft -= Math.Sign(newleft - gpButtonsLeft);
+							}
 						}
-						else
+						while (continuemoving);
+						do
 						{
-							continuemoving = false;
-							dtop -= Math.Sign(newtop - gpButtonsTop);
+							if (dtop != newtop - gpButtonsTop)
+								dtop += Math.Sign(newtop - gpButtonsTop);
+							else
+								break;
+							if
+							(
+								IsInsideVisibleScreen(gpButtonsLeft + dleft, gpButtonsTop + dtop) &&
+								IsInsideVisibleScreen(gpButtonsLeft + gpButtonsWidth + dleft, gpButtonsTop + dtop) &&
+								IsInsideVisibleScreen(gpButtonsLeft + dleft, gpButtonsTop + gpButtonsHeight + dtop) &&
+								IsInsideVisibleScreen(gpButtonsLeft + gpButtonsWidth + dleft, gpButtonsTop + gpButtonsHeight + dtop)
+							)
+							{
+								continuemoving = true;
+								ToolbarMoved = true;
+								toolbarmovedthisframe = true;
+							}
+							else
+							{
+								continuemoving = false;
+								dtop -= Math.Sign(newtop - gpButtonsTop);
+							}
 						}
+						while (continuemoving);
 					}
-					while (continuemoving);
+
 					if (toolbarmovedthisframe)
 					{
 						gpButtonsLeft += dleft;
