@@ -470,6 +470,10 @@ namespace gInk
 			{
 				SaveUndoStrokes();
 			}
+			else
+			{
+				Root.UponAllDrawingUpdate = true;
+			}
 		}
 
 		private void IC_CursorInRange(object sender, InkCollectorCursorInRangeEventArgs e)
