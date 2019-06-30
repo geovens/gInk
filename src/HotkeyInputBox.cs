@@ -29,7 +29,7 @@ namespace gInk
 		{
 			InitializeComponent();
 
-			//BackColor = Color.White;
+			Width = 150;
 		}
 
 		protected void UpdateText()
@@ -65,7 +65,7 @@ namespace gInk
 			Keys modifierKeys = e.Modifiers;
 			Keys pressedKey = e.KeyData ^ modifierKeys;
 
-			if (pressedKey == Keys.Escape)
+			if (pressedKey == Keys.Escape || pressedKey == Keys.Delete)
 			{
 				Text = "None";
 				Hotkey.Key = 0;
@@ -75,7 +75,7 @@ namespace gInk
 				Hotkey.Win = false;
 			}
 
-			if (modifierKeys != Keys.None)
+			else if (modifierKeys != Keys.None)
 			{
 				BackColor = Color.LimeGreen;
 				Text = "";

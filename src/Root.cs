@@ -32,12 +32,12 @@ namespace gInk
 					Root.StartInk();
 				else if (Root.PointerMode)
 				{
-					Root.UnPointer();
+					//Root.UnPointer();
 					Root.SelectPen(Root.LastPen);
 				}
 				else
 				{
-					Root.Pointer();
+					//Root.Pointer();
 					Root.SelectPen(-2);
 				}
 			}
@@ -66,6 +66,7 @@ namespace gInk
 		public string SnapshotBasePath;
 		public int CanvasCursor = 0;
 		public bool AllowDraggingToolbar = true;
+		public bool AllowHotkeyInPointerMode = true;
 		public int gpButtonsLeft, gpButtonsTop;
 
 		public Hotkey Hotkey_Global = new Hotkey();
@@ -261,6 +262,9 @@ namespace gInk
 
 		public void Pan(int x, int y)
 		{
+			if (x == 0 && y == 0)
+				return;
+
 			FormCollection.IC.Ink.Strokes.Move(x, y);
 
 			FormDisplay.ClearCanvus();
@@ -272,6 +276,10 @@ namespace gInk
 		public void SetInkVisible(bool visible)
 		{
 			InkVisible = visible;
+			if (visible)
+				FormCollection.btInkVisible.Image = FormCollection.image_visible;
+			else
+				FormCollection.btInkVisible.Image = FormCollection.image_visible_not;
 
 			FormDisplay.ClearCanvus();
 			FormDisplay.DrawStrokes();
@@ -340,6 +348,7 @@ namespace gInk
 			PointerMode = false;
 			FormCollection.ToUnThrough();
 			FormCollection.ToTopMost();
+			FormCollection.Activate();
 
 			FormButtonHitter.Hide();
 		}
@@ -606,6 +615,10 @@ namespace gInk
 							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
 								AllowDraggingToolbar = false;
 							break;
+						case "ALLOW_HOTKEY_IN_POINTER_MODE":
+							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
+								AllowHotkeyInPointerMode = false;
+							break;
 						case "TOOLBAR_LEFT":
 							if (int.TryParse(sPara, out tempi))
 								gpButtonsLeft = tempi;
@@ -798,6 +811,12 @@ namespace gInk
 							break;
 						case "ALLOW_DRAGGING_TOOLBAR":
 							if (AllowDraggingToolbar)
+								sPara = "True";
+							else
+								sPara = "False";
+							break;
+						case "ALLOW_HOTKEY_IN_POINTER_MODE":
+							if (AllowHotkeyInPointerMode)
 								sPara = "True";
 							else
 								sPara = "False";

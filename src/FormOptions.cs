@@ -53,6 +53,8 @@ namespace gInk
 				cbWhiteIcon.Checked = true;
 			if (Root.AllowDraggingToolbar)
 				cbAllowDragging.Checked = true;
+			if (Root.AllowHotkeyInPointerMode)
+				cbAllowHotkeyInPointer.Checked = true;
 
 			comboCanvasCursor.SelectedIndex = Root.CanvasCursor;
 
@@ -331,6 +333,11 @@ namespace gInk
 		private void cbAllowDragging_CheckedChanged(object sender, EventArgs e)
 		{
 			Root.AllowDraggingToolbar = cbAllowDragging.Checked;
+		}
+
+		private void cbAllowHotkeyInPointer_CheckedChanged(object sender, EventArgs e)
+		{
+			Root.AllowHotkeyInPointerMode = cbAllowHotkeyInPointer.Checked;
 		}
 	}
 }

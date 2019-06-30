@@ -71,6 +71,7 @@ namespace gInk
 				btPen[b].BackColor = Root.PenAttr[b].Color;
 				btPen[b].FlatAppearance.MouseDownBackColor = Root.PenAttr[b].Color;
 				btPen[b].FlatAppearance.MouseOverBackColor = Root.PenAttr[b].Color;
+				this.toolTip.SetToolTip(this.btPen[b], "Pen " + b.ToString());
 
 				btPen[b].MouseDown += gpButtons_MouseDown;
 				btPen[b].MouseMove += gpButtons_MouseMove;
@@ -410,6 +411,11 @@ namespace gInk
 				Root.SnappingRect = new Rectangle(e.X, e.Y, 0, 0);
 				Root.Snapping = 2;
 			}
+
+			if (!Root.InkVisible && Root.Snapping <= 0)
+			{
+				Root.SetInkVisible(true);
+			}
 		}
 
 		public Point LasteXY;
@@ -636,16 +642,6 @@ namespace gInk
 
 			if (pen != -2)
 				Root.LastPen = pen;
-		}
-
-		public void SetInkVisible(bool visible)
-		{
-			if (visible)
-				btInkVisible.Image = image_visible;
-			else
-				btInkVisible.Image = image_visible_not;
-
-			Root.SetInkVisible(visible);
 		}
 
 		public void RetreatAndExit()
@@ -1017,8 +1013,8 @@ namespace gInk
 				LastESCStatus = retVal;
 			}
 
-			
-			if (!Root.FingerInAction && !Root.PointerMode && Root.Snapping <= 0)
+
+			if (!Root.FingerInAction && (!Root.PointerMode || Root.AllowHotkeyInPointerMode) && Root.Snapping <= 0)
 			{
 				bool control = ((short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL)) & 0x8000) == 0x8000;
 				bool alt = ((short)(GetKeyState(VK_LMENU) | GetKeyState(VK_RMENU)) & 0x8000) == 0x8000;
@@ -1052,6 +1048,9 @@ namespace gInk
 				pressed = (GetKeyState(Root.Hotkey_Undo.Key) & 0x8000) == 0x8000;
 				if (pressed && !LastUndoStatus && Root.Hotkey_Undo.ModifierMatch(control, alt, shift, win))
 				{
+					if (!Root.InkVisible)
+						Root.SetInkVisible(true);
+
 					Root.UndoInk();
 				}
 				LastUndoStatus = pressed;
@@ -1223,7 +1222,7 @@ namespace gInk
 				return;
 			}
 
-			SetInkVisible(!Root.InkVisible);
+			Root.SetInkVisible(!Root.InkVisible);
 		}
 
 		public void btClear_Click(object sender, EventArgs e)
@@ -1245,6 +1244,9 @@ namespace gInk
 				ToolbarMoved = false;
 				return;
 			}
+
+			if (!Root.InkVisible)
+				Root.SetInkVisible(true);
 
 			Root.UndoInk();
 		}
