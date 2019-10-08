@@ -76,7 +76,8 @@ namespace gInk
 				btPen[b].BackColor = Root.PenAttr[b].Color;
 				btPen[b].FlatAppearance.MouseDownBackColor = Root.PenAttr[b].Color;
 				btPen[b].FlatAppearance.MouseOverBackColor = Root.PenAttr[b].Color;
-				this.toolTip.SetToolTip(this.btPen[b], "Pen " + b.ToString());
+
+				this.toolTip.SetToolTip(this.btPen[b], Root.Local.ButtonNamePen[b]);
 
 				btPen[b].MouseDown += gpButtons_MouseDown;
 				btPen[b].MouseMove += gpButtons_MouseMove;
@@ -369,6 +370,17 @@ namespace gInk
 
 			ToTransparent();
 			ToTopMost();
+
+			this.toolTip.SetToolTip(this.btDock, Root.Local.ButtonNameDock);
+			this.toolTip.SetToolTip(this.btPenWidth, Root.Local.ButtonNamePenwidth);
+			this.toolTip.SetToolTip(this.btEraser, Root.Local.ButtonNameErasor);
+			this.toolTip.SetToolTip(this.btPan, Root.Local.ButtonNamePan);
+			this.toolTip.SetToolTip(this.btPointer, Root.Local.ButtonNameMousePointer);
+			this.toolTip.SetToolTip(this.btInkVisible, Root.Local.ButtonNameInkVisible);
+			this.toolTip.SetToolTip(this.btSnap, Root.Local.ButtonNameSnapshot);
+			this.toolTip.SetToolTip(this.btUndo, Root.Local.ButtonNameUndo);
+			this.toolTip.SetToolTip(this.btClear, Root.Local.ButtonNameClear);
+			this.toolTip.SetToolTip(this.btStop, Root.Local.ButtonNameExit);
 		}
 
 		private void IC_Stroke(object sender, InkCollectorStrokeEventArgs e)

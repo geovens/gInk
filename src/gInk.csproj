@@ -103,6 +103,7 @@
     <Compile Include="HotkeyInputBox.Designer.cs">
       <DependentUpon>HotkeyInputBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Local.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Root.cs" />

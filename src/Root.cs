@@ -47,6 +47,7 @@ namespace gInk
 
 	public class Root
 	{
+		public Local Local = new Local();
 		public const int MaxPenCount = 10;
 
 		// options
@@ -125,10 +126,10 @@ namespace gInk
 			ReadOptions("hotkeys.ini");
 
 			trayMenu = new ContextMenu();
-			trayMenu.MenuItems.Add("About...", OnAbout);
-			trayMenu.MenuItems.Add("Options...", OnOptions);
+			trayMenu.MenuItems.Add(Local.MenuEntryAbout + "...", OnAbout);
+			trayMenu.MenuItems.Add(Local.MenuEntryOptions + "...", OnOptions);
 			trayMenu.MenuItems.Add("-");
-			trayMenu.MenuItems.Add("Exit", OnExit);
+			trayMenu.MenuItems.Add(Local.MenuEntryExit, OnExit);
 
 			Size size = SystemInformation.SmallIconSize;
 			trayIcon = new NotifyIcon();
@@ -136,7 +137,7 @@ namespace gInk
 			trayIcon.ContextMenu = trayMenu;
 			trayIcon.Visible = true;
 			trayIcon.MouseClick += TrayIcon_Click;
-			trayIcon.BalloonTipText = "Snapshot saved. Click here to browse snapshots.";
+			trayIcon.BalloonTipText = Local.NotificationSnapshot;
 			trayIcon.BalloonTipClicked += TrayIcon_BalloonTipClicked;
 			SetTrayIconColor();
 
@@ -534,6 +535,9 @@ namespace gInk
 					int tempi = 0;
 					switch (sName)
 					{
+						case "LANGUAGE_FILE":
+							Local.LoadLocalFile(sPara);
+							break;
 						case "HOTKEY_GLOBAL":
 							Hotkey_Global.Parse(sPara);
 							break;
@@ -718,6 +722,9 @@ namespace gInk
 
 					switch (sName)
 					{
+						case "LANGUAGE_FILE":
+							sPara = Local.CurrentLanguageFile;
+							break;
 						case "HOTKEY_GLOBAL":
 							sPara = Hotkey_Global.ToString();
 							break;
