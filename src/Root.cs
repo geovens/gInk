@@ -119,17 +119,17 @@ namespace gInk
 			for (int p = 0; p < MaxPenCount; p++)
 				Hotkey_Pens[p] = new Hotkey();
 
-			SetDefaultPens();
-			SetDefaultConfig();
-			ReadOptions("pens.ini");
-			ReadOptions("config.ini");
-			ReadOptions("hotkeys.ini");
-
 			trayMenu = new ContextMenu();
 			trayMenu.MenuItems.Add(Local.MenuEntryAbout + "...", OnAbout);
 			trayMenu.MenuItems.Add(Local.MenuEntryOptions + "...", OnOptions);
 			trayMenu.MenuItems.Add("-");
 			trayMenu.MenuItems.Add(Local.MenuEntryExit, OnExit);
+
+			SetDefaultPens();
+			SetDefaultConfig();
+			ReadOptions("pens.ini");
+			ReadOptions("config.ini");
+			ReadOptions("hotkeys.ini");			
 
 			Size size = SystemInformation.SmallIconSize;
 			trayIcon = new NotifyIcon();
@@ -536,7 +536,7 @@ namespace gInk
 					switch (sName)
 					{
 						case "LANGUAGE_FILE":
-							Local.LoadLocalFile(sPara);
+							ChangeLanguage(sPara);
 							break;
 						case "HOTKEY_GLOBAL":
 							Hotkey_Global.Parse(sPara);
@@ -894,6 +894,17 @@ namespace gInk
 			if (Hotkey_Global.Win) modifier |= 0x8;
 			if (modifier != 0)
 				UnregisterHotKey(IntPtr.Zero, 0);
+		}
+
+		public void ChangeLanguage(string filename)
+		{
+			Local.LoadLocalFile(filename);
+
+			trayMenu.MenuItems.Clear();
+			trayMenu.MenuItems.Add(Local.MenuEntryAbout + "...", OnAbout);
+			trayMenu.MenuItems.Add(Local.MenuEntryOptions + "...", OnOptions);
+			trayMenu.MenuItems.Add("-");
+			trayMenu.MenuItems.Add(Local.MenuEntryExit, OnExit);
 		}
 
 		private void OnExit(object sender, EventArgs e)

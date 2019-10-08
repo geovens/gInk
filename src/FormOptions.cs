@@ -427,7 +427,7 @@ namespace gInk
 		{
 			if (comboLanguage.Text != Root.Local.GetLanguagenameByFilename(Root.Local.CurrentLanguageFile))
 			{
-				Root.Local.LoadLocalFile(Root.Local.GetFilenameByLanguagename(comboLanguage.Text));
+				Root.ChangeLanguage(Root.Local.GetFilenameByLanguagename(comboLanguage.Text));
 				FormOptions_LocalReload();
 			}
 		}
