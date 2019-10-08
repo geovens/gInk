@@ -18,6 +18,7 @@ namespace gInk
 		PictureBox[] pboxPens = new PictureBox[10];
 		ComboBox[] comboPensAlpha = new ComboBox[10];
 		ComboBox[] comboPensWidth = new ComboBox[10];
+		Label lbcbPens, lbpboxPens, lbcomboPensAlpha, lbcomboPensWidth;
 
 		Label[] lbHotkeyPens = new Label[10];
 		HotkeyInputBox[] hiPens = new HotkeyInputBox[10];
@@ -62,29 +63,29 @@ namespace gInk
 			
 			lbNote.ForeColor = Color.Black;
 
-			Label lbcbPens = new Label();
+			lbcbPens = new Label();
 			lbcbPens.Left = 90;
 			lbcbPens.Width = 35;
 			lbcbPens.Top = 15;
-			lbcbPens.Text = Root.Local.OptionsPensShow;
+			
 			tabPage2.Controls.Add(lbcbPens);
-			Label lbpboxPens = new Label();
+			lbpboxPens = new Label();
 			lbpboxPens.Left = 125;
 			lbpboxPens.Width = 35;
 			lbpboxPens.Top = 15;
-			lbpboxPens.Text = Root.Local.OptionsPensColor;
+			
 			tabPage2.Controls.Add(lbpboxPens);
-			Label lbcomboPensAlpha = new Label();
+			lbcomboPensAlpha = new Label();
 			lbcomboPensAlpha.Left = 160;
 			lbcomboPensAlpha.Width = 55;
 			lbcomboPensAlpha.Top = 15;
-			lbcomboPensAlpha.Text = Root.Local.OptionsPensAlpha;
+			
 			tabPage2.Controls.Add(lbcomboPensAlpha);
-			Label lbcomboPensWidth = new Label();
+			lbcomboPensWidth = new Label();
 			lbcomboPensWidth.Left = 250;
 			lbcomboPensWidth.Width = 55;
 			lbcomboPensWidth.Top = 15;
-			lbcomboPensWidth.Text = Root.Local.OptionsPensWidth;
+			
 			tabPage2.Controls.Add(lbcomboPensWidth);
 
 			for (int p = 0; p < Root.MaxPenCount; p++)
@@ -94,7 +95,6 @@ namespace gInk
 				lbPens[p].Left = 40;
 				lbPens[p].Width = 40;
 				lbPens[p].Top = top;
-				lbPens[p].Text = Root.Local.ButtonNamePen[p];
 
 				cbPens[p] = new CheckBox();
 				cbPens[p].Left = 90;
@@ -113,7 +113,7 @@ namespace gInk
 				pboxPens[p].Click += pboxPens_Click;
 
 				comboPensAlpha[p] = new ComboBox();
-				comboPensAlpha[p].Items.AddRange(new object[] { Root.Local.OptionsPensPencil, Root.Local.OptionsPensHighlighter });
+				
 				comboPensAlpha[p].Left = 160;
 				comboPensAlpha[p].Top = top - 2;
 				comboPensAlpha[p].Width = 70;
@@ -121,7 +121,7 @@ namespace gInk
 				comboPensAlpha[p].TextChanged += comboPensAlpha_TextChanged;
 
 				comboPensWidth[p] = new ComboBox();
-				comboPensWidth[p].Items.AddRange(new object[] {Root.Local.OptionsPensThin, Root.Local.OptionsPensNormal, Root.Local.OptionsPensThick});
+				
 				comboPensWidth[p].Left = 250;
 				comboPensWidth[p].Top = top - 2;
 				comboPensWidth[p].Width = 70;
@@ -142,7 +142,6 @@ namespace gInk
 				lbHotkeyPens[p].Left = 20;
 				lbHotkeyPens[p].Width = 40;
 				lbHotkeyPens[p].Top = top;
-				lbHotkeyPens[p].Text = Root.Local.ButtonNamePen[p];
 
 				hiPens[p] = new HotkeyInputBox();
 				hiPens[p].Hotkey = Root.Hotkey_Pens[p];
@@ -165,6 +164,11 @@ namespace gInk
 			hiRedo.Hotkey = Root.Hotkey_Redo;
 			hiClear.Hotkey = Root.Hotkey_Clear;
 
+			FormOptions_LocalReload();
+		}
+
+		private void FormOptions_LocalReload()
+		{
 			this.Text = Root.Local.MenuEntryOptions + " - gInk";
 			tabControl1.TabPages[0].Text = Root.Local.OptionsTabGeneral;
 			tabControl1.TabPages[1].Text = Root.Local.OptionsTabPens;
@@ -189,11 +193,30 @@ namespace gInk
 			this.comboCanvasCursor.Items[0] = Root.Local.OptionsGeneralCanvascursorArrow;
 			this.comboCanvasCursor.Items[1] = Root.Local.OptionsGeneralCanvascursorPentip;
 
+
+			for (int p = 0; p < Root.MaxPenCount; p++)
+			{
+				comboPensAlpha[p].Items.Clear();
+				comboPensWidth[p].Items.Clear();
+				comboPensAlpha[p].Items.AddRange(new object[] { Root.Local.OptionsPensPencil, Root.Local.OptionsPensHighlighter });
+				comboPensWidth[p].Items.AddRange(new object[] { Root.Local.OptionsPensThin, Root.Local.OptionsPensNormal, Root.Local.OptionsPensThick });
+
+				lbPens[p].Text = Root.Local.ButtonNamePen[p];
+				lbHotkeyPens[p].Text = Root.Local.ButtonNamePen[p];
+
+				lbcbPens.Text = Root.Local.OptionsPensShow;
+				lbpboxPens.Text = Root.Local.OptionsPensColor;
+				lbcomboPensAlpha.Text = Root.Local.OptionsPensAlpha;
+				lbcomboPensWidth.Text = Root.Local.OptionsPensWidth;
+			}
+
+				comboLanguage.Items.Clear();
 			List<string> langs = Root.Local.GetLanguagenames();
 			foreach (string languagename in langs)
 			{
 				comboLanguage.Items.Add(languagename);
 			}
+
 			string ln = Root.Local.GetLanguagenameByFilename(Root.Local.CurrentLanguageFile);
 			if (comboLanguage.Items.Contains(ln))
 				comboLanguage.SelectedIndex = comboLanguage.Items.IndexOf(ln);
@@ -402,7 +425,11 @@ namespace gInk
 
 		private void comboLanguage_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			Root.Local.LoadLocalFile(Root.Local.GetFilenameByLanguagename(comboLanguage.Text));
+			if (comboLanguage.Text != Root.Local.GetLanguagenameByFilename(Root.Local.CurrentLanguageFile))
+			{
+				Root.Local.LoadLocalFile(Root.Local.GetFilenameByLanguagename(comboLanguage.Text));
+				FormOptions_LocalReload();
+			}
 		}
 	}
 }
