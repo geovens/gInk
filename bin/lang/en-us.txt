@@ -49,7 +49,7 @@ OptionsPensThin = "Thin"
 OptionsPensNormal = "Normal"
 OptionsPensThick = "Thick"
 
-OptionsHotkeysglobal = "Global hotkey (start drawing, switch between mouse pointer and drawing)"
+OptionsHotkeysglobal = "Global hotkey (starts drawing, switches between mouse pointer and drawing)"
 OptionsHotkeysEnableinpointer = "Enable all following hotkeys in mouse pointer mode (may cause a mess)"
 
 NotificationSnapshot = "Snapshot saved. Click here to browse snapshots."

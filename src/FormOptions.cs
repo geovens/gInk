@@ -64,25 +64,25 @@ namespace gInk
 			lbNote.ForeColor = Color.Black;
 
 			lbcbPens = new Label();
-			lbcbPens.Left = 90;
+			lbcbPens.Left = 105;
 			lbcbPens.Width = 35;
 			lbcbPens.Top = 15;
 			
 			tabPage2.Controls.Add(lbcbPens);
 			lbpboxPens = new Label();
-			lbpboxPens.Left = 125;
+			lbpboxPens.Left = 145;
 			lbpboxPens.Width = 35;
 			lbpboxPens.Top = 15;
 			
 			tabPage2.Controls.Add(lbpboxPens);
 			lbcomboPensAlpha = new Label();
-			lbcomboPensAlpha.Left = 160;
+			lbcomboPensAlpha.Left = 190;
 			lbcomboPensAlpha.Width = 55;
 			lbcomboPensAlpha.Top = 15;
 			
 			tabPage2.Controls.Add(lbcomboPensAlpha);
 			lbcomboPensWidth = new Label();
-			lbcomboPensWidth.Left = 250;
+			lbcomboPensWidth.Left = 315;
 			lbcomboPensWidth.Width = 55;
 			lbcomboPensWidth.Top = 15;
 			
@@ -90,14 +90,14 @@ namespace gInk
 
 			for (int p = 0; p < Root.MaxPenCount; p++)
 			{
-				int top = p * 25 + 40;
+				int top = p * 30 + 40;
 				lbPens[p] = new Label();
-				lbPens[p].Left = 40;
-				lbPens[p].Width = 40;
+				lbPens[p].Left = 20;
+				lbPens[p].Width = 90;
 				lbPens[p].Top = top;
 
 				cbPens[p] = new CheckBox();
-				cbPens[p].Left = 90;
+				cbPens[p].Left = 110;
 				cbPens[p].Width = 15;
 				cbPens[p].Top = top - 5;
 				cbPens[p].Text = "";
@@ -105,7 +105,7 @@ namespace gInk
 				cbPens[p].CheckedChanged += cbPens_CheckedChanged;
 
 				pboxPens[p] = new PictureBox();
-				pboxPens[p].Left = 125;
+				pboxPens[p].Left = 150;
 				pboxPens[p].Top = top;
 				pboxPens[p].Width = 15;
 				pboxPens[p].Height = 15;
@@ -114,17 +114,17 @@ namespace gInk
 
 				comboPensAlpha[p] = new ComboBox();
 				
-				comboPensAlpha[p].Left = 160;
+				comboPensAlpha[p].Left = 195;
 				comboPensAlpha[p].Top = top - 2;
-				comboPensAlpha[p].Width = 70;
+				comboPensAlpha[p].Width = 100;
 				comboPensAlpha[p].Text = (255 - Root.PenAttr[p].Transparency).ToString();
 				comboPensAlpha[p].TextChanged += comboPensAlpha_TextChanged;
 
 				comboPensWidth[p] = new ComboBox();
 				
-				comboPensWidth[p].Left = 250;
+				comboPensWidth[p].Left = 320;
 				comboPensWidth[p].Top = top - 2;
-				comboPensWidth[p].Width = 70;
+				comboPensWidth[p].Width = 100;
 				comboPensWidth[p].Text = ((int)Root.PenAttr[p].Width).ToString();
 				comboPensWidth[p].TextChanged += comboPensWidth_TextChanged;
 
@@ -137,16 +137,16 @@ namespace gInk
 
 			for (int p = 0; p < Root.MaxPenCount; p++)
 			{
-				int top = p * 25 + 100;
+				int top = p * 25 + 120;
 				lbHotkeyPens[p] = new Label();
 				lbHotkeyPens[p].Left = 20;
-				lbHotkeyPens[p].Width = 40;
+				lbHotkeyPens[p].Width = 80;
 				lbHotkeyPens[p].Top = top;
 
 				hiPens[p] = new HotkeyInputBox();
 				hiPens[p].Hotkey = Root.Hotkey_Pens[p];
-				hiPens[p].Left = 70;
-				hiPens[p].Width = 150;
+				hiPens[p].Left = 100;
+				hiPens[p].Width = 120;
 				hiPens[p].Top = top;
 				hiPens[p].OnHotkeyChanged += hi_OnHotkeyChanged;
 
