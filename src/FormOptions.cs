@@ -64,13 +64,13 @@ namespace gInk
 			lbNote.ForeColor = Color.Black;
 
 			lbcbPens = new Label();
-			lbcbPens.Left = 105;
+			lbcbPens.Left = 95;
 			lbcbPens.Width = 35;
 			lbcbPens.Top = 15;
 			
 			tabPage2.Controls.Add(lbcbPens);
 			lbpboxPens = new Label();
-			lbpboxPens.Left = 145;
+			lbpboxPens.Left = 140;
 			lbpboxPens.Width = 35;
 			lbpboxPens.Top = 15;
 			
@@ -93,11 +93,11 @@ namespace gInk
 				int top = p * 30 + 40;
 				lbPens[p] = new Label();
 				lbPens[p].Left = 20;
-				lbPens[p].Width = 90;
+				lbPens[p].Width = 80;
 				lbPens[p].Top = top;
 
 				cbPens[p] = new CheckBox();
-				cbPens[p].Left = 110;
+				cbPens[p].Left = 100;
 				cbPens[p].Width = 15;
 				cbPens[p].Top = top - 5;
 				cbPens[p].Text = "";
@@ -105,7 +105,7 @@ namespace gInk
 				cbPens[p].CheckedChanged += cbPens_CheckedChanged;
 
 				pboxPens[p] = new PictureBox();
-				pboxPens[p].Left = 150;
+				pboxPens[p].Left = 145;
 				pboxPens[p].Top = top;
 				pboxPens[p].Width = 15;
 				pboxPens[p].Height = 15;

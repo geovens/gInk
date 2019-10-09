@@ -8,20 +8,24 @@ gInk is an on-screen annotation software under Windows, used to help improving m
 ![screenshot](https://raw.githubusercontent.com/geovens/gInk/master/screenshot1.jpg)  
 ![screenshot](https://raw.githubusercontent.com/geovens/gInk/master/screenshot2.jpg)  
 
+#### Download
+
+https://github.com/geovens/gInk/releases/
+
 #### How to use
 
 Start gInk and an icon will appear in the system tray. Click the icon (or use a hotkey) to start drawing on screen.  
 Click the exit button or press ESC to exit drawing.  
 
-#### Download
+#### How to contribute translation
 
-https://github.com/geovens/gInk/releases/
+gInk supports multiple languages now. Here is how you can contribute translation. Simply create a duplication of the file "en-us.txt" in "lang" folder, rename it and then translate the strings in the file. Check in gInk to make sure your translation shows correctly, and then you can make a pull request to merge your translation to the next version of release for others to use.  
 
 #### Features
 
 Compact and intuitive interface.  
 Inks rendered on dynamic desktops.  
-Stylus w/ eraser, touch screen and mouse compatable.  
+Stylus w/ eraser, touch screen and mouse compatible.  
 Click-through mode.  
 Multiple displays support.  
 Pen pressure support.  
