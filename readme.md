@@ -19,7 +19,7 @@ Click the exit button or press ESC to exit drawing.
 
 #### How to contribute translation
 
-gInk supports multiple languages now. Here is how you can contribute translation. Simply create a duplication of the file "en-us.txt" in "lang" folder, rename it and then translate the strings in the file. Check in gInk to make sure your translation shows correctly, and then you can make a pull request to merge your translation to the next version of release for others to use.  
+gInk supports multiple languages now. Here is how you can contribute translation. Simply create a duplication of the file "en-us.txt" in "bin/lang" folder, rename it and then translate the strings in the file. Check in gInk to make sure your translation shows correctly, and then you can make a pull request to merge your translation to the next version of release for others to use.  
 
 #### Features
 
