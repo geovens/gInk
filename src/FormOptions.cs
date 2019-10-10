@@ -64,40 +64,40 @@ namespace gInk
 			lbNote.ForeColor = Color.Black;
 
 			lbcbPens = new Label();
-			lbcbPens.Left = 95;
-			lbcbPens.Width = 35;
+			lbcbPens.Left = 25;
+			lbcbPens.Width = 100;
 			lbcbPens.Top = 15;
 			
 			tabPage2.Controls.Add(lbcbPens);
 			lbpboxPens = new Label();
 			lbpboxPens.Left = 140;
-			lbpboxPens.Width = 35;
+			lbpboxPens.Width = 60;
 			lbpboxPens.Top = 15;
 			
 			tabPage2.Controls.Add(lbpboxPens);
 			lbcomboPensAlpha = new Label();
-			lbcomboPensAlpha.Left = 190;
-			lbcomboPensAlpha.Width = 55;
+			lbcomboPensAlpha.Left = 200;
+			lbcomboPensAlpha.Width = 100;
 			lbcomboPensAlpha.Top = 15;
 			
 			tabPage2.Controls.Add(lbcomboPensAlpha);
 			lbcomboPensWidth = new Label();
-			lbcomboPensWidth.Left = 315;
-			lbcomboPensWidth.Width = 55;
+			lbcomboPensWidth.Left = 325;
+			lbcomboPensWidth.Width = 100;
 			lbcomboPensWidth.Top = 15;
 			
 			tabPage2.Controls.Add(lbcomboPensWidth);
 
 			for (int p = 0; p < Root.MaxPenCount; p++)
 			{
-				int top = p * 30 + 40;
+				int top = p * 32 + 40;
 				lbPens[p] = new Label();
-				lbPens[p].Left = 20;
+				lbPens[p].Left = 60;
 				lbPens[p].Width = 80;
 				lbPens[p].Top = top;
 
 				cbPens[p] = new CheckBox();
-				cbPens[p].Left = 100;
+				cbPens[p].Left = 30;
 				cbPens[p].Width = 15;
 				cbPens[p].Top = top - 5;
 				cbPens[p].Text = "";
@@ -114,7 +114,7 @@ namespace gInk
 
 				comboPensAlpha[p] = new ComboBox();
 				
-				comboPensAlpha[p].Left = 195;
+				comboPensAlpha[p].Left = 205;
 				comboPensAlpha[p].Top = top - 2;
 				comboPensAlpha[p].Width = 100;
 				comboPensAlpha[p].Text = (255 - Root.PenAttr[p].Transparency).ToString();
@@ -122,7 +122,7 @@ namespace gInk
 
 				comboPensWidth[p] = new ComboBox();
 				
-				comboPensWidth[p].Left = 320;
+				comboPensWidth[p].Left = 330;
 				comboPensWidth[p].Top = top - 2;
 				comboPensWidth[p].Width = 100;
 				comboPensWidth[p].Text = ((int)Root.PenAttr[p].Width).ToString();
@@ -173,6 +173,7 @@ namespace gInk
 			tabControl1.TabPages[0].Text = Root.Local.OptionsTabGeneral;
 			tabControl1.TabPages[1].Text = Root.Local.OptionsTabPens;
 			tabControl1.TabPages[2].Text = Root.Local.OptionsTabHotkeys;
+			this.lbLanguage.Text = Root.Local.OptionsGeneralLanguage;
 			this.lbCanvascursor.Text = Root.Local.OptionsGeneralCanvascursor;
 			this.lbSnapshotsavepath.Text = Root.Local.OptionsGeneralSnapshotsavepath;
 			this.cbWhiteIcon.Text = Root.Local.OptionsGeneralWhitetrayicon;

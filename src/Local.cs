@@ -34,6 +34,7 @@ namespace gInk
 		public string OptionsTabPens = "Pens";
 		public string OptionsTabHotkeys = "Hotkeys";
 
+		public string OptionsGeneralLanguage = "Language";
 		public string OptionsGeneralCanvascursor = "Canvus cursor";
 		public string OptionsGeneralCanvascursorArrow = "Arrow";
 		public string OptionsGeneralCanvascursorPentip = "Pen tip";
@@ -88,7 +89,9 @@ namespace gInk
 				{
 					sLine = srini.ReadLine();
 				}
-				while (!sLine.StartsWith("LanguageName"));
+				while (sLine != null && !sLine.StartsWith("LanguageName"));
+				if (sLine == null)
+					continue;
 				string sPara = sLine.Substring(sLine.IndexOf("=") + 1);
 				sPara = sPara.Trim();
 				sPara = sPara.Trim('\"');

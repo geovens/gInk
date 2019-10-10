@@ -56,7 +56,6 @@
 			this.comboCanvasCursor = new System.Windows.Forms.ComboBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.comboLanguage = new System.Windows.Forms.ComboBox();
 			this.cbInkVisibleEnabled = new System.Windows.Forms.CheckBox();
@@ -83,9 +82,9 @@
 			this.hiUndo = new gInk.HotkeyInputBox();
 			this.hiEraser = new gInk.HotkeyInputBox();
 			this.hiGlobal = new gInk.HotkeyInputBox();
+			this.lbLanguage = new System.Windows.Forms.Label();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.tabPage3.SuspendLayout();
 			this.SuspendLayout();
@@ -241,7 +240,7 @@
 			// tabPage1
 			// 
 			this.tabPage1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.tabPage1.Controls.Add(this.pictureBox2);
+			this.tabPage1.Controls.Add(this.lbLanguage);
 			this.tabPage1.Controls.Add(this.pictureBox1);
 			this.tabPage1.Controls.Add(this.comboLanguage);
 			this.tabPage1.Controls.Add(this.comboCanvasCursor);
@@ -266,17 +265,6 @@
 			this.tabPage1.Size = new System.Drawing.Size(484, 432);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "General";
-			// 
-			// pictureBox2
-			// 
-			this.pictureBox2.BackgroundImage = global::gInk.Properties.Resources.i18n;
-			this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-			this.pictureBox2.Location = new System.Drawing.Point(12, 128);
-			this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
-			this.pictureBox2.Name = "pictureBox2";
-			this.pictureBox2.Size = new System.Drawing.Size(22, 19);
-			this.pictureBox2.TabIndex = 8;
-			this.pictureBox2.TabStop = false;
 			// 
 			// pictureBox1
 			// 
@@ -578,6 +566,15 @@
 			this.hiGlobal.Text = "None";
 			this.hiGlobal.OnHotkeyChanged += new System.EventHandler(this.hi_OnHotkeyChanged);
 			// 
+			// lbLanguage
+			// 
+			this.lbLanguage.AutoSize = true;
+			this.lbLanguage.Location = new System.Drawing.Point(9, 130);
+			this.lbLanguage.Name = "lbLanguage";
+			this.lbLanguage.Size = new System.Drawing.Size(55, 13);
+			this.lbLanguage.TabIndex = 8;
+			this.lbLanguage.Text = "Language";
+			// 
 			// FormOptions
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -594,7 +591,6 @@
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.tabPage3.ResumeLayout(false);
 			this.tabPage3.PerformLayout();
@@ -648,6 +644,6 @@
 		private System.Windows.Forms.Label lbHkInkVisible;
 		private System.Windows.Forms.CheckBox cbAllowHotkeyInPointer;
 		private System.Windows.Forms.ComboBox comboLanguage;
-		private System.Windows.Forms.PictureBox pictureBox2;
+		private System.Windows.Forms.Label lbLanguage;
 	}
 }

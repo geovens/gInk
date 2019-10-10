@@ -31,6 +31,7 @@ OptionsTabGeneral = "通用"
 OptionsTabPens = "笔"
 OptionsTabHotkeys = "快捷键"
 
+OptionsGeneralLanguage = "语言"
 OptionsGeneralCanvascursor = "鼠标光标"
 OptionsGeneralCanvascursorArrow = "箭头"
 OptionsGeneralCanvascursorPentip = "笔尖"

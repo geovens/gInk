@@ -31,6 +31,7 @@ OptionsTabGeneral = "Všeobecné"
 OptionsTabPens = "Perá"
 OptionsTabHotkeys = "Klávesové skratky"
 
+OptionsGeneralLanguage = "Jazyk"
 OptionsGeneralCanvascursor = "Kurzor pera"
 OptionsGeneralCanvascursorArrow = "Šípka"
 OptionsGeneralCanvascursorPentip = "Kruh"
