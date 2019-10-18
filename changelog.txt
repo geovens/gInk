@@ -1,4 +1,9 @@
 
+v1.0.2 (Oct. 18, 2019)
+=================
+- Thai language.
+- Japanese language.
+
 v1.0.1 (Oct. 10, 2019)
 =================
 - Slovak language.
