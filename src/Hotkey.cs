@@ -56,6 +56,10 @@ namespace gInk
 			}
 			else if (para.Length >= 1)
 			{
+				Control = false;
+				Alt = false;
+				Shift = false;
+				Win = false;
 				Keys key = (Keys)para[para.Length - 1];
 				if (IsValidKey(key))
 				{

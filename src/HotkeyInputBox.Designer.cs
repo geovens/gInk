@@ -29,6 +29,8 @@
 		private void InitializeComponent()
 		{
 			components = new System.ComponentModel.Container();
+
+			this.ImeMode = System.Windows.Forms.ImeMode.Disable;
 		}
 
 		#endregion
