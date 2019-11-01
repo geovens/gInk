@@ -1,4 +1,8 @@
 
+v1.0.4 (Nov. 1, 2019)
+=================
+- Portuguese language.
+
 v1.0.3 (Oct. 19, 2019)
 =================
 - Fix a hotkey bug.
