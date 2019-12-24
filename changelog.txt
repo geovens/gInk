@@ -1,4 +1,9 @@
 
+v1.0.5 (Dec. 24, 2019)
+=================
+- Polish language.
+- Czech language.
+
 v1.0.4 (Nov. 1, 2019)
 =================
 - Portuguese language.
