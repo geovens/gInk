@@ -61,7 +61,7 @@ namespace gInk
 			//this.Width = virwidth;
 			//this.Height = targetbottom - this.Top;
 			this.Width = SystemInformation.VirtualScreen.Width;
-			this.Height = SystemInformation.VirtualScreen.Height;
+			this.Height = SystemInformation.VirtualScreen.Height - 2;
 
 			Bitmap InitCanvus = new Bitmap(this.Width, this.Height);
 			Canvus = InitCanvus.GetHbitmap(Color.FromArgb(0));

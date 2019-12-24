@@ -194,7 +194,7 @@ namespace gInk
 			//this.Width = virwidth;
 			//this.Height = targetbottom - this.Top;
 			this.Width = SystemInformation.VirtualScreen.Width;
-			this.Height = SystemInformation.VirtualScreen.Height;
+			this.Height = SystemInformation.VirtualScreen.Height - 2;
 			this.DoubleBuffered = true;
 
 			gpButtonsWidth = gpButtons.Width;
