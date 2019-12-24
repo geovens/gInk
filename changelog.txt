@@ -1,7 +1,8 @@
 
 v1.0.5 (Dec. 24, 2019)
 =================
-- Polish language.
+- Slightly reduce the size of canvas to unblock mouse interaction with hidden (as well as non-hidden) windows taskbar.
+- Polish language. 
 - Czech language.
 
 v1.0.4 (Nov. 1, 2019)
