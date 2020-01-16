@@ -162,9 +162,9 @@
 			// 
 			// tbSnapPath
 			// 
-			this.tbSnapPath.Location = new System.Drawing.Point(157, 197);
+			this.tbSnapPath.Location = new System.Drawing.Point(177, 197);
 			this.tbSnapPath.Name = "tbSnapPath";
-			this.tbSnapPath.Size = new System.Drawing.Size(272, 20);
+			this.tbSnapPath.Size = new System.Drawing.Size(252, 20);
 			this.tbSnapPath.TabIndex = 1;
 			this.tbSnapPath.ModifiedChanged += new System.EventHandler(this.tbSnapPath_ModifiedChanged);
 			// 
@@ -218,9 +218,9 @@
 			this.comboCanvasCursor.Items.AddRange(new object[] {
             "Arrow",
             "Pen tip"});
-			this.comboCanvasCursor.Location = new System.Drawing.Point(157, 162);
+			this.comboCanvasCursor.Location = new System.Drawing.Point(177, 162);
 			this.comboCanvasCursor.Name = "comboCanvasCursor";
-			this.comboCanvasCursor.Size = new System.Drawing.Size(272, 21);
+			this.comboCanvasCursor.Size = new System.Drawing.Size(252, 21);
 			this.comboCanvasCursor.TabIndex = 6;
 			this.comboCanvasCursor.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
 			// 
@@ -234,7 +234,7 @@
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.Padding = new System.Drawing.Point(0, 0);
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(492, 458);
+			this.tabControl1.Size = new System.Drawing.Size(552, 458);
 			this.tabControl1.TabIndex = 7;
 			// 
 			// tabPage1
@@ -280,9 +280,9 @@
 			// 
 			this.comboLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboLanguage.FormattingEnabled = true;
-			this.comboLanguage.Location = new System.Drawing.Point(157, 127);
+			this.comboLanguage.Location = new System.Drawing.Point(177, 127);
 			this.comboLanguage.Name = "comboLanguage";
-			this.comboLanguage.Size = new System.Drawing.Size(272, 21);
+			this.comboLanguage.Size = new System.Drawing.Size(252, 21);
 			this.comboLanguage.TabIndex = 6;
 			this.comboLanguage.SelectedIndexChanged += new System.EventHandler(this.comboLanguage_SelectedIndexChanged);
 			// 
