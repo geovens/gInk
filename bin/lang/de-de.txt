@@ -1,5 +1,5 @@
-LanguageName = "German"
-
+LanguageName = "Deutsch"
+ 
 ButtonNamePen0 = "Stift 0"
 ButtonNamePen1 = "Stift 1"
 ButtonNamePen2 = "Stift 2"
@@ -38,7 +38,7 @@ OptionsGeneralCanvascursorPentip = "Stiftspitze"
 OptionsGeneralSnapshotsavepath = "Speicherort für Screenshots"
 OptionsGeneralWhitetrayicon = "Weißes Taskleistenicon verwenden"
 OptionsGeneralAllowdragging = "Verschieben der Werkzeugleiste erlauben"
-OptionsGeneralNotePenwidth = "Beachte: Stiftbreitenfeld überschreibt alle individuellen Stiftbreiteneinstellungen"
+OptionsGeneralNotePenwidth = "Beachte: Stiftbreitenanzeige überschreibt alle individuellen Stiftbreiteneinstellungen"
 
 OptionsPensShow = "Zeigen"
 OptionsPensColor = "Farbe"
@@ -50,7 +50,7 @@ OptionsPensThin = "Dünn"
 OptionsPensNormal = "Normal"
 OptionsPensThick = "Dick"
 
-OptionsHotkeysglobal = "Zentrale Tastenkombination (Zeichnen starten, Wechseln zwischen Mauszeiger und Zeichnen)"
+OptionsHotkeysglobal = "Zentrale Tastenkombinationen (Zeichnen starten, Wechseln zwischen Mauszeiger und Zeichnen)"
 OptionsHotkeysEnableinpointer = "Im Mauszeigermodus folgende Tastenkombinationen erlauben"
 
 NotificationSnapshot = "Screenshot gespeichert. Hier klicken um auszuwählen."
