@@ -1,4 +1,9 @@
 
+v1.0.6 (Feb. 2, 2020)
+=================
+- German language.
+- Traditional Chinese language.
+
 v1.0.5 (Dec. 24, 2019)
 =================
 - Slightly reduce the size of canvas to unblock mouse interaction with hidden (as well as non-hidden) windows taskbar.
