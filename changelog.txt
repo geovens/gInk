@@ -1,4 +1,9 @@
 
+v1.0.7 (Feb. 8, 2020)
+=================
+- French language.
+- Italian language.
+
 v1.0.6 (Feb. 2, 2020)
 =================
 - German language.
