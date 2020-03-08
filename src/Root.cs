@@ -56,7 +56,7 @@ namespace gInk
 		public bool PointerEnabled = true;
 		public bool PenWidthEnabled = false;
 		public bool SnapEnabled = true;
-		public bool CloseOnSnap = true;
+		public string CloseOnSnap = "blankonly";
 		public bool UndoEnabled = true;
 		public bool ClearEnabled = true;
 		public bool PanEnabled = true;
@@ -597,7 +597,11 @@ namespace gInk
 							break;
 						case "CLOSE_ON_SNAP":
 							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
-								CloseOnSnap = false;
+								CloseOnSnap = "false";
+							else if (sPara.ToUpper() == "TRUE" || sPara == "1" || sPara.ToUpper() == "ON")
+								CloseOnSnap = "true";
+							else if (sPara.ToUpper() == "BLANKONLY")
+								CloseOnSnap = "blankonly";
 							break;
 						case "UNDO_ICON":
 							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
@@ -787,10 +791,12 @@ namespace gInk
 								sPara = "False";
 							break;
 						case "CLOSE_ON_SNAP":
-							if (CloseOnSnap)
+							if (CloseOnSnap == "true")
 								sPara = "True";
-							else
+							else if (CloseOnSnap == "false")
 								sPara = "False";
+							else
+								sPara = "BlankOnly";
 							break;
 						case "UNDO_ICON":
 							if (UndoEnabled)

@@ -473,8 +473,15 @@ namespace gInk
 				UpdateFormDisplay(true);
 				SnapShot(Root.SnappingRect);
 				Root.UponTakingSnap = false;
-				if ((Root.FormCollection.IC.Ink.Strokes.Count == 0) || Root.CloseOnSnap)
+				if (Root.CloseOnSnap == "true")
+				{
 					Root.FormCollection.RetreatAndExit();
+				}
+				else if (Root.CloseOnSnap == "blankonly")
+				{
+					if ((Root.FormCollection.IC.Ink.Strokes.Count == 0))
+						Root.FormCollection.RetreatAndExit();
+				}
 			}
 
 			else if (Root.Snapping == 2)
