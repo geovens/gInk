@@ -118,6 +118,7 @@ namespace gInk
 		public int LastPen = 1;
 		public int GlobalPenWidth = 80;
 		public bool gpPenWidthVisible = false;
+		public string SnapshotFileFullPath = ""; // used to record the last snapshot file name, to select it when the balloon is clicked
 
 		public Root()
 		{
@@ -157,9 +158,11 @@ namespace gInk
 
 		private void TrayIcon_BalloonTipClicked(object sender, EventArgs e)
 		{
-			string snapbasepath = SnapshotBasePath;
-			snapbasepath = Environment.ExpandEnvironmentVariables(snapbasepath);
-			System.Diagnostics.Process.Start(snapbasepath);
+			//string snapbasepath = SnapshotBasePath;
+			//snapbasepath = Environment.ExpandEnvironmentVariables(snapbasepath);
+			//System.Diagnostics.Process.Start(snapbasepath);
+			string fullpath = System.IO.Path.GetFullPath(SnapshotFileFullPath);
+			System.Diagnostics.Process.Start("explorer.exe", string.Format("/select,\"{0}\"", fullpath));
 		}
 
 		private void TrayIcon_Click(object sender, MouseEventArgs e)

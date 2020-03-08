@@ -333,8 +333,10 @@ namespace gInk
 				Clipboard.SetImage(tempbmp);
 				DateTime now = DateTime.Now;
 				string nowstr = now.Year.ToString() + "-" + now.Month.ToString("D2") + "-" + now.Day.ToString("D2") + " " + now.Hour.ToString("D2") + "-" + now.Minute.ToString("D2") + "-" + now.Second.ToString("D2");
+				string savefilename = nowstr + ".png";
+				Root.SnapshotFileFullPath = snapbasepath + savefilename;
 
-				tempbmp.Save(snapbasepath + nowstr + ".png", System.Drawing.Imaging.ImageFormat.Png);
+				tempbmp.Save(Root.SnapshotFileFullPath, System.Drawing.Imaging.ImageFormat.Png);
 
 				tempbmp.Dispose();
 				DeleteObject(hBmp);
