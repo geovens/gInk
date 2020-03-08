@@ -56,7 +56,6 @@ namespace gInk
 		public bool PointerEnabled = true;
 		public bool PenWidthEnabled = false;
 		public bool SnapEnabled = true;
-		public string CloseOnSnap = "blankonly";
 		public bool UndoEnabled = true;
 		public bool ClearEnabled = true;
 		public bool PanEnabled = true;
@@ -70,6 +69,11 @@ namespace gInk
 		public bool AllowHotkeyInPointerMode = true;
 		public int gpButtonsLeft, gpButtonsTop;
 
+		// advanced options
+		public string CloseOnSnap = "blankonly";
+		public bool AlwaysHideToolbar = false;
+
+		// hotkey options
 		public Hotkey Hotkey_Global = new Hotkey();
 		public Hotkey[] Hotkey_Pens = new Hotkey[10];
 		public Hotkey Hotkey_Eraser = new Hotkey();
@@ -603,6 +607,10 @@ namespace gInk
 							else if (sPara.ToUpper() == "BLANKONLY")
 								CloseOnSnap = "blankonly";
 							break;
+						case "ALWAYS_HIDE_TOOLBAR":
+							if (sPara.ToUpper() == "TRUE" || sPara == "1" || sPara.ToUpper() == "ON")
+								AlwaysHideToolbar = true;
+							break;
 						case "UNDO_ICON":
 							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
 								UndoEnabled = false;
@@ -797,6 +805,12 @@ namespace gInk
 								sPara = "False";
 							else
 								sPara = "BlankOnly";
+							break;
+						case "ALWAYS_HIDE_TOOLBAR":
+							if (AlwaysHideToolbar)
+								sPara = "True";
+							else
+								sPara = "False";
 							break;
 						case "UNDO_ICON":
 							if (UndoEnabled)

@@ -142,6 +142,9 @@ namespace gInk
 
 		public void DrawButtons(bool redrawbuttons, bool exiting = false)
 		{
+			if (Root.AlwaysHideToolbar)
+				return;
+
 			int top, height, left, width;
 			int fullwidth;
 			int gpbl;
