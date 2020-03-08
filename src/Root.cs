@@ -245,7 +245,6 @@ namespace gInk
 
 		public void ShowBalloonSnapshot()
 		{
-			Console.WriteLine(SnapshotBasePath);
 			trayIcon.ShowBalloonTip(3000);
 		}
 
