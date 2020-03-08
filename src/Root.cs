@@ -97,6 +97,7 @@ namespace gInk
 		public bool UponBalloonSnap = false;
 		public bool UponSubPanelUpdate = false;
 		public bool UponAllDrawingUpdate = false;
+		public bool MouseMovedUnderSnapshotDragging = false; // used to pause re-drawing when mouse is not moving during dragging to take a screenshot
 
 		public bool PanMode = false;
 		public bool InkVisible = true;

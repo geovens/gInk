@@ -463,6 +463,9 @@ namespace gInk
 				int width = Math.Abs(Root.SnappingX - e.X);
 				int height = Math.Abs(Root.SnappingY - e.Y);
 				Root.SnappingRect = new Rectangle(left, top, width, height);
+
+				if (LasteXY != currentxy)
+					Root.MouseMovedUnderSnapshotDragging = true;
 			}
 			else if (Root.PanMode && Root.FingerInAction)
 			{

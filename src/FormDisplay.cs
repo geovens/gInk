@@ -489,13 +489,15 @@ namespace gInk
 
 			else if (Root.Snapping == 2)
 			{
-
-				ClearCanvus();
-				DrawStrokes();
-				DrawButtons(false);
-				DrawSnapping(Root.SnappingRect);
-				UpdateFormDisplay(true);
-
+				if (Root.MouseMovedUnderSnapshotDragging)
+				{
+					ClearCanvus();
+					DrawStrokes();
+					DrawButtons(false);
+					DrawSnapping(Root.SnappingRect);
+					UpdateFormDisplay(true);
+					Root.MouseMovedUnderSnapshotDragging = false;
+				}
 			}
 
 			else if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false && Root.InkVisible)
