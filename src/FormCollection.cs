@@ -568,16 +568,32 @@ namespace gInk
 
 		public void EnterEraserMode(bool enter)
 		{
-			if (enter)
+			int exceptiontick = 0;
+			bool exc;
+			do
 			{
-				IC.EditingMode = InkOverlayEditingMode.Delete;
-				Root.EraserMode = true;
+				exceptiontick++;
+				exc = false;
+				try
+				{
+					if (enter)
+					{
+						IC.EditingMode = InkOverlayEditingMode.Delete;
+						Root.EraserMode = true;
+					}
+					else
+					{
+						IC.EditingMode = InkOverlayEditingMode.Ink;
+						Root.EraserMode = false;
+					}
+				}
+				catch
+				{
+					Thread.Sleep(50);
+					exc = true;
+				}
 			}
-			else
-			{
-				IC.EditingMode = InkOverlayEditingMode.Ink;
-				Root.EraserMode = false;
-			}
+			while (exc && exceptiontick < 3);
 		}
 
 		public void SelectPen(int pen)
