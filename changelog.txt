@@ -1,4 +1,8 @@
 
+v1.0.9 (Mar. 26, 2020)
+=================
+- Hot fix a rare crash which occurs at startup due to path problem. 
+
 v1.0.8 (Mar. 25, 2020)
 =================
 - Jump to the snapshot file when clicking the Windows tip balloon after taking a snapshot.
