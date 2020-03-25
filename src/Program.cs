@@ -101,11 +101,22 @@ namespace gInk
 
 		private static void WriteErrorLog(string errormsg)
 		{
-			FileStream fs = new FileStream("crash.txt", FileMode.Create);
-			StreamWriter sw = new StreamWriter(fs);
-			sw.Write(errormsg);
-			sw.Close();
-			fs.Close();
+			try
+			{
+				FileStream fs = new FileStream("crash.txt", FileMode.Create);
+				StreamWriter sw = new StreamWriter(fs);
+				sw.Write(errormsg);
+				sw.Close();
+				fs.Close();
+			}
+			catch
+			{
+				FileStream fs = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "crash.txt", FileMode.Create);
+				StreamWriter sw = new StreamWriter(fs);
+				sw.Write(errormsg);
+				sw.Close();
+				fs.Close();
+			}
 		}
 	}
 }

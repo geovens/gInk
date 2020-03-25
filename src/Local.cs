@@ -87,7 +87,7 @@ namespace gInk
 			{
 				string filename = file.Name;
 
-				FileStream fini = new FileStream("./lang/" + filename, FileMode.Open);
+				FileStream fini = new FileStream(d.FullName + filename, FileMode.Open);
 				StreamReader srini = new StreamReader(fini);
 				string sLine;
 				do
