@@ -85,9 +85,7 @@ namespace gInk
 			FileInfo[] Files = d.GetFiles("*.txt");
 			foreach (FileInfo file in Files)
 			{
-				string filename = file.Name;
-
-				FileStream fini = new FileStream(d.FullName + filename, FileMode.Open);
+				FileStream fini = new FileStream(file.FullName, FileMode.Open);
 				StreamReader srini = new StreamReader(fini);
 				string sLine;
 				do
@@ -102,7 +100,7 @@ namespace gInk
 				sPara = sPara.Trim('\"');
 				string languagename = sPara;
 
-				Languages.Add(filename.Substring(0, filename.Length - 4), sPara);
+				Languages.Add(file.Name.Substring(0, file.Name.Length - 4), sPara);
 
 				fini.Close();
 			}
