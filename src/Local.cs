@@ -140,9 +140,9 @@ namespace gInk
 			string filename = "./lang/" + loname + ".txt";
 
 			if (!File.Exists(filename))
-			{
+				filename = AppDomain.CurrentDomain.BaseDirectory + "lang/" + loname + ".txt";
+			if (!File.Exists(filename))
 				return;
-			}
 
 			FileStream fini = new FileStream(filename, FileMode.Open);
 			StreamReader srini = new StreamReader(fini);

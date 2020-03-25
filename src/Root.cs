@@ -461,9 +461,10 @@ namespace gInk
 		public void ReadOptions(string file)
 		{
 			if (!File.Exists(file))
-			{
+				file = AppDomain.CurrentDomain.BaseDirectory + file;
+			if (!File.Exists(file))
 				return;
-			}
+
 
 			FileStream fini = new FileStream(file, FileMode.Open);
 			StreamReader srini = new StreamReader(fini);
@@ -661,9 +662,9 @@ namespace gInk
 		public void SaveOptions(string file)
 		{
 			if (!File.Exists(file))
-			{
+				file = AppDomain.CurrentDomain.BaseDirectory + file;
+			if (!File.Exists(file))
 				return;
-			}
 
 			FileStream fini = new FileStream(file, FileMode.Open);
 			StreamReader srini = new StreamReader(fini);
