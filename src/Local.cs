@@ -77,6 +77,9 @@ namespace gInk
 		public void LoadLocalList()
 		{
 			DirectoryInfo d = new DirectoryInfo("./lang/");
+			if (!d.Exists)
+				return;
+
 			FileInfo[] Files = d.GetFiles("*.txt");
 			foreach (FileInfo file in Files)
 			{
