@@ -78,6 +78,8 @@ namespace gInk
 		{
 			DirectoryInfo d = new DirectoryInfo("./lang/");
 			if (!d.Exists)
+				d = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "lang");
+			if (!d.Exists)
 				return;
 
 			FileInfo[] Files = d.GetFiles("*.txt");
