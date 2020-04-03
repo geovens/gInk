@@ -64,25 +64,25 @@ namespace gInk
 			lbNote.ForeColor = Color.Black;
 
 			lbcbPens = new Label();
-			lbcbPens.Left = 25;
+			lbcbPens.Left = (int)(this.Width / 500.0 * 25);
 			lbcbPens.Width = 100;
 			lbcbPens.Top = 15;
 			
 			tabPage2.Controls.Add(lbcbPens);
 			lbpboxPens = new Label();
-			lbpboxPens.Left = 140;
+			lbpboxPens.Left = (int)(this.Width / 500.0 * 140);
 			lbpboxPens.Width = 60;
 			lbpboxPens.Top = 15;
 			
 			tabPage2.Controls.Add(lbpboxPens);
 			lbcomboPensAlpha = new Label();
-			lbcomboPensAlpha.Left = 200;
+			lbcomboPensAlpha.Left = (int)(this.Width / 500.0 * 200);
 			lbcomboPensAlpha.Width = 100;
 			lbcomboPensAlpha.Top = 15;
 			
 			tabPage2.Controls.Add(lbcomboPensAlpha);
 			lbcomboPensWidth = new Label();
-			lbcomboPensWidth.Left = 325;
+			lbcomboPensWidth.Left = (int)(this.Width / 500.0 * 325);
 			lbcomboPensWidth.Width = 100;
 			lbcomboPensWidth.Top = 15;
 			
@@ -90,22 +90,22 @@ namespace gInk
 
 			for (int p = 0; p < Root.MaxPenCount; p++)
 			{
-				int top = p * 32 + 40;
+				int top = p * (int)(this.Height * 0.075) + (int)(this.Height * 0.09);
 				lbPens[p] = new Label();
-				lbPens[p].Left = 60;
+				lbPens[p].Left = (int)(this.Width / 500.0 * 60);
 				lbPens[p].Width = 80;
 				lbPens[p].Top = top;
 
 				cbPens[p] = new CheckBox();
-				cbPens[p].Left = 30;
-				cbPens[p].Width = 15;
+				cbPens[p].Left = (int)(this.Width / 500.0 * 30);
+				cbPens[p].Width = 25;
 				cbPens[p].Top = top - 5;
 				cbPens[p].Text = "";
 				cbPens[p].Checked = Root.PenEnabled[p];
 				cbPens[p].CheckedChanged += cbPens_CheckedChanged;
 
 				pboxPens[p] = new PictureBox();
-				pboxPens[p].Left = 145;
+				pboxPens[p].Left = (int)(this.Width / 500.0 * 145);
 				pboxPens[p].Top = top;
 				pboxPens[p].Width = 15;
 				pboxPens[p].Height = 15;
@@ -114,7 +114,7 @@ namespace gInk
 
 				comboPensAlpha[p] = new ComboBox();
 				
-				comboPensAlpha[p].Left = 205;
+				comboPensAlpha[p].Left = (int)(this.Width / 500.0 * 205);
 				comboPensAlpha[p].Top = top - 2;
 				comboPensAlpha[p].Width = 100;
 				comboPensAlpha[p].Text = (255 - Root.PenAttr[p].Transparency).ToString();
@@ -122,7 +122,7 @@ namespace gInk
 
 				comboPensWidth[p] = new ComboBox();
 				
-				comboPensWidth[p].Left = 330;
+				comboPensWidth[p].Left = (int)(this.Width / 500.0 * 330);
 				comboPensWidth[p].Top = top - 2;
 				comboPensWidth[p].Width = 100;
 				comboPensWidth[p].Text = ((int)Root.PenAttr[p].Width).ToString();
@@ -135,9 +135,11 @@ namespace gInk
 				tabPage2.Controls.Add(comboPensWidth[p]);
 			}
 
+			cbAllowHotkeyInPointer.Top = (int)(this.Height * 0.18);
+
 			for (int p = 0; p < Root.MaxPenCount; p++)
 			{
-				int top = p * 25 + 120;
+				int top = p * (int)(this.Height * 0.055) + (int)(this.Height * 0.24);
 				lbHotkeyPens[p] = new Label();
 				lbHotkeyPens[p].Left = 20;
 				lbHotkeyPens[p].Width = 80;

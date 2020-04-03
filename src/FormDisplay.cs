@@ -92,8 +92,9 @@ namespace gInk
 
 			//this.DoubleBuffered = true;
 
-			gpButtonsImage = new Bitmap(2400, 53);
-			gpPenWidthImage = new Bitmap(200, 53);
+			int gpheight = (int)(Screen.PrimaryScreen.Bounds.Height * 0.06);
+			gpButtonsImage = new Bitmap(2400, gpheight);
+			gpPenWidthImage = new Bitmap(200, gpheight);
 			TransparentBrush = new SolidBrush(Color.Transparent);
 			SemiTransparentBrush = new SolidBrush(Color.FromArgb(120, 255, 255, 255));
 

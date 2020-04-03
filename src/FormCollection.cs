@@ -56,14 +56,34 @@ namespace gInk
 			PrimaryLeft = Screen.PrimaryScreen.Bounds.Left - SystemInformation.VirtualScreen.Left;
 			PrimaryTop = Screen.PrimaryScreen.Bounds.Top - SystemInformation.VirtualScreen.Top;
 
+			gpButtons.Height = (int)(Screen.PrimaryScreen.Bounds.Height * 0.06);
+			btClear.Height = (int)(gpButtons.Height * 0.85);
+			btClear.Width = btClear.Height;
+			btDock.Height = (int)(gpButtons.Height * 0.85);
+			btDock.Width = btDock.Height / 2;
+			btEraser.Height = (int)(gpButtons.Height * 0.85);
+			btEraser.Width = btEraser.Height;
+			btInkVisible.Height = (int)(gpButtons.Height * 0.85);
+			btInkVisible.Width = btInkVisible.Height;
+			btPan.Height = (int)(gpButtons.Height * 0.85);
+			btPan.Width = btPan.Height;
+			btPointer.Height = (int)(gpButtons.Height * 0.85);
+			btPointer.Width = btPointer.Height;
+			btSnap.Height = (int)(gpButtons.Height * 0.85);
+			btSnap.Width = btSnap.Height;
+			btStop.Height = (int)(gpButtons.Height * 0.85);
+			btStop.Width = btStop.Height;
+			btUndo.Height = (int)(gpButtons.Height * 0.85);
+			btUndo.Width = btUndo.Height;
+
 			btPen = new Button[Root.MaxPenCount];
 
 			int cumulatedleft = 40;
 			for (int b = 0; b < Root.MaxPenCount; b++)
 			{
 				btPen[b] = new Button();
-				btPen[b].Width = 46;
-				btPen[b].Height = 46;
+				btPen[b].Width = (int)(gpButtons.Height * 0.85);
+				btPen[b].Height = (int)(gpButtons.Height * 0.85);
 				btPen[b].Top = 5;
 				btPen[b].FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
 				btPen[b].FlatAppearance.BorderSize = 3;
@@ -89,7 +109,7 @@ namespace gInk
 				{
 					btPen[b].Visible = true;
 					btPen[b].Left = cumulatedleft;
-					cumulatedleft += 50;
+					cumulatedleft += (int)(btPen[b].Width * 1.1);
 				}
 				else
 				{
@@ -101,7 +121,7 @@ namespace gInk
 			{
 				btEraser.Visible = true;
 				btEraser.Left = cumulatedleft;
-				cumulatedleft += 50;
+				cumulatedleft += (int)(btEraser.Width * 1.1);
 			}
 			else
 			{
@@ -111,7 +131,7 @@ namespace gInk
 			{
 				btPan.Visible = true;
 				btPan.Left = cumulatedleft;
-				cumulatedleft += 50;
+				cumulatedleft += (int)(btPan.Width * 1.1);
 			}
 			else
 			{
@@ -121,7 +141,7 @@ namespace gInk
 			{
 				btPointer.Visible = true;
 				btPointer.Left = cumulatedleft;
-				cumulatedleft += 50;
+				cumulatedleft += (int)(btPointer.Width * 1.1);
 			}
 			else
 			{
@@ -132,7 +152,7 @@ namespace gInk
 			{
 				btPenWidth.Visible = true;
 				btPenWidth.Left = cumulatedleft;
-				cumulatedleft += 50;
+				cumulatedleft += (int)(btPenWidth.Width * 1.1);
 			}
 			else
 			{
@@ -142,7 +162,7 @@ namespace gInk
 			{
 				btInkVisible.Visible = true;
 				btInkVisible.Left = cumulatedleft;
-				cumulatedleft += 50;
+				cumulatedleft += (int)(btInkVisible.Width * 1.1);
 			}
 			else
 			{
@@ -152,7 +172,7 @@ namespace gInk
 			{
 				btSnap.Visible = true;
 				btSnap.Left = cumulatedleft;
-				cumulatedleft += 50;
+				cumulatedleft += (int)(btSnap.Width * 1.1);
 			}
 			else
 			{
@@ -162,7 +182,7 @@ namespace gInk
 			{
 				btUndo.Visible = true;
 				btUndo.Left = cumulatedleft;
-				cumulatedleft += 50;
+				cumulatedleft += (int)(btUndo.Width * 1.1);
 			}
 			else
 			{
@@ -172,7 +192,7 @@ namespace gInk
 			{
 				btClear.Visible = true;
 				btClear.Left = cumulatedleft;
-				cumulatedleft += 50;
+				cumulatedleft += (int)(btClear.Width * 1.1);
 			}
 			else
 			{
