@@ -1,7 +1,7 @@
 
-v1.0.9 (Mar. 26, 2020)
+v1.0.9 (Apr. 3, 2020)
 =================
-- Better handling of UI layout for multiple display of unmatched DPI.
+- Better handling of UI layout for multiple displays of unmatched DPI.
 - Fix a rare crash which occurs at startup due to path problem. 
 
 v1.0.8 (Mar. 25, 2020)
