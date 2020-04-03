@@ -92,7 +92,7 @@ namespace gInk
 
 			//this.DoubleBuffered = true;
 
-			int gpheight = (int)(Screen.PrimaryScreen.Bounds.Height * 0.06);
+			int gpheight = (int)(Screen.PrimaryScreen.Bounds.Height * Root.ToolbarHeight);
 			gpButtonsImage = new Bitmap(2400, gpheight);
 			gpPenWidthImage = new Bitmap(200, gpheight);
 			TransparentBrush = new SolidBrush(Color.Transparent);

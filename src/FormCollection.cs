@@ -56,7 +56,7 @@ namespace gInk
 			PrimaryLeft = Screen.PrimaryScreen.Bounds.Left - SystemInformation.VirtualScreen.Left;
 			PrimaryTop = Screen.PrimaryScreen.Bounds.Top - SystemInformation.VirtualScreen.Top;
 
-			gpButtons.Height = (int)(Screen.PrimaryScreen.Bounds.Height * 0.06);
+			gpButtons.Height = (int)(Screen.PrimaryScreen.Bounds.Height * Root.ToolbarHeight);
 			btClear.Height = (int)(gpButtons.Height * 0.85);
 			btClear.Width = btClear.Height;
 			btDock.Height = (int)(gpButtons.Height * 0.85);

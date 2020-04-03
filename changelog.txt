@@ -1,7 +1,8 @@
 
 v1.0.9 (Mar. 26, 2020)
 =================
-- Hot fix a rare crash which occurs at startup due to path problem. 
+- Better handling of UI layout for multiple display of unmatched DPI.
+- Fix a rare crash which occurs at startup due to path problem. 
 
 v1.0.8 (Mar. 25, 2020)
 =================

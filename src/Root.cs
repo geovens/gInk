@@ -72,6 +72,7 @@ namespace gInk
 		// advanced options
 		public string CloseOnSnap = "blankonly";
 		public bool AlwaysHideToolbar = false;
+		public float ToolbarHeight = 0.06f;
 
 		// hotkey options
 		public Hotkey Hotkey_Global = new Hotkey();
@@ -541,6 +542,7 @@ namespace gInk
 					}
 
 					int tempi = 0;
+					float tempf = 0;
 					switch (sName)
 					{
 						case "LANGUAGE_FILE":
@@ -646,6 +648,10 @@ namespace gInk
 						case "TOOLBAR_TOP":
 							if (int.TryParse(sPara, out tempi))
 								gpButtonsTop = tempi;
+							break;
+						case "TOOLBAR_HEIGHT":
+							if (float.TryParse(sPara, out tempf))
+								ToolbarHeight = tempf;
 							break;
 						case "CANVAS_CURSOR":
 							if (sPara == "0")
@@ -857,6 +863,9 @@ namespace gInk
 							break;
 						case "TOOLBAR_TOP":
 							sPara = gpButtonsTop.ToString();
+							break;
+						case "TOOLBAR_HEIGHT":
+							sPara = ToolbarHeight.ToString();
 							break;
 						case "CANVAS_CURSOR":
 							sPara = CanvasCursor.ToString();
