@@ -59,32 +59,41 @@ namespace gInk
 			gpButtons.Height = (int)(Screen.PrimaryScreen.Bounds.Height * Root.ToolbarHeight);
 			btClear.Height = (int)(gpButtons.Height * 0.85);
 			btClear.Width = btClear.Height;
+			btClear.Top = (int)(gpButtons.Height * 0.08);
 			btDock.Height = (int)(gpButtons.Height * 0.85);
 			btDock.Width = btDock.Height / 2;
+			btDock.Top = (int)(gpButtons.Height * 0.08);
 			btEraser.Height = (int)(gpButtons.Height * 0.85);
 			btEraser.Width = btEraser.Height;
+			btEraser.Top = (int)(gpButtons.Height * 0.08);
 			btInkVisible.Height = (int)(gpButtons.Height * 0.85);
 			btInkVisible.Width = btInkVisible.Height;
+			btInkVisible.Top = (int)(gpButtons.Height * 0.08);
 			btPan.Height = (int)(gpButtons.Height * 0.85);
 			btPan.Width = btPan.Height;
+			btPan.Top = (int)(gpButtons.Height * 0.08);
 			btPointer.Height = (int)(gpButtons.Height * 0.85);
 			btPointer.Width = btPointer.Height;
+			btPointer.Top = (int)(gpButtons.Height * 0.08);
 			btSnap.Height = (int)(gpButtons.Height * 0.85);
 			btSnap.Width = btSnap.Height;
+			btSnap.Top = (int)(gpButtons.Height * 0.08);
 			btStop.Height = (int)(gpButtons.Height * 0.85);
 			btStop.Width = btStop.Height;
+			btStop.Top = (int)(gpButtons.Height * 0.08);
 			btUndo.Height = (int)(gpButtons.Height * 0.85);
 			btUndo.Width = btUndo.Height;
+			btUndo.Top = (int)(gpButtons.Height * 0.08);
 
 			btPen = new Button[Root.MaxPenCount];
 
-			int cumulatedleft = 40;
+			int cumulatedleft = (int)(btDock.Width * 2.5);
 			for (int b = 0; b < Root.MaxPenCount; b++)
 			{
 				btPen[b] = new Button();
 				btPen[b].Width = (int)(gpButtons.Height * 0.85);
 				btPen[b].Height = (int)(gpButtons.Height * 0.85);
-				btPen[b].Top = 5;
+				btPen[b].Top = (int)(gpButtons.Height * 0.08);
 				btPen[b].FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
 				btPen[b].FlatAppearance.BorderSize = 3;
 				btPen[b].FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(250, 50, 50);
@@ -116,7 +125,7 @@ namespace gInk
 					btPen[b].Visible = false;
 				}
 			}
-			cumulatedleft += 40;
+			cumulatedleft += (int)(btDock.Width * 1.5);
 			if (Root.EraserEnabled)
 			{
 				btEraser.Visible = true;
@@ -147,7 +156,7 @@ namespace gInk
 			{
 				btPointer.Visible = false;
 			}
-			cumulatedleft += 40;
+			cumulatedleft += (int)(btDock.Width * 1.5);
 			if (Root.PenWidthEnabled)
 			{
 				btPenWidth.Visible = true;
@@ -198,8 +207,9 @@ namespace gInk
 			{
 				btClear.Visible = false;
 			}
-			btStop.Left = cumulatedleft + 40;
-			gpButtons.Width = btStop.Right + 20;
+			cumulatedleft += (int)(btDock.Width * 1.5);
+			btStop.Left = cumulatedleft;
+			gpButtons.Width = btStop.Right + btDock.Width;
 			
 
 			this.Left = SystemInformation.VirtualScreen.Left;
