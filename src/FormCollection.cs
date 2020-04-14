@@ -643,7 +643,15 @@ namespace gInk
 				Root.UnPointer();
 				Root.PanMode = true;
 
-				IC.SetWindowInputRectangle(new Rectangle(0, 0, 1, 1));
+				try
+				{
+					IC.SetWindowInputRectangle(new Rectangle(0, 0, 1, 1));
+				}
+				catch
+				{
+					Thread.Sleep(1);
+					IC.SetWindowInputRectangle(new Rectangle(0, 0, 1, 1));
+				}
 			}
 			else if (pen == -2)
 			{
@@ -678,7 +686,15 @@ namespace gInk
 				else if (Root.CanvasCursor == 1)
 					SetPenTipCursor();
 
-				IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+				try
+				{
+					IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+				}
+				catch
+				{
+					Thread.Sleep(1);
+					IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+				}
 			}
 			else if (pen >= 0)
 			{
@@ -708,7 +724,15 @@ namespace gInk
 				else if (Root.CanvasCursor == 1)
 					SetPenTipCursor();
 
-				IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+				try
+				{
+					IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+				}
+				catch
+				{
+					Thread.Sleep(1);
+					IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+				}
 			}
 			Root.CurrentPen = pen;
 			if (Root.gpPenWidthVisible)
@@ -804,7 +828,15 @@ namespace gInk
 
 			Root.gpPenWidthVisible = false;
 
-			IC.SetWindowInputRectangle(new Rectangle(0, 0, 1, 1));
+			try
+			{
+				IC.SetWindowInputRectangle(new Rectangle(0, 0, 1, 1));
+			}
+			catch
+			{
+				Thread.Sleep(1);
+				IC.SetWindowInputRectangle(new Rectangle(0, 0, 1, 1));
+			}
 			Root.SnappingX = -1;
 			Root.SnappingY = -1;
 			Root.SnappingRect = new Rectangle(0, 0, 0, 0);
@@ -815,7 +847,15 @@ namespace gInk
 
 		public void ExitSnapping()
 		{
-			IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+			try
+			{
+				IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+			}
+			catch
+			{
+				Thread.Sleep(1);
+				IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+			}
 			Root.SnappingX = -1;
 			Root.SnappingY = -1;
 			Root.Snapping = -60;
