@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -276,8 +276,9 @@ namespace gInk
 			IC.DefaultDrawingAttributes.Width = 80;
 			IC.DefaultDrawingAttributes.Transparency = 30;
 			IC.DefaultDrawingAttributes.AntiAliased = true;
+            IC.DefaultDrawingAttributes.FitToCurve = true;
 
-			cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
+            cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
 			//IC.Cursor = cursorred;
 			IC.Enabled = true;
 
@@ -706,7 +707,8 @@ namespace gInk
 				{
 					IC.DefaultDrawingAttributes.Width = Root.GlobalPenWidth;
 				}
-				for (int b = 0; b < Root.MaxPenCount; b++)
+                IC.DefaultDrawingAttributes.FitToCurve = true;
+                for (int b = 0; b < Root.MaxPenCount; b++)
 					btPen[b].Image = image_pen[b];
 				btPen[pen].Image = image_pen_act[pen];
 				btEraser.Image = image_eraser;
