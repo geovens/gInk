@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
@@ -25,21 +25,10 @@ namespace gInk
 			if (m.Msg == 0x0312)
 			{
 				//Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);                  // The key of the hotkey that was pressed.
-				//int modifier = (int)m.LParam & 0xFFFF;       // The modifier of the hotkey that was pressed.
-				//int id = m.WParam.ToInt32();                                        // The id of the hotkey that was pressed.
+                //int modifier = (int)m.LParam & 0xFFFF;       // The modifier of the hotkey that was pressed.
+                //int id = m.WParam.ToInt32();                                        // The id of the hotkey that was pressed.
 
-				if (Root.FormCollection == null && Root.FormDisplay == null)
-					Root.StartInk();
-				else if (Root.PointerMode)
-				{
-					//Root.UnPointer();
-					Root.SelectPen(Root.LastPen);
-				}
-				else
-				{
-					//Root.Pointer();
-					Root.SelectPen(-2);
-				}
+                Root.callshortcut();
 			}
 			return false;
 		}
@@ -121,6 +110,9 @@ namespace gInk
 		public bool gpPenWidthVisible = false;
 		public string SnapshotFileFullPath = ""; // used to record the last snapshot file name, to select it when the balloon is clicked
 
+        public int FormTop = -1, FormLeft = -1, FormWidth = 48, FormOpacity = 50;
+        public CallForm callForm = null;
+
 		public Root()
 		{
 			for (int p = 0; p < MaxPenCount; p++)
@@ -157,7 +149,27 @@ namespace gInk
 			FormDisplay = null;
 		}
 
-		private void TrayIcon_BalloonTipClicked(object sender, EventArgs e)
+        public void callshortcut()
+        {
+            if (FormCollection == null && FormDisplay == null)
+            {
+                if (callForm != null) callForm.Hide();
+                StartInk();
+            }
+            else if (PointerMode)
+            {
+                //Root.UnPointer();
+                SelectPen(LastPen);
+            }
+            else
+            {
+                //Root.Pointer();
+                SelectPen(-2);
+            }
+
+        }
+
+        private void TrayIcon_BalloonTipClicked(object sender, EventArgs e)
 		{
 			//string snapbasepath = SnapshotBasePath;
 			//snapbasepath = Environment.ExpandEnvironmentVariables(snapbasepath);
@@ -234,9 +246,10 @@ namespace gInk
 				ShowBalloonSnapshot();
 				UponBalloonSnap = false;
 			}
-		}
+            if (callForm != null) callForm.Show();
+        }
 
-		public void ClearInk()
+        public void ClearInk()
 		{
 			FormCollection.IC.Ink.DeleteStrokes();
 			FormDisplay.ClearCanvus();
@@ -659,6 +672,12 @@ namespace gInk
 							else if (sPara == "1")
 								CanvasCursor = 1;
 							break;
+						case "WINDOW_POS": // if not defined, no window else 2 to 4 integers Top,Left,[Width/Height,[Opacity]]
+							string [] tab = sPara.Split(',');
+							if (tab.Length >= 2) { FormTop = Int32.Parse(tab[0]);FormLeft = Int32.Parse(tab[1]); };
+							if (tab.Length >= 3 ) { FormWidth = Int32.Parse(tab[2]); }
+							if (tab.Length >= 4) { FormOpacity = Int32.Parse(tab[3]); }
+							break;
 					}
 				}
 			}
@@ -870,8 +889,11 @@ namespace gInk
 						case "CANVAS_CURSOR":
 							sPara = CanvasCursor.ToString();
 							break;
-					}
-				}
+                        case "WINDOW_POS": // if not defined, no window else 2 to 4 integers Top,Left,[Width/Height,[Opacity]]
+                            sPara = FormTop.ToString() + "," + FormLeft.ToString() + "," + FormWidth.ToString() + "," + FormOpacity.ToString();
+                            break;
+                    }
+                }
 				if (sPara != "")
 					writelines.Add(sNameO + "= " + sPara);
 				else if (sLine != null)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading;
@@ -15,7 +15,8 @@ namespace gInk
 		[STAThread]
 		static void Main()
 		{
-			Application.ThreadException += new ThreadExceptionEventHandler(UIThreadException);
+            CallForm frm;
+                Application.ThreadException += new ThreadExceptionEventHandler(UIThreadException);
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledException);
 
@@ -23,7 +24,19 @@ namespace gInk
 			Application.SetCompatibleTextRenderingDefault(false);
 
 			new Root();
-			Application.Run();
+            frm = new CallForm();
+            frm.Root = new Root();
+            if (frm.Root.FormTop >= 0)
+            {
+                frm.Root.callForm = frm;
+                frm.Show();
+                frm.Top = frm.Root.FormTop;
+                frm.Left = frm.Root.FormLeft;
+                frm.Width = frm.Root.FormWidth;
+                frm.Height = frm.Root.FormWidth;
+                frm.Opacity = frm.Root.FormOpacity / 100.0;
+            }
+            Application.Run();
 		}
 
 		private static void UIThreadException(object sender, ThreadExceptionEventArgs t)
