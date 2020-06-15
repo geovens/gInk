@@ -213,6 +213,13 @@
     <None Include="buttonback.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="tool_enAr.png" />
+    <Content Include="tool_enAr_act.png" />
+    <Content Include="tool_line_act.png" />
+    <Content Include="tool_oval_act.png" />
+    <Content Include="tool_rect_act.png" />
+    <Content Include="tool_StAr.png" />
+    <Content Include="tool_StAr_act.png" />
     <None Include="paneloption.png" />
     <None Include="visible_not.png" />
     <None Include="visible.png" />
@@ -230,6 +237,10 @@
     <None Include="i18n.png" />
     <Content Include="draw.png" />
     <Content Include="draw1.png" />
+    <None Include="tool_hand.png" />
+    <None Include="tool_line.png" />
+    <None Include="tool_rect.png" />
+    <None Include="tool_oval.png" />
     <Content Include="icon_red.ico" />
     <None Include="icon_white.ico" />
   </ItemGroup>

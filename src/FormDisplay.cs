@@ -18,10 +18,13 @@ namespace gInk
 		IntPtr onestrokeDc;
 		IntPtr BlankCanvus;
 		IntPtr blankcanvusDc;
-		Graphics gCanvus;
+        IntPtr OutCanvus;
+        IntPtr OutcanvusDc;
+        Graphics gCanvus;
 		public Graphics gOneStrokeCanvus;
-		//Bitmap ScreenBitmap;
-		IntPtr hScreenBitmap;
+        public Graphics gOutCanvus;
+        //Bitmap ScreenBitmap;
+        IntPtr hScreenBitmap;
 		IntPtr memscreenDc;
 
 		Bitmap gpButtonsImage;
@@ -64,22 +67,28 @@ namespace gInk
 			this.Height = SystemInformation.VirtualScreen.Height - 2;
 
 			Bitmap InitCanvus = new Bitmap(this.Width, this.Height);
+            Bitmap Init2Canvus = new Bitmap(this.Width, this.Height);
 			Canvus = InitCanvus.GetHbitmap(Color.FromArgb(0));
 			OneStrokeCanvus = InitCanvus.GetHbitmap(Color.FromArgb(0));
-			//BlankCanvus = InitCanvus.GetHbitmap(Color.FromArgb(0));
+            OutCanvus = Init2Canvus.GetHbitmap(Color.FromArgb(0));
+            //BlankCanvus = InitCanvus.GetHbitmap(Color.FromArgb(0));
 
-			IntPtr screenDc = GetDC(IntPtr.Zero);
-			canvusDc = CreateCompatibleDC(screenDc);
+            IntPtr screenDc = GetDC(IntPtr.Zero);
+            canvusDc = CreateCompatibleDC(screenDc);
 			SelectObject(canvusDc, Canvus);
 			onestrokeDc = CreateCompatibleDC(screenDc);
 			SelectObject(onestrokeDc, OneStrokeCanvus);
-			//blankcanvusDc = CreateCompatibleDC(screenDc);
-			//SelectObject(blankcanvusDc, BlankCanvus);
-			gCanvus = Graphics.FromHdc(canvusDc);
+            OutcanvusDc = CreateCompatibleDC(screenDc);
+            SelectObject(OutcanvusDc, OutCanvus);
+            //blankcanvusDc = CreateCompatibleDC(screenDc);
+            //SelectObject(blankcanvusDc, BlankCanvus);
+            gCanvus = Graphics.FromHdc(canvusDc);
 			gCanvus.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
 			gOneStrokeCanvus = Graphics.FromHdc(onestrokeDc);
 			gOneStrokeCanvus.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-			if (Root.AutoScroll)
+            gOutCanvus = Graphics.FromHdc(OutcanvusDc);
+            gOutCanvus.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+            if (Root.AutoScroll)
 			{
 				hScreenBitmap = InitCanvus.GetHbitmap(Color.FromArgb(0));
 				memscreenDc = CreateCompatibleDC(screenDc);
@@ -88,11 +97,12 @@ namespace gInk
 				lastscreenbits = new byte[50000000];
 			}
 			ReleaseDC(IntPtr.Zero, screenDc);
-			InitCanvus.Dispose();
+         
+            InitCanvus.Dispose();
+            Init2Canvus.Dispose();
+            //this.DoubleBuffered = true;
 
-			//this.DoubleBuffered = true;
-
-			int gpheight = (int)(Screen.PrimaryScreen.Bounds.Height * Root.ToolbarHeight);
+            int gpheight = (int)(Screen.PrimaryScreen.Bounds.Height * Root.ToolbarHeight);
 			gpButtonsImage = new Bitmap(2400, gpheight);
 			gpPenWidthImage = new Bitmap(200, gpheight);
 			TransparentBrush = new SolidBrush(Color.Transparent);
@@ -227,9 +237,10 @@ namespace gInk
 
 		public void DrawStrokes()
 		{
-			if (Root.InkVisible)
-				Root.FormCollection.IC.Renderer.Draw(gCanvus, Root.FormCollection.IC.Ink.Strokes);
+            if (Root.InkVisible)
+                Root.FormCollection.IC.Renderer.Draw(gCanvus, Root.FormCollection.IC.Ink.Strokes);
 		}
+
 		public void DrawStrokes(Graphics g)
 		{
 			if (Root.InkVisible)
@@ -348,7 +359,57 @@ namespace gInk
 			}
 		}
 
-		public int Test()
+        public void DrawLineOnGraphic(Graphics g, int CursorX0, int CursorY0, int CursorX, int CursorY)
+        {
+            gOutCanvus.DrawLine(new Pen(Root.PenAttr[Root.CurrentPen].Color, Root.PenAttr[Root.CurrentPen].Width/ (float)26.45834),
+                                    CursorX0, CursorY0 , CursorX, CursorY);
+        }
+        public void DrawRectOnGraphic(Graphics g, int CursorX0, int CursorY0, int CursorX, int CursorY)
+        {
+            int dX = Math.Abs(CursorX - CursorX0);
+            int dY = Math.Abs(CursorY - CursorY0);
+
+            gOutCanvus.DrawRectangle(new Pen(Root.PenAttr[Root.CurrentPen].Color, Root.PenAttr[Root.CurrentPen].Width / (float)26.45834),
+                                        Math.Min(CursorX0,CursorX), Math.Min(CursorY0, CursorY), dX, dY);
+        }
+        public void DrawEllipseOnGraphic(Graphics g, int CursorX0, int CursorY0, int CursorX, int CursorY)
+        {
+            int dX = Math.Abs(CursorX - CursorX0);
+            int dY = Math.Abs(CursorY - CursorY0);
+
+            gOutCanvus.DrawEllipse(new Pen(Root.PenAttr[Root.CurrentPen].Color, Root.PenAttr[Root.CurrentPen].Width / (float)26.45834), 
+                                        CursorX0 - dX, CursorY0 - dY, 2 * dX, 2 * dY);
+        }
+
+        public void DrawArrowOnGraphic(Graphics g, int CursorX0, int CursorY0, int CursorX, int CursorY)
+        {
+            Point[] pts = new Point[5];
+            double theta = Math.Atan2(CursorY - CursorY0, CursorX - CursorX0);
+            Pen p = new Pen(Root.PenAttr[Root.CurrentPen].Color, Root.PenAttr[Root.CurrentPen].Width / (float)26.45834);
+
+            gOutCanvus.DrawLine(p,CursorX0, CursorY0, (int)(CursorX0 + Math.Cos(theta + Root.ArrowAngle) * Root.ArrowLen), (int)(CursorY0 + Math.Sin(theta + Root.ArrowAngle) * Root.ArrowLen));
+            gOutCanvus.DrawLine(p, CursorX0, CursorY0, (int)(CursorX0 + Math.Cos(theta - Root.ArrowAngle) * Root.ArrowLen), (int)(CursorY0 + Math.Sin(theta - Root.ArrowAngle) * Root.ArrowLen));
+            gOutCanvus.DrawLine(p, CursorX0, CursorY0, CursorX,CursorY);
+        }
+
+        public void DrawCustomOnGraphic(Graphics g, int CursorX0, int CursorY0, int CursorX, int CursorY)
+        {
+            if ((CursorX0 != int.MinValue) || (CursorY0 != int.MinValue))
+            {
+                if (Root.ToolSelected == 1)
+                    DrawLineOnGraphic(g, CursorX0, CursorY0, CursorX, CursorY);
+                else if (Root.ToolSelected == 2)
+                    DrawRectOnGraphic(g, CursorX0, CursorY0, CursorX, CursorY);
+                else if (Root.ToolSelected == 3)
+                    DrawEllipseOnGraphic(g, CursorX0, CursorY0, CursorX, CursorY);
+                else if (Root.ToolSelected == 4)
+                    DrawArrowOnGraphic(g, CursorX0, CursorY0, CursorX, CursorY);
+                else if (Root.ToolSelected == 5)
+                    DrawArrowOnGraphic(g, CursorX, CursorY, CursorX0, CursorY0);
+            }
+        }
+
+    public int Test()
 		{
 			IntPtr screenDc = GetDC(IntPtr.Zero);
 
@@ -432,18 +493,23 @@ namespace gInk
 			blend.SourceConstantAlpha = 255;  // additional alpha multiplier to the whole image. value 255 means multiply with 1.
 			blend.AlphaFormat = AC_SRC_ALPHA;
 
-			if (draw)
-				UpdateLayeredWindow(this.Handle, screenDc, ref topPos, ref size, canvusDc, ref pointSource, 0, ref blend, ULW_ALPHA);
-			else
-				UpdateLayeredWindow(this.Handle, screenDc, ref topPos, ref size, blankcanvusDc, ref pointSource, 0, ref blend, ULW_ALPHA);
+            //#define SRCCOPY             (DWORD)0x00CC0020 /* dest = source                   */
+            BitBlt(OutcanvusDc, 0, 0, this.Width, this.Height, canvusDc, 0, 0, 0x00CC0020);
+            DrawCustomOnGraphic(gOutCanvus, Root.CursorX0, Root.CursorY0, Root.CursorX, Root.CursorY);
+
+            if (draw)
+                UpdateLayeredWindow(this.Handle, screenDc, ref topPos, ref size, OutcanvusDc, ref pointSource, 0, ref blend, ULW_ALPHA);
+            else
+                UpdateLayeredWindow(this.Handle, screenDc, ref topPos, ref size, blankcanvusDc, ref pointSource, 0, ref blend, ULW_ALPHA);
 
 			//Clean-up
 			ReleaseDC(IntPtr.Zero, screenDc);
-		}
+        }
 
 		int stackmove = 0;
 		int Tick = 0;
 		DateTime TickStartTime;
+
 		private void timer1_Tick(object sender, EventArgs e)
 		{
 			Tick++;
@@ -520,7 +586,8 @@ namespace gInk
 						Root.FormCollection.IC.Renderer.InkSpaceToPixel(gCanvus, ref lt);
 						Root.FormCollection.IC.Renderer.InkSpaceToPixel(gCanvus, ref rb);
 						BitBlt(canvusDc, lt.X, lt.Y, rb.X - lt.X, rb.Y - lt.Y, onestrokeDc, lt.X, lt.Y, (uint)CopyPixelOperation.SourceCopy);
-						Root.FormCollection.IC.Renderer.Draw(gCanvus, stroke, Root.FormCollection.IC.DefaultDrawingAttributes);
+                        if(Root.ToolSelected == 0)
+                            Root.FormCollection.IC.Renderer.Draw(gCanvus, stroke, Root.FormCollection.IC.DefaultDrawingAttributes);
 					}
 					UpdateFormDisplay(true);
 				}

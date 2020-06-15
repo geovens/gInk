@@ -41,7 +41,8 @@ namespace gInk
 
 		// options
 		public bool[] PenEnabled = new bool[MaxPenCount];
-		public bool EraserEnabled = true;
+        public bool ToolsEnabled = true;
+        public bool EraserEnabled = true;
 		public bool PointerEnabled = true;
 		public bool PenWidthEnabled = false;
 		public bool SnapEnabled = true;
@@ -63,6 +64,9 @@ namespace gInk
 		public bool AlwaysHideToolbar = false;
 		public float ToolbarHeight = 0.06f;
 
+        public int CursorX,CursorY;
+        public int CursorX0=int.MinValue,CursorY0=int.MinValue;
+
 		// hotkey options
 		public Hotkey Hotkey_Global = new Hotkey();
 		public Hotkey[] Hotkey_Pens = new Hotkey[10];
@@ -75,7 +79,8 @@ namespace gInk
 		public Hotkey Hotkey_Snap = new Hotkey();
 		public Hotkey Hotkey_Clear = new Hotkey();
 
-		public bool EraserMode = false;
+        public int ToolSelected = 0;
+        public bool EraserMode = false;
 		public bool Docked = false;
 		public bool PointerMode = false;
 		public bool FingerInAction = false;  // true when mouse down, either drawing or snapping or whatever
@@ -113,7 +118,10 @@ namespace gInk
         public int FormTop = -1, FormLeft = -1, FormWidth = 48, FormOpacity = 50;
         public CallForm callForm = null;
 
-		public Root()
+        public double ArrowAngle = 15 * Math.PI /180;   // 15°
+        public double ArrowLen = 0.0185 * System.Windows.SystemParameters.PrimaryScreenWidth; // == 1.85% of screen width
+
+        public Root()
 		{
 			for (int p = 0; p < MaxPenCount; p++)
 				Hotkey_Pens[p] = new Hotkey();
@@ -600,7 +608,19 @@ namespace gInk
 							if (!SnapshotBasePath.EndsWith("/") && !SnapshotBasePath.EndsWith("\\"))
 								SnapshotBasePath += "/";
 							break;
-						case "ERASER_ICON":
+                        case "DRAWING_ICON":
+                            if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
+                                ToolsEnabled = false;
+                            break;
+                        case "ARROW":           // angle in degrees, len in % of the screen width
+                            string[] tab2 = sPara.Split(',');
+                            if (tab2.Length != 2) break;
+                            if (float.TryParse(tab2[0], out tempf))
+                                ArrowAngle = tempf * Math.PI / 180;
+                            if (float.TryParse(tab2[1], out tempf))
+                                ArrowLen = tempf / 100.0 * System.Windows.SystemParameters.PrimaryScreenWidth;
+                            break;
+                        case "ERASER_ICON":
 							if (sPara.ToUpper() == "FALSE" || sPara == "0" || sPara.ToUpper() == "OFF")
 								EraserEnabled = false;
 							break;
@@ -803,7 +823,16 @@ namespace gInk
 						case "SNAPSHOT_PATH":
 							sPara = SnapshotBasePath;
 							break;
-						case "ERASER_ICON":
+                        case "DRAWING_ICON":
+                            if (ToolsEnabled)
+                                sPara = "True";
+                            else
+                                sPara = "False";
+                            break;
+                        case "ARROW":           // angle in degrees, len in % of the screen width
+                            sPara = (ArrowAngle / Math.PI * 180.0).ToString()+","+ (ArrowLen / System.Windows.SystemParameters.PrimaryScreenWidth * 100.0).ToString();
+                            break;
+                        case "ERASER_ICON":
 							if (EraserEnabled)
 								sPara = "True";
 							else

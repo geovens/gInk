@@ -1,4 +1,4 @@
-﻿namespace gInk
+namespace gInk
 {
 	partial class FormCollection
 	{
@@ -34,7 +34,15 @@
 			this.btPan = new System.Windows.Forms.Button();
 			this.btDock = new System.Windows.Forms.Button();
 			this.btPenWidth = new System.Windows.Forms.Button();
-			this.btEraser = new System.Windows.Forms.Button();
+
+            this.btHand = new System.Windows.Forms.Button();
+            this.btLine = new System.Windows.Forms.Button();
+            this.btRect = new System.Windows.Forms.Button();
+            this.btOval = new System.Windows.Forms.Button();
+            this.btStAr = new System.Windows.Forms.Button();
+            this.btEnAr = new System.Windows.Forms.Button();
+
+            this.btEraser = new System.Windows.Forms.Button();
 			this.btSnap = new System.Windows.Forms.Button();
 			this.btPointer = new System.Windows.Forms.Button();
 			this.btStop = new System.Windows.Forms.Button();
@@ -56,7 +64,16 @@
 			this.gpButtons.Controls.Add(this.btPan);
 			this.gpButtons.Controls.Add(this.btDock);
 			this.gpButtons.Controls.Add(this.btPenWidth);
-			this.gpButtons.Controls.Add(this.btEraser);
+
+            this.gpButtons.Controls.Add(this.btHand);
+            this.gpButtons.Controls.Add(this.btLine);
+            this.gpButtons.Controls.Add(this.btRect);
+            this.gpButtons.Controls.Add(this.btOval);
+            this.gpButtons.Controls.Add(this.btStAr);
+            this.gpButtons.Controls.Add(this.btEnAr);
+
+
+            this.gpButtons.Controls.Add(this.btEraser);
 			this.gpButtons.Controls.Add(this.btSnap);
 			this.gpButtons.Controls.Add(this.btPointer);
 			this.gpButtons.Controls.Add(this.btStop);
@@ -147,9 +164,137 @@
 			this.btPenWidth.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
 			this.btPenWidth.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
 			this.btPenWidth.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
-			// 
-			// btEraser
-			// 
+
+            // 
+            // btHand
+            // 
+            this.btHand.FlatAppearance.BorderSize = 0;
+            this.btHand.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btHand.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btHand.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btHand.ForeColor = System.Drawing.Color.Transparent;
+            this.btHand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btHand.BackgroundImage = global::gInk.Properties.Resources.tool_hand;
+            this.btHand.Location = new System.Drawing.Point(489, 4);
+            this.btHand.Name = "btHand";
+            this.btHand.Size = new System.Drawing.Size(69, 69);
+            this.btHand.TabIndex = 0;
+            this.toolTip.SetToolTip(this.btHand, "Hand Drawing");
+            this.btHand.UseVisualStyleBackColor = false;
+            this.btHand.Click += new System.EventHandler(this.btTool_Click);
+            this.btHand.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+            this.btHand.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+            this.btHand.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
+            // 
+            // btLine
+            // 
+            this.btLine.FlatAppearance.BorderSize = 0;
+            this.btLine.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btLine.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btLine.ForeColor = System.Drawing.Color.Transparent;
+            this.btLine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btLine.BackgroundImage = global::gInk.Properties.Resources.tool_line;
+            this.btLine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btLine.Location = new System.Drawing.Point(489, 4);
+            this.btLine.Name = "btLine";
+            this.btLine.Size = new System.Drawing.Size(69, 69);
+            this.btLine.TabIndex = 0;
+            this.toolTip.SetToolTip(this.btLine, "Line Drawing");
+            this.btLine.UseVisualStyleBackColor = false;
+            this.btLine.Click += new System.EventHandler(this.btTool_Click);
+            this.btLine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+            this.btLine.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+            this.btLine.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
+            // 
+            // btRect
+            // 
+            this.btRect.FlatAppearance.BorderSize = 0;
+            this.btRect.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btRect.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btRect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btRect.ForeColor = System.Drawing.Color.Transparent;
+            this.btRect.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btRect.BackgroundImage = global::gInk.Properties.Resources.tool_rect;
+            this.btRect.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btRect.Location = new System.Drawing.Point(489, 4);
+            this.btRect.Name = "btRect";
+            this.btRect.Size = new System.Drawing.Size(69, 69);
+            this.btRect.TabIndex = 0;
+            this.toolTip.SetToolTip(this.btRect, "Rect Shape");
+            this.btRect.UseVisualStyleBackColor = false;
+            this.btRect.Click += new System.EventHandler(this.btTool_Click);
+            this.btRect.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+            this.btRect.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+            this.btRect.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
+            // 
+            // btOval
+            // 
+            this.btOval.FlatAppearance.BorderSize = 0;
+            this.btOval.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btOval.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btOval.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btOval.ForeColor = System.Drawing.Color.Transparent;
+            this.btOval.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btOval.BackgroundImage = global::gInk.Properties.Resources.tool_oval;
+            this.btOval.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btOval.Location = new System.Drawing.Point(489, 4);
+            this.btOval.Name = "btOval";
+            this.btOval.Size = new System.Drawing.Size(69, 69);
+            this.btOval.TabIndex = 0;
+            this.toolTip.SetToolTip(this.btOval, "Oval Shape");
+            this.btOval.UseVisualStyleBackColor = false;
+            this.btOval.Click += new System.EventHandler(this.btTool_Click);
+            this.btOval.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+            this.btOval.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+            this.btOval.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
+            // 
+            // btStAr
+            // 
+            this.btStAr.FlatAppearance.BorderSize = 0;
+            this.btStAr.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btStAr.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btStAr.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btStAr.ForeColor = System.Drawing.Color.Transparent;
+            this.btStAr.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btStAr.BackgroundImage = global::gInk.Properties.Resources.tool_stAr;
+            this.btStAr.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btStAr.Location = new System.Drawing.Point(489, 4);
+            this.btStAr.Name = "btStAr";
+            this.btStAr.Size = new System.Drawing.Size(69, 69);
+            this.btStAr.TabIndex = 0;
+            this.toolTip.SetToolTip(this.btStAr, "Starting Arrow Shape");
+            this.btStAr.UseVisualStyleBackColor = false;
+            this.btStAr.Click += new System.EventHandler(this.btTool_Click);
+            this.btStAr.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+            this.btStAr.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+            this.btStAr.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
+            // 
+            // btEnAr
+            // 
+            this.btEnAr.FlatAppearance.BorderSize = 0;
+            this.btEnAr.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btEnAr.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+            this.btEnAr.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btEnAr.ForeColor = System.Drawing.Color.Transparent;
+            this.btEnAr.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btEnAr.BackgroundImage = global::gInk.Properties.Resources.tool_enAr;
+            this.btEnAr.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btEnAr.Location = new System.Drawing.Point(489, 4);
+            this.btEnAr.Name = "btEnAr";
+            this.btEnAr.Size = new System.Drawing.Size(69, 69);
+            this.btEnAr.TabIndex = 0;
+            this.toolTip.SetToolTip(this.btEnAr, "Ending Arrow Shape");
+            this.btEnAr.UseVisualStyleBackColor = false;
+            this.btEnAr.Click += new System.EventHandler(this.btTool_Click);
+            this.btEnAr.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseDown);
+            this.btEnAr.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseMove);
+            this.btEnAr.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gpButtons_MouseUp);
+
+
+            // 
+            // btEraser
+            // 
 			this.btEraser.FlatAppearance.BorderSize = 0;
 			this.btEraser.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btEraser.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
@@ -326,7 +471,15 @@
 		public System.Windows.Forms.Button btClear;
 		public System.Windows.Forms.Button btUndo;
 		public System.Windows.Forms.Panel gpButtons;
-		public System.Windows.Forms.Button btEraser;
+
+        public System.Windows.Forms.Button btHand;
+        public System.Windows.Forms.Button btLine;
+        public System.Windows.Forms.Button btRect;
+        public System.Windows.Forms.Button btOval;
+        public System.Windows.Forms.Button btStAr;
+        public System.Windows.Forms.Button btEnAr;
+
+        public System.Windows.Forms.Button btEraser;
 		private System.Windows.Forms.Timer tiSlide;
 		public System.Windows.Forms.Button btDock;
 		public System.Windows.Forms.Button btSnap;

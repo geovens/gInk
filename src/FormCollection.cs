@@ -23,7 +23,7 @@ namespace gInk
 		public Bitmap image_pointer, image_pointer_act;
 		public Bitmap[] image_pen;
 		public Bitmap[] image_pen_act;
-		public Bitmap image_eraser_act, image_eraser;
+        public Bitmap image_eraser_act, image_eraser;
 		public Bitmap image_pan_act, image_pan;
 		public Bitmap image_visible_not, image_visible;
 		public System.Windows.Forms.Cursor cursorred, cursorsnap;
@@ -51,9 +51,11 @@ namespace gInk
 		public FormCollection(Root root)
 		{
 			Root = root;
-			InitializeComponent();
+            InitializeComponent();
 
-			PrimaryLeft = Screen.PrimaryScreen.Bounds.Left - SystemInformation.VirtualScreen.Left;
+            SelectTool(0); // Select Hand Drawing by Default
+
+            PrimaryLeft = Screen.PrimaryScreen.Bounds.Left - SystemInformation.VirtualScreen.Left;
 			PrimaryTop = Screen.PrimaryScreen.Bounds.Top - SystemInformation.VirtualScreen.Top;
 
 			gpButtons.Height = (int)(Screen.PrimaryScreen.Bounds.Height * Root.ToolbarHeight);
@@ -63,7 +65,28 @@ namespace gInk
 			btDock.Height = (int)(gpButtons.Height * 0.85);
 			btDock.Width = btDock.Height / 2;
 			btDock.Top = (int)(gpButtons.Height * 0.08);
-			btEraser.Height = (int)(gpButtons.Height * 0.85);
+
+            btHand.Height = (int)(gpButtons.Height * 0.48);
+            btHand.Width = btHand.Height;
+            btHand.Top = (int)(gpButtons.Height * 0.02);
+            btLine.Height = (int)(gpButtons.Height * 0.48);
+            btLine.Width = btLine.Height;
+            btLine.Top = (int)(gpButtons.Height * 0.52);
+            btRect.Height = (int)(gpButtons.Height * 0.48);
+            btRect.Width = btRect.Height;
+            btRect.Top = (int)(gpButtons.Height * 0.02);
+            btOval.Height = (int)(gpButtons.Height * 0.48);
+            btOval.Width = btOval.Height;
+            btOval.Top = (int)(gpButtons.Height * 0.52);
+            btStAr.Height = (int)(gpButtons.Height * 0.48);
+            btStAr.Width = btOval.Height;
+            btStAr.Top = (int)(gpButtons.Height * 0.02);
+            btEnAr.Height = (int)(gpButtons.Height * 0.48);
+            btEnAr.Width = btOval.Height;
+            btEnAr.Top = (int)(gpButtons.Height * 0.52);
+
+
+            btEraser.Height = (int)(gpButtons.Height * 0.85);
 			btEraser.Width = btEraser.Height;
 			btEraser.Top = (int)(gpButtons.Height * 0.08);
 			btInkVisible.Height = (int)(gpButtons.Height * 0.85);
@@ -125,7 +148,36 @@ namespace gInk
 					btPen[b].Visible = false;
 				}
 			}
-			cumulatedleft += (int)(btDock.Width * 1.5);
+            cumulatedleft += (int)(btDock.Width * 0.2);
+            if (Root.ToolsEnabled)
+            {
+                btHand.Visible = true;
+                btLine.Visible = true;
+                btHand.Left = cumulatedleft;
+                btLine.Left = cumulatedleft;
+                cumulatedleft += (int)(btHand.Width * 1.1);
+                btRect.Visible = true;
+                btOval.Visible = true;
+                btRect.Left = cumulatedleft;
+                btOval.Left = cumulatedleft;
+                cumulatedleft += (int)(btRect.Width * 1.1);
+                btStAr.Visible = true;
+                btEnAr.Visible = true;
+                btStAr.Left = cumulatedleft;
+                btEnAr.Left = cumulatedleft;
+                cumulatedleft += (int)(btStAr.Width * 1.1);
+            }
+            else
+            {
+                btHand.Visible = false;
+                btLine.Visible = false;
+                btRect.Visible = false;
+                btOval.Visible = false;
+                btStAr.Visible = false;
+                btEnAr.Visible = false;
+            }
+
+            cumulatedleft += (int)(btDock.Width * 0.5);
 			if (Root.EraserEnabled)
 			{
 				btEraser.Visible = true;
@@ -414,9 +466,96 @@ namespace gInk
 			this.toolTip.SetToolTip(this.btStop, Root.Local.ButtonNameExit);
 		}
 
-		private void IC_Stroke(object sender, InkCollectorStrokeEventArgs e)
+        private void AddEllipseStroke(int CursorX0, int CursorY0, int CursorX, int CursorY)
+        {
+            int NB_PTS = 36 * 3;
+            Point[] pts = new Point[NB_PTS + 1];
+            int dX = CursorX - CursorX0;
+            int dY = CursorY - CursorY0;
+
+            for (int i = 0; i < NB_PTS + 1; i++)
+            {
+                pts[i] = new Point(Root.CursorX0 + (int)(dX * Math.Cos(Math.PI * (i + NB_PTS / 8) / (NB_PTS / 2))), Root.CursorY0 + (int)(dY * Math.Sin(Math.PI * (i + NB_PTS / 8) / (NB_PTS / 2))));
+            }
+            IC.Renderer.PixelToInkSpace(Root.FormDisplay.gOneStrokeCanvus, ref pts);
+            Stroke st = Root.FormCollection.IC.Ink.CreateStroke(pts);
+            st.DrawingAttributes = Root.FormCollection.IC.DefaultDrawingAttributes.Clone();
+            st.DrawingAttributes.AntiAliased = true;
+            st.DrawingAttributes.FitToCurve = true;
+            Root.FormCollection.IC.Ink.Strokes.Add(st);
+        }
+
+        private void AddRectStroke(int CursorX0, int CursorY0, int CursorX, int CursorY)
+        {
+            Point[] pts = new Point[5];
+            pts[0] = new Point(CursorX0, CursorY0);
+            pts[1] = new Point(CursorX0, CursorY);
+            pts[2] = new Point(CursorX, CursorY);
+            pts[3] = new Point(CursorX, CursorY0);
+            pts[4] = new Point(CursorX0, CursorY0);
+
+            IC.Renderer.PixelToInkSpace(Root.FormDisplay.gOneStrokeCanvus, ref pts);
+            Stroke st = Root.FormCollection.IC.Ink.CreateStroke(pts);
+            st.DrawingAttributes = Root.FormCollection.IC.DefaultDrawingAttributes.Clone();
+            st.DrawingAttributes.AntiAliased = true;
+            st.DrawingAttributes.FitToCurve = false;
+            Root.FormCollection.IC.Ink.Strokes.Add(st);
+        }
+
+        private void AddLineStroke(int CursorX0, int CursorY0, int CursorX, int CursorY)
+        {
+            Point[] pts = new Point[2];
+            pts[0] = new Point(CursorX0, CursorY0);
+            pts[1] = new Point(CursorX, CursorY);
+
+            IC.Renderer.PixelToInkSpace(Root.FormDisplay.gOneStrokeCanvus, ref pts);
+            Stroke st = Root.FormCollection.IC.Ink.CreateStroke(pts);
+            st.DrawingAttributes = Root.FormCollection.IC.DefaultDrawingAttributes.Clone();
+            st.DrawingAttributes.AntiAliased = true;
+            st.DrawingAttributes.FitToCurve = false;
+            Root.FormCollection.IC.Ink.Strokes.Add(st);
+        }
+
+        private void AddArrowStroke(int CursorX0, int CursorY0, int CursorX, int CursorY)
+        // arrow at starting point
+        {
+            Point[] pts = new Point[5];
+            double theta = Math.Atan2(CursorY - CursorY0, CursorX - CursorX0);
+
+            pts[0] = new Point((int)(CursorX0+Math.Cos(theta + Root.ArrowAngle) * Root.ArrowLen), (int)(CursorY0 + Math.Sin(theta + Root.ArrowAngle) * Root.ArrowLen));
+            pts[1] = new Point(CursorX0, CursorY0);
+            pts[2] = new Point((int)(CursorX0 + Math.Cos(theta - Root.ArrowAngle) * Root.ArrowLen), (int)(CursorY0 + Math.Sin(theta - Root.ArrowAngle) * Root.ArrowLen));
+            pts[3] = new Point(CursorX0, CursorY0);
+            pts[4] = new Point(CursorX, CursorY);
+
+            IC.Renderer.PixelToInkSpace(Root.FormDisplay.gOneStrokeCanvus, ref pts);
+            Stroke st = Root.FormCollection.IC.Ink.CreateStroke(pts);
+            st.DrawingAttributes = Root.FormCollection.IC.DefaultDrawingAttributes.Clone();
+            st.DrawingAttributes.AntiAliased = true;
+            st.DrawingAttributes.FitToCurve = false;
+            Root.FormCollection.IC.Ink.Strokes.Add(st);
+        }
+
+
+        private void IC_Stroke(object sender, InkCollectorStrokeEventArgs e)
 		{
-			SaveUndoStrokes();
+            if(Root.ToolSelected>0)
+            {
+                IC.Ink.DeleteStroke(e.Stroke); // the stroke that was just inserted has to be replaced.
+                if (Root.ToolSelected == 1)
+                    AddLineStroke(Root.CursorX0, Root.CursorY0, Root.CursorX, Root.CursorY);
+                else if (Root.ToolSelected == 2)
+                    AddRectStroke(Root.CursorX0, Root.CursorY0, Root.CursorX, Root.CursorY);
+                else if (Root.ToolSelected == 3)
+                    AddEllipseStroke(Root.CursorX0, Root.CursorY0, Root.CursorX, Root.CursorY);
+                else if (Root.ToolSelected == 4)
+                    AddArrowStroke(Root.CursorX0, Root.CursorY0, Root.CursorX, Root.CursorY);
+                else if (Root.ToolSelected == 5)
+                    AddArrowStroke(Root.CursorX, Root.CursorY, Root.CursorX0, Root.CursorY0);
+            }
+            SaveUndoStrokes();
+            Root.FormDisplay.DrawStrokes();
+            Root.FormDisplay.UpdateFormDisplay(true);
 		}
 
 		private void SaveUndoStrokes()
@@ -444,7 +583,7 @@ namespace gInk
 			}
 
 			Root.FormDisplay.ClearCanvus(Root.FormDisplay.gOneStrokeCanvus);
-			Root.FormDisplay.DrawStrokes(Root.FormDisplay.gOneStrokeCanvus);
+            Root.FormDisplay.DrawStrokes(Root.FormDisplay.gOneStrokeCanvus);
 			Root.FormDisplay.DrawButtons(Root.FormDisplay.gOneStrokeCanvus, false);
 		}
 
@@ -473,12 +612,17 @@ namespace gInk
 			LasteXY.X = e.X;
 			LasteXY.Y = e.Y;
 			IC.Renderer.PixelToInkSpace(Root.FormDisplay.gOneStrokeCanvus, ref LasteXY);
+            Root.CursorX0 = e.X;
+            Root.CursorY0 = e.Y;
 		}
 
 		public Point LasteXY;
 		private void IC_MouseMove(object sender, CancelMouseEventArgs e)
 		{
-			if (LasteXY.X == 0 && LasteXY.Y == 0)
+            Root.CursorX = e.X;
+            Root.CursorY = e.Y;
+
+            if (LasteXY.X == 0 && LasteXY.Y == 0)
 			{
 				LasteXY.X = e.X;
 				LasteXY.Y = e.Y;
@@ -506,9 +650,9 @@ namespace gInk
 			LasteXY = currentxy;
 		}
 
-		private void IC_MouseUp(object sender, CancelMouseEventArgs e)
-		{
-			Root.FingerInAction = false;
+        private void IC_MouseUp(object sender, CancelMouseEventArgs e)
+        {
+            Root.FingerInAction = false;
 			if (Root.Snapping == 2)
 			{
 				int left = Math.Min(Root.SnappingX, e.X);
@@ -534,9 +678,11 @@ namespace gInk
 			{
 				Root.UponAllDrawingUpdate = true;
 			}
-		}
+            Root.CursorX0 = int.MinValue;
+            Root.CursorY0 = int.MinValue;
+        }
 
-		private void IC_CursorInRange(object sender, InkCollectorCursorInRangeEventArgs e)
+        private void IC_CursorInRange(object sender, InkCollectorCursorInRangeEventArgs e)
 		{
 			if (e.Cursor.Inverted && Root.CurrentPen != -1)
 			{
@@ -610,7 +756,7 @@ namespace gInk
 				exc = false;
 				try
 				{
-					if (enter)
+                    if (enter)
 					{
 						IC.EditingMode = InkOverlayEditingMode.Delete;
 						Root.EraserMode = true;
@@ -630,7 +776,35 @@ namespace gInk
 			while (exc && exceptiontick < 3);
 		}
 
-		public void SelectPen(int pen)
+        public void SelectTool(int tool) 
+        // Hand (0),Line(1),Rect(2),Oval(3),StartArrow(4),EndArrow(5)
+        {
+            btHand.BackgroundImage = global::gInk.Properties.Resources.tool_hand;
+            btLine.BackgroundImage = global::gInk.Properties.Resources.tool_line;
+            btRect.BackgroundImage = global::gInk.Properties.Resources.tool_rect;
+            btOval.BackgroundImage = global::gInk.Properties.Resources.tool_oval;
+            btStAr.BackgroundImage = global::gInk.Properties.Resources.tool_stAr;
+            btEnAr.BackgroundImage = global::gInk.Properties.Resources.tool_enAr;
+            if (tool == 0)
+            {
+                btHand.BackgroundImage = global::gInk.Properties.Resources.tool_hand_act;
+                EnterEraserMode(false);
+            }
+            else if (tool == 1)
+                btLine.BackgroundImage = global::gInk.Properties.Resources.tool_line_act;
+            else if (tool == 2)
+                btRect.BackgroundImage = global::gInk.Properties.Resources.tool_rect_act;
+            else if (tool == 3)
+                btOval.BackgroundImage = global::gInk.Properties.Resources.tool_oval_act;
+            else if (tool == 4)
+                btStAr.BackgroundImage = global::gInk.Properties.Resources.tool_stAr_act;
+            else if (tool == 5)
+                btEnAr.BackgroundImage = global::gInk.Properties.Resources.tool_enAr_act;
+            Root.ToolSelected = tool;
+            Root.UponButtonsUpdate |= 0x2;
+        }
+
+        public void SelectPen(int pen)
 		{
 			// -3=pan, -2=pointer, -1=erasor, 0+=pens
 			if (pen == -3)
@@ -650,7 +824,7 @@ namespace gInk
 				}
 				catch
 				{
-					Thread.Sleep(1);
+					Thread.Sleep(1); 
 					IC.SetWindowInputRectangle(new Rectangle(0, 0, 1, 1));
 				}
 			}
@@ -1419,8 +1593,32 @@ namespace gInk
 					SelectPen(b);
 				}
 		}
+        
+        public void btTool_Click(object sender, EventArgs e)
+        {
+            if (ToolbarMoved)
+            {
+                ToolbarMoved = false;
+                return;
+            }
+            int i = -1;
+            if (((Button)sender).Name.Contains("Hand"))
+                i = 0;
+            else if (((Button)sender).Name.Contains("Line"))
+                i = 1;
+            else if (((Button)sender).Name.Contains("Rect"))
+                i = 2;
+            else if (((Button)sender).Name.Contains("Oval"))
+                i = 3;
+            else if (((Button)sender).Name.Contains("StAr"))
+                i = 4;
+            else if (((Button)sender).Name.Contains("EnAr"))
+                i = 5;
 
-		public void btEraser_Click(object sender, EventArgs e)
+            SelectTool(i);
+        }
+
+        public void btEraser_Click(object sender, EventArgs e)
 		{
 			if (ToolbarMoved)
 			{
