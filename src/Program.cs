@@ -15,17 +15,27 @@ namespace gInk
 		[STAThread]
 		static void Main()
 		{
-			Application.ThreadException += new ThreadExceptionEventHandler(UIThreadException);
-			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledException);
+			using(Mutex mutex = new Mutex(false, "Global\\" + appGuid))
+   			{
+      				if(!mutex.WaitOne(0, false))
+      				{
+         				return;
+				}
+				
+				Application.ThreadException += new ThreadExceptionEventHandler(UIThreadException);
+				Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+				AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledException);
 
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
+				Application.EnableVisualStyles();
+				Application.SetCompatibleTextRenderingDefault(false);
 
-			new Root();
-			Application.Run();
+				new Root();
+				Application.Run();
+			}
 		}
 
+		private static string appGuid = "86280230-c3d2-4da0-8621-e2a2466fc136",
+		
 		private static void UIThreadException(object sender, ThreadExceptionEventArgs t)
 		{
 			DialogResult result = DialogResult.Cancel;
