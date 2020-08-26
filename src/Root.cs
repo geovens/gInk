@@ -461,6 +461,8 @@ namespace gInk
 
 		public void ReadOptions(string file)
 		{
+			Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+
 			if (!File.Exists(file))
 				file = AppDomain.CurrentDomain.BaseDirectory + file;
 			if (!File.Exists(file))
