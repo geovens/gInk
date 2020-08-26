@@ -34,7 +34,7 @@ namespace gInk
 			}
 		}
 
-		private static string appGuid = "86280230-c3d2-4da0-8621-e2a2466fc136",
+		private static string appGuid = "86280230-c3d2-4da0-8621-e2a2466fc136";
 		
 		private static void UIThreadException(object sender, ThreadExceptionEventArgs t)
 		{
