@@ -63,6 +63,7 @@ namespace gInk
 				Keys key = (Keys)para[para.Length - 1];
 				if (IsValidKey(key))
 				{
+					if (para.Contains("Control")) Control = true;
 					if (para.Contains("Ctrl")) Control = true;
 					if (para.Contains("Alt")) Alt = true;
 					if (para.Contains("Shift")) Shift = true;
