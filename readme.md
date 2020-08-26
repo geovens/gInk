@@ -30,7 +30,7 @@ Click the exit button or press ESC to exit drawing.
 
 #### Tips
 
-- There is a known issue for multiple displays of unmatched DPI settings (100%, 125%, 150%, etc.). If you use gInk on a computer with multiple displays of unmatched DPI settings, or you encounter problems such as incorrect snapshot area, being unable to drag toolbar to locations etc., please do the following as a workaround (in Windows 10 version 1903 as an example): right-click gInk.exe, Properties, Compatibility, Change high DPI settings, Enable override high DPI scaling behavior scaling performed by: Application.
+- There is a known issue for multiple displays of unmatched DPI settings (100%, 125%, 150%, etc.). If you use gInk on a computer with multiple displays of unmatched DPI settings, or you encounter problems such as incorrect snapshot area, being unable to drag toolbar to locations etc., please do the following as a workaround (in Windows 10 version 1903 as an example): right-click gInk.exe, Properties, Compatibility, Change high DPI settings, Enable override high DPI scaling behavior scaling performed by: Application. (do this only for gInk version v1.1.0 and after)
 - There are a few hidden options you can tweak in config.ini that are not shown in the options window.
 
 #### How to contribute translation
