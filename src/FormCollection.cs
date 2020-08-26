@@ -57,42 +57,42 @@ namespace gInk
 			PrimaryTop = Screen.PrimaryScreen.Bounds.Top - SystemInformation.VirtualScreen.Top;
 
 			gpButtons.Height = (int)(Screen.PrimaryScreen.Bounds.Height * Root.ToolbarHeight);
-			btClear.Height = (int)(gpButtons.Height * 0.85);
+			btClear.Height = (int)(gpButtons.Height * 0.88);
 			btClear.Width = btClear.Height;
-			btClear.Top = (int)(gpButtons.Height * 0.08);
-			btDock.Height = (int)(gpButtons.Height * 0.85);
-			btDock.Width = btDock.Height / 2;
-			btDock.Top = (int)(gpButtons.Height * 0.08);
-			btEraser.Height = (int)(gpButtons.Height * 0.85);
+			btClear.Top = (int)(gpButtons.Height * 0.07);
+			btDock.Height = (int)(gpButtons.Height * 0.88);
+			btDock.Width = (int)(btDock.Height * 0.75);
+			btDock.Top = (int)(gpButtons.Height * 0.07);
+			btEraser.Height = (int)(gpButtons.Height * 0.88);
 			btEraser.Width = btEraser.Height;
-			btEraser.Top = (int)(gpButtons.Height * 0.08);
-			btInkVisible.Height = (int)(gpButtons.Height * 0.85);
+			btEraser.Top = (int)(gpButtons.Height * 0.07);
+			btInkVisible.Height = (int)(gpButtons.Height * 0.88);
 			btInkVisible.Width = btInkVisible.Height;
-			btInkVisible.Top = (int)(gpButtons.Height * 0.08);
-			btPan.Height = (int)(gpButtons.Height * 0.85);
+			btInkVisible.Top = (int)(gpButtons.Height * 0.07);
+			btPan.Height = (int)(gpButtons.Height * 0.88);
 			btPan.Width = btPan.Height;
-			btPan.Top = (int)(gpButtons.Height * 0.08);
-			btPointer.Height = (int)(gpButtons.Height * 0.85);
+			btPan.Top = (int)(gpButtons.Height * 0.07);
+			btPointer.Height = (int)(gpButtons.Height * 0.88);
 			btPointer.Width = btPointer.Height;
-			btPointer.Top = (int)(gpButtons.Height * 0.08);
-			btSnap.Height = (int)(gpButtons.Height * 0.85);
+			btPointer.Top = (int)(gpButtons.Height * 0.07);
+			btSnap.Height = (int)(gpButtons.Height * 0.88);
 			btSnap.Width = btSnap.Height;
-			btSnap.Top = (int)(gpButtons.Height * 0.08);
-			btStop.Height = (int)(gpButtons.Height * 0.85);
+			btSnap.Top = (int)(gpButtons.Height * 0.07);
+			btStop.Height = (int)(gpButtons.Height * 0.88);
 			btStop.Width = btStop.Height;
-			btStop.Top = (int)(gpButtons.Height * 0.08);
-			btUndo.Height = (int)(gpButtons.Height * 0.85);
+			btStop.Top = (int)(gpButtons.Height * 0.07);
+			btUndo.Height = (int)(gpButtons.Height * 0.88);
 			btUndo.Width = btUndo.Height;
-			btUndo.Top = (int)(gpButtons.Height * 0.08);
+			btUndo.Top = (int)(gpButtons.Height * 0.07);
 
 			btPen = new Button[Root.MaxPenCount];
 
-			int cumulatedleft = (int)(btDock.Width * 2.5);
+			int cumulatedleft = (int)(btStop.Width * 1.2);
 			for (int b = 0; b < Root.MaxPenCount; b++)
 			{
 				btPen[b] = new Button();
-				btPen[b].Width = (int)(gpButtons.Height * 0.85);
-				btPen[b].Height = (int)(gpButtons.Height * 0.85);
+				btPen[b].Width = (int)(gpButtons.Height * 0.88);
+				btPen[b].Height = (int)(gpButtons.Height * 0.88);
 				btPen[b].Top = (int)(gpButtons.Height * 0.08);
 				btPen[b].FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
 				btPen[b].FlatAppearance.BorderSize = 3;
@@ -125,7 +125,7 @@ namespace gInk
 					btPen[b].Visible = false;
 				}
 			}
-			cumulatedleft += (int)(btDock.Width * 1.5);
+			cumulatedleft += (int)(btStop.Width * 0.8);
 			if (Root.EraserEnabled)
 			{
 				btEraser.Visible = true;
@@ -156,7 +156,7 @@ namespace gInk
 			{
 				btPointer.Visible = false;
 			}
-			cumulatedleft += (int)(btDock.Width * 1.5);
+			cumulatedleft += (int)(btStop.Width * 0.8);
 			if (Root.PenWidthEnabled)
 			{
 				btPenWidth.Visible = true;
@@ -207,9 +207,9 @@ namespace gInk
 			{
 				btClear.Visible = false;
 			}
-			cumulatedleft += (int)(btDock.Width * 1.5);
+			cumulatedleft += (int)(btStop.Width * 0.8);
 			btStop.Left = cumulatedleft;
-			gpButtons.Width = btStop.Right + btDock.Width;
+			gpButtons.Width = btStop.Right + (int)(btStop.Width * 0.5);
 			
 
 			this.Left = SystemInformation.VirtualScreen.Left;
