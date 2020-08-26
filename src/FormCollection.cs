@@ -1441,6 +1441,13 @@ namespace gInk
 			SelectPen(-3);
 		}
 
+		private void FormCollection_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			short retVal = GetKeyState(0x73);
+			if ((retVal & 0x8000) == 0x8000)
+				e.Cancel = true;
+		}
+
 		[DllImport("user32.dll")]
 		static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 		[DllImport("user32.dll", SetLastError = true)]
