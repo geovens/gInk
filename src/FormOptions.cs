@@ -289,6 +289,8 @@ namespace gInk
 			Root.SaveOptions("pens.ini");
 			Root.SaveOptions("config.ini");
 			Root.SaveOptions("hotkeys.ini");
+
+			Root.FormOptions = null;
 		}
 
 		private void cbWidthEnabled_CheckedChanged(object sender, EventArgs e)

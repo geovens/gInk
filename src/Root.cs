@@ -902,6 +902,11 @@ namespace gInk
 		*/
 		private void OnOptions(object sender, EventArgs e)
 		{
+			if (FormOptions != null)
+				return;
+			if (FormDisplay != null || FormCollection != null)
+				return;
+
 			ReadOptions("pens.ini");
 			ReadOptions("config.ini");
 			ReadOptions("hotkeys.ini");
