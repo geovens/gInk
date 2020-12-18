@@ -32,6 +32,7 @@ Click the exit button or press ESC to exit drawing.
 
 - There is a known issue for multiple displays of unmatched DPI settings (100%, 125%, 150%, etc.). If you use gInk on a computer with multiple displays of unmatched DPI settings, or you encounter problems such as incorrect snapshot area, being unable to drag toolbar to locations etc., please do the following as a workaround (in Windows 10 version 1903 as an example): right-click gInk.exe, Properties, Compatibility, Change high DPI settings, Enable override high DPI scaling behavior scaling performed by: Application. (do this only for gInk version v1.1.0 and after)
 - There are a few hidden options you can tweak in config.ini that are not shown in the options window.
+- Many have asked for features to draw lines, arrows, squares, texts etc. I indeed wish to add these features, but currently I haven't found a way to implement them while keeping the UI simple, which I weight more. The good news is that someone else (pubpub-zz) is actively working on a project [ppInk](https://github.com/pubpub-zz/ppInk) which is based on gInk, adding many more functions to it including drawing lines, arrows, squared, texts etc. You could check whether the fork project meets your needs if you want these features.
 
 #### How to contribute translation
 
