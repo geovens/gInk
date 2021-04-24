@@ -1,4 +1,4 @@
-LanguageName = "العربية"
+LanguageName = "اللغة العربية"
 
 ButtonNamePen0 = "القلم 0"
 ButtonNamePen1 = "القلم  1"
@@ -33,12 +33,12 @@ OptionsTabHotkeys = "الاختصارات"
 
 OptionsGeneralLanguage = "اللغة"
 OptionsGeneralCanvascursor = "مؤشر الفأرة"
-OptionsGeneralCanvascursorArrow = "سهم"
-OptionsGeneralCanvascursorPentip = "قلم"
+OptionsGeneralCanvascursorArrow = "مؤشر السهم"
+OptionsGeneralCanvascursorPentip = "مؤشر القلم"
 OptionsGeneralSnapshotsavepath = "مسار حفظ الصور الملتقطة"
-OptionsGeneralWhitetrayicon = "استخدم الايقونة البيضاء"
+OptionsGeneralWhitetrayicon = "استخدم الايقونة المصغرة البيضاء"
 OptionsGeneralAllowdragging = "السماح بتحريك الشريط "
-OptionsGeneralNotePenwidth = "لوحة حجم القلم : تجاهل الاعدادت لكل قلم على حدي"
+OptionsGeneralNotePenwidth = "لوحة حجم القلم : تجاهل الاعدادت لكل قلم على حدى"
 
 OptionsPensShow = "عرض"
 OptionsPensColor = "اللون"
