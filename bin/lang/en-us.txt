@@ -32,7 +32,7 @@ OptionsTabPens = "Pens"
 OptionsTabHotkeys = "Hotkeys"
 
 OptionsGeneralLanguage = "Language"
-OptionsGeneralCanvascursor = "Canvus cursor"
+OptionsGeneralCanvascursor = "Canvas cursor"
 OptionsGeneralCanvascursorArrow = "Arrow"
 OptionsGeneralCanvascursorPentip = "Pen tip"
 OptionsGeneralSnapshotsavepath = "Snapshot save path"
