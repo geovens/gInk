@@ -1,4 +1,12 @@
 
+v1.1.1 (Continueing)
+=================
+- Arabic language.
+- Brazilian Portuguese language.
+- Bangla language.
+- Hungarian language.
+- Persian language.
+
 v1.1.0 (Aug. 26, 2020)
 =================
 - Better handling of UI layout for multiple displays of unmatched DPI.
