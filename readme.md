@@ -5,8 +5,8 @@ gInk is an on-screen annotation software under Windows, used to help improving m
 
 #### Screen Shots
 
-![screenshot](https://raw.githubusercontent.com/geovens/gInk/master/screenshot1.jpg)  
-![screenshot](https://raw.githubusercontent.com/geovens/gInk/master/screenshot2.jpg)  
+![screenshot1](https://user-images.githubusercontent.com/64111533/179380249-c8cb7a97-002e-4293-af46-9b1bf35494cc.jpg)  
+![screenshot2](https://user-images.githubusercontent.com/64111533/179380257-59b54fa5-eb15-4ce6-a446-361ef8eef15c.jpg)  
 
 #### Download
 
