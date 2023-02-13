@@ -1,4 +1,11 @@
 
+v1.2.0 (Feb. 13, 2023)
+=================
+- Allow using F1 to F12 as hotkeys.
+- Memory leak is greatly reduced.
+- A crash when rapidly drawing and switching pens hopefully might be fixed.
+- Korean, Lithuanian, Hebrew, Hindi, Assamese, Croatian language.
+
 v1.1.1 (Mar. 8, 2022)
 =================
 - Turkish language.
