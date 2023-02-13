@@ -590,6 +590,8 @@ namespace gInk
 				DeleteObject(hScreenBitmap);
 				DeleteDC(memscreenDc);
 			}
+			gpButtonsImage.Dispose();
+			gpPenWidthImage.Dispose();
 		}
 
 		[DllImport("user32.dll")]

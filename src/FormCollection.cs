@@ -1366,13 +1366,18 @@ namespace gInk
 		private void FormCollection_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			image_exit.Dispose(); image_clear.Dispose(); image_undo.Dispose(); image_snap.Dispose(); image_penwidth.Dispose(); 
-			image_dock.Dispose(); image_dockback.Dispose();;
-			image_pencil.Dispose(); image_highlighter.Dispose(); image_pencil_act.Dispose(); image_highlighter_act.Dispose();;
-			image_pointer.Dispose(); image_pointer_act.Dispose();;
-			image_eraser_act.Dispose(); image_eraser.Dispose();;
-			image_pan_act.Dispose(); image_pan.Dispose();;
-			image_visible_not.Dispose(); image_visible.Dispose();;
-		
+			image_dock.Dispose(); image_dockback.Dispose();
+			image_pencil.Dispose(); image_highlighter.Dispose(); image_pencil_act.Dispose(); image_highlighter_act.Dispose();
+			image_pointer.Dispose(); image_pointer_act.Dispose();
+			image_eraser_act.Dispose(); image_eraser.Dispose();
+			image_pan_act.Dispose(); image_pan.Dispose();
+			image_visible_not.Dispose(); image_visible.Dispose();
+			for (int b = 0; b < Root.MaxPenCount; b++)
+			{
+				image_pen[b].Dispose();
+				image_pen_act[b].Dispose();
+			}
+			cursorred.Dispose();
 			IC.Dispose();		
 		}
 
