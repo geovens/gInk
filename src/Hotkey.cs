@@ -22,7 +22,25 @@ namespace gInk
 				return true;
 			if (key >= Keys.NumPad0 && key <= Keys.NumPad9)
 				return true;
+			if (key >= Keys.F1 && key <= Keys.F12)
+				return true;
 			return false;
+		}
+
+		public static string KeyToString(Keys key)
+		{
+			if (key >= Keys.F1 && key <= Keys.F12)
+				return "F" + (key - Keys.F1 + 1).ToString();
+			else
+				return ((char)key).ToString();
+		}
+
+		public static string KeyToString(int key)
+		{
+			if (key >= (int)Keys.F1 && key <= (int)Keys.F12)
+				return "F" + (key - (int)Keys.F1 + 1).ToString();
+			else
+				return ((char)key).ToString();
 		}
 
 		public override string ToString()
@@ -34,7 +52,7 @@ namespace gInk
 				if (Alt) str += "Alt + ";
 				if (Shift) str += "Shift + ";
 				if (Win) str += "Win + ";
-				str += (char)Key;
+				str += KeyToString(Key);
 				return str;
 			}
 			else
@@ -60,7 +78,13 @@ namespace gInk
 				Alt = false;
 				Shift = false;
 				Win = false;
-				Keys key = (Keys)para[para.Length - 1];
+				Keys key;
+				if (para.Length == 1 || para[para.Length - 2] == ' ' || para[para.Length - 2] == '+')
+					key = (Keys)para[para.Length - 1];
+				else if (para[para.Length - 2] == 'F')
+					key = int.Parse(para[para.Length - 1].ToString()) - 1 + Keys.F1;
+				else
+					key = Keys.None;
 				if (IsValidKey(key))
 				{
 					if (para.Contains("Control")) Control = true;

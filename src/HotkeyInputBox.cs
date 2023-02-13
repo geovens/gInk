@@ -70,7 +70,7 @@ namespace gInk
 					Text += "Shift + ";
 				if (Hotkey.Win)
 					Text += "Win + ";
-				Text += (char)Hotkey.Key;
+				Text += Hotkey.KeyToString(Hotkey.Key);
 			}
 			else
 			{
@@ -115,7 +115,7 @@ namespace gInk
 					Text += "Win + ";
 
 				if (Hotkey.IsValidKey(pressedKey))
-					Text += (char)pressedKey;
+					Text += Hotkey.KeyToString(pressedKey);
 			}
 
 			if (deleting)
@@ -169,7 +169,7 @@ namespace gInk
 					Text += "Win + ";
 
 				if (Hotkey.IsValidKey(pressedKey))
-					Text += (char)pressedKey;
+					Text += Hotkey.KeyToString(pressedKey);
 			}
 
 			if (modifierKeys == Keys.None)
