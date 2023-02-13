@@ -692,8 +692,8 @@ namespace gInk
 				}
 				catch
 				{
-					Thread.Sleep(1);
-					IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+					//Thread.Sleep(1);
+					//IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
 				}
 			}
 			else if (pen >= 0)
@@ -730,8 +730,8 @@ namespace gInk
 				}
 				catch
 				{
-					Thread.Sleep(1);
-					IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
+					//Thread.Sleep(1);
+					//IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
 				}
 			}
 			Root.CurrentPen = pen;
