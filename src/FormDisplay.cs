@@ -583,6 +583,8 @@ namespace gInk
 			DeleteObject(Canvus);
 			//DeleteObject(BlankCanvus);
 			DeleteDC(canvusDc);
+			DeleteObject(OneStrokeCanvus);
+			DeleteDC(onestrokeDc);
 			if (Root.AutoScroll)
 			{
 				DeleteObject(hScreenBitmap);

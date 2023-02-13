@@ -1363,6 +1363,19 @@ namespace gInk
 			IsMovingToolbar = 0;
 		}
 
+		private void FormCollection_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			image_exit.Dispose(); image_clear.Dispose(); image_undo.Dispose(); image_snap.Dispose(); image_penwidth.Dispose(); 
+			image_dock.Dispose(); image_dockback.Dispose();;
+			image_pencil.Dispose(); image_highlighter.Dispose(); image_pencil_act.Dispose(); image_highlighter_act.Dispose();;
+			image_pointer.Dispose(); image_pointer_act.Dispose();;
+			image_eraser_act.Dispose(); image_eraser.Dispose();;
+			image_pan_act.Dispose(); image_pan.Dispose();;
+			image_visible_not.Dispose(); image_visible.Dispose();;
+		
+			IC.Dispose();		
+		}
+
 		private void btInkVisible_Click(object sender, EventArgs e)
 		{
 			if (ToolbarMoved)
