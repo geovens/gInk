@@ -79,12 +79,9 @@ jobs:
       run:  msbuild .\gInk.sln /p:Configuration=$env:Configuration
       env:
         Configuration: ${{ matrix.configuration }}
-    # Create portable archive
-    - name: Create portable release
-      run: Compress-Archive -Path bin/* -Destination release.zip
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
         name: gInk_${{ github.event.inputs.version_number }}_portable.zip
-        path: release.zip
+        path: bin/
