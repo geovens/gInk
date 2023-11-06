@@ -84,10 +84,10 @@ jobs:
     - name: Create portable release
       run: zip $env:version_number.zip ./bin/* -r
       env:
-        version_number: ${{githib.event.inputs.version_number}}
+        version_number: ${{github.event.inputs.version_number}}
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
         name: Portable release upload
-        path: ${{ ithib.event.inputs.version_number }}.zip
+        path: ${{ github.event.inputs.version_number }}.zip
