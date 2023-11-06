@@ -66,9 +66,6 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    # Install zip
-    - name: Install zip
-      uses: montudor/action-zip@v1
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
@@ -84,7 +81,7 @@ jobs:
         Configuration: ${{ matrix.configuration }}
     # Create portable archive
     - name: Create portable release
-      run: zip $env:version_number.zip ./bin/* -r
+      run: Compress-Archive -Path bin/* -Destination $env:version_number.zip
       env:
         version_number: ${{github.event.inputs.version_number}}
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
