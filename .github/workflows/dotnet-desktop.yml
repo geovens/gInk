@@ -60,28 +60,13 @@ jobs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-
     # Install the .NET Core workload
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
-    # Restore the application to populate the obj folder with RuntimeIdentifiers
-    - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
-    # Create the app package by building and packaging the Windows Application Packaging project
-    - name: Create build
-      run:  msbuild .\gInk.sln /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
-    # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: gInk_${{ github.event.inputs.version_number }}_portable.zip
-        path: bin/
+    - name: Install NSIS
+      run: | 
+            Choco-Install -PackageName nsis
+            $NsisPath = "${env:ProgramFiles(x86)}\NSIS\"
+            Add-MachinePathItem $NsisPath
