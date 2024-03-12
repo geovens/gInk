@@ -921,8 +921,7 @@ namespace gInk
 			if (Hotkey_Global.Alt) modifier |= 0x1;
 			if (Hotkey_Global.Shift) modifier |= 0x4;
 			if (Hotkey_Global.Win) modifier |= 0x8;
-			if (modifier != 0)
-				RegisterHotKey(IntPtr.Zero, 0, modifier, Hotkey_Global.Key);
+			RegisterHotKey(IntPtr.Zero, 0, modifier, Hotkey_Global.Key);
 		}
 
 		public void UnsetHotkey()
@@ -932,8 +931,7 @@ namespace gInk
 			if (Hotkey_Global.Alt) modifier |= 0x1;
 			if (Hotkey_Global.Shift) modifier |= 0x4;
 			if (Hotkey_Global.Win) modifier |= 0x8;
-			if (modifier != 0)
-				UnregisterHotKey(IntPtr.Zero, 0);
+			UnregisterHotKey(IntPtr.Zero, 0);
 		}
 
 		public void ChangeLanguage(string filename)
