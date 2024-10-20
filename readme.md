@@ -1,45 +1,111 @@
+[comment]: p "Animated Intro."
 
-#### Introduction
+<h1 align="center">
+    <img src="https://readme-typing-svg.herokuapp.com/?font=Righteous&size=35&center=true&vCenter=true&width=900&height=70&duration=5000&lines=Welcome+to+gInk!+👋;+An+Intuitive+On-Screen+Annotation+Tool...+🙌;Free+to+use+and+collaborate...+🤝;Mentained+and+improved+by+experts...+😎&color=3C99D4" />
+</h1>
 
-gInk is an on-screen annotation software under Windows, used to help improving my presentations and demonstrations, and to help working on temperary thoughts which need to be noted beside something on the screen. The features are greatly inspired by another screen annotation software Epic Pen, but even more easy to use. gInk is made with the idea kept in mind that the interface should be as simple as possible and should not distract attention of both the presenter and the audience when used for presentations. Unlike in many other softwares in the same category, you select from pens to draw things instead of changing individual settings of color, transparency and tip width everytime. Each pen is a combination of these attributes and is configurable to your need.
+[comment]: br "About gInk"
 
-#### Screen Shots
+<h2 align="center">__ About gInk __</h2>
+<p align="justify">
+✨ gInk is a lightweight and super easy-to-use tool for on-screen drawing and annotations on Windows! Whether you're giving a presentation, teaching, or just brainstorming 💡, gInk lets you draw directly on your screen with ease.
+</p>
+<p align="justify">
+🎨 Inspired by Epic Pen, it keeps things simple and distraction-free, making sure you stay focused while sharing your ideas. 
+</p> 
+<p align="justify"> 
+It’s perfect for both beginners and pros who want a smooth and intuitive drawing experience! 👩‍🏫🖋️
+</p>
+<br>
+<br>
 
-![screenshot](https://raw.githubusercontent.com/geovens/gInk/master/screenshot1.jpg)  
-![screenshot](https://raw.githubusercontent.com/geovens/gInk/master/screenshot2.jpg)  
+<div align="center">
+  <picture>
+    <source media="(max-width: 768px)" srcset="https://raw.githubusercontent.com/geovens/gInk/master/screenshot1.jpg">
+    <img alt="coding" width="450" src="https://raw.githubusercontent.com/geovens/gInk/master/screenshot1.jpg" style="margin:10px;">
+  </picture>
+  <picture>
+    <source media="(max-width: 768px)" srcset="https://raw.githubusercontent.com/geovens/gInk/master/screenshot2.jpg">
+    <img alt="toolbar" width="450" src="https://raw.githubusercontent.com/geovens/gInk/master/screenshot2.jpg" style="margin:10px;">
+  </picture>
+</div>
 
-#### Download
+<br>
 
-https://github.com/geovens/gInk/releases/
+## 🎓 Features
 
-#### How to use
+- 🌟 **Compact and user-friendly** interface keeps the focus on your content.
+- 🎨 **Dynamic Desktop Rendering** ensures seamless annotations across multiple displays.
+- 💡 **Supports Stylus, Touchscreen, and Mouse Input** for a flexible drawing experience.
+- ✨ **Click-Through Mode** allows interactions with applications while annotations remain visible.
+- 🖌️ **Pen Pressure Sensitivity** provides a natural drawing feel.
+- 🖼️ **Snapshot Support** for easy capturing and sharing of your annotations.
+- 🌐 **Customizable Hotkeys** for a personalized and efficient workflow.
+  <br> <br>
 
-Start gInk and an icon will appear in the system tray. Click the icon (or use a hotkey) to start drawing on screen.  
-Click the exit button or press ESC to exit drawing.  
+## 🔧 Getting Started
 
-#### Features
+1. **Download & Installation**: [Download the latest release here](https://github.com/geovens/gInk/releases/).
+2. **Start gInk**: Launch the app and find its icon in the system tray.
+3. **Begin Annotating**: Click the icon or use a hotkey to start drawing on your screen.
+4. **Exit Drawing Mode**: Click the exit button or press `ESC` to stop annotating.
 
-- Compact and intuitive interface.  
-- Inks rendered on dynamic desktops.  
-- Stylus with eraser, touch screen and mouse compatible.  
-- Click-through mode.  
-- Multiple displays support.  
-- Pen pressure support.  
-- Snapshot support.  
-- Hotkey support.    
+## 🛠️ Advanced Configuration
 
-#### Tips
+- **DPI Settings for Multiple Displays**:
+  For systems with mismatched DPI settings across displays (e.g., 100%, 125%, 150%), you may encounter issues like incorrect snapshot areas or toolbar positioning. To fix this:
 
-- There is a known issue for multiple displays of unmatched DPI settings (100%, 125%, 150%, etc.). If you use gInk on a computer with multiple displays of unmatched DPI settings, or you encounter problems such as incorrect snapshot area, being unable to drag toolbar to locations etc., please do the following as a workaround (in Windows 10 version 1903 as an example): right-click gInk.exe, Properties, Compatibility, Change high DPI settings, Enable override high DPI scaling behavior scaling performed by: Application. (do this only for gInk version v1.1.0 and after)
-- There are a few hidden options you can tweak in config.ini that are not shown in the options window.
-- Many have asked for features to draw lines, arrows, squares, texts etc. I indeed wish to add these features, but currently I haven't found a way to implement them while keeping the UI simple, which I weight more. The good news is that someone else (pubpub-zz) is actively working on a project [ppInk](https://github.com/pubpub-zz/ppInk) which is based on gInk, adding many more functions to it including drawing lines, arrows, squared, texts etc. You could check whether the fork project meets your needs if you want these features.
+  - Right-click `gInk.exe`, go to `Properties`, then `Compatibility`.
+  - Click `Change high DPI settings`, and enable "Override high DPI scaling behavior" with scaling performed by the application.
+  - This applies to gInk version v1.1.0 and later.
 
-#### How to contribute translation
+- **Hidden Configuration Options**: Some settings can be fine-tuned directly in the `config.ini` file for more advanced customization.
 
-gInk supports multiple languages now. Here is how you can contribute translation. Simply create a duplication of the file "en-us.txt" in "bin/lang" folder, rename it and then translate the strings in the file. Check in gInk to make sure your translation shows correctly, and then you can make a pull request to merge your translation to the next version of release for others to use.  
+[comment]: <> (Languages Section)
 
+<h2 align="start">🌍 Contributing Translations</h2>
+<div align="start">
+    Help make gInk accessible in more languages by contributing translations:
+    <ol>
+        <li>Duplicate the file <code>en-us.txt</code> found in the <code>bin/lang</code> folder.</li>
+        <li>Rename the file according to the target language.</li>
+        <li>Translate the strings within the file.</li>
+        <li>Verify the translation displays correctly in gInk.</li>
+        <li>Submit a pull request to share your translation for the next release.</li>
+    </ol>
+</div>
+<br>
 
-----
-gInk  
-https://github.com/geovens/gInk  
-Weizhi Nai @ 2020  
+## 🤝 How to Contribute
+
+- **Feature Requests**: Share your ideas for new features or improvements.
+- **Bug Reports**: Let us know if you encounter any issues.
+- **Fork the Project**: Make your modifications and submit a pull request for review.
+- For those looking for additional features such as drawing lines, arrows, shapes, and text, you might be interested in [ppInk](https://github.com/pubpub-zz/ppInk), a project forked from gInk that offers a more feature-rich experience.
+
+[comment]: <> (Status Section)
+
+<h2 align="center">⚡ Project Stats ⚡</h2>
+<br>
+
+<div align="center">
+  <picture>
+    <source media="(max-width: 768px)" srcset="https://github-readme-stats.vercel.app/api/pin/?username=geovens&repo=gInk&theme=onedark">
+    <img alt="coding" width="450" src="https://github-readme-stats.vercel.app/api/pin/?username=geovens&repo=gInk&theme=onedark" style="margin:10px;">
+  </picture>
+  <picture>
+    <source media="(max-width: 768px)" srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=geovens&repo=gInk&layout=compact&theme=onedark">
+    <img alt="toolbar" width="450" src="https://github-readme-stats.vercel.app/api/top-langs/?username=geovens&repo=gInk&layout=compact&theme=onedark" style="margin:10px;">
+  </picture>
+</div>
+
+##
+
+[comment]: <> (Ending section)
+
+<p align="center">
+  <img src="https://media.giphy.com/media/LnQjpWaON8nhr21vNW/giphy.gif" width="60" style="vertical-align: middle; margin-right: 10px;">
+  <span style="vertical-align: middle;">
+    <b>Why Not to join as Contributer... </b>🙃
+  </span>
+</p>
